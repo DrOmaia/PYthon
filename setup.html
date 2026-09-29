@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup and help — Py30</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23E0357A%22/><text x=%2250%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22>py</text></svg>">
+<link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="wrap narrow" style="padding-top:26px">
+<h1>Setup and help</h1>
+<h2>1. How Py30 works</h2>
+<p>Py30 runs a real Python 3.12 inside your browser — no installation needed. The first time you run code, the browser downloads Python (about 10 MB) and keeps it in its cache, so later visits are fast. Code that uses <code>numpy</code> or <code>scikit-learn</code> (Week 4) downloads those libraries the first time too.</p>
+<p>Use a recent Chrome, Edge, Firefox or Safari, on a computer or a phone. An internet connection is needed to open the site.</p>
+<div class="callout hint-ar"><div class="ar">الموقع يعمل مباشرة في المتصفح بدون تثبيت أي شيء. أول تشغيل للكود يحمّل بايثون مرة واحدة ثم يصبح سريعًا.</div></div>
+<h2>2. Install Python on your own computer (recommended later)</h2>
+<p>You don't need it for the course, but after Day 30 you'll want to write programs on your own computer: download Python from python.org (on Windows tick <b>"Add python.exe to PATH"</b> on the first installer screen) and an editor like VS Code.</p>
+<h2>3. Your progress</h2>
+<p>Your name, solved problems, quiz scores, code and notes are saved in <b>this browser on this computer</b>. If you clear browser data or change browser, it is gone — so make a backup from time to time.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn btn-primary" id="exp" type="button">Download backup</button>
+  <label class="btn btn-soft" style="cursor:pointer">Restore from backup<input type="file" id="imp" accept=".json" hidden></label>
+  <button class="btn btn-ghost" onclick="Py30.reset()" type="button">Delete all progress</button>
+</div>
+<h2 style="margin-top:28px">4. Using the code editors</h2>
+<ul>
+  <li><b>Run</b> (or Ctrl+Enter) runs your code. <b>Check</b> tests your solution automatically.</li>
+  <li><b>Visualize</b> runs the code one line at a time and shows every variable.</li>
+  <li>Programs that use <code>input()</code> read from the <b>Input</b> box under the editor: one line per <code>input()</code>.</li>
+  <li>Tab inserts 4 spaces. <b>Reset</b> brings back the original code.</li>
+  <li>The first run of the day takes a few seconds while Python wakes up. Code using <code>numpy</code> or <code>sklearn</code> loads those libraries the first time too.</li>
+</ul>
+</main>
+<script>Py30.renderTopbar("setup");
+document.getElementById("exp").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([Py30.exportData()], {type:"application/json"})); a.download = "py30-backup-" + Py30.today() + ".json"; a.click(); };
+document.getElementById("imp").onchange = e => { const f = e.target.files[0]; if (!f) return; f.text().then(t => { try { Py30.importData(t); Py30.toast("Progress restored"); setTimeout(()=>location.href="index.html", 800); } catch(err) { alert("This file is not a Py30 backup."); } }); };
+Py30.renderFooter();</script></body></html>

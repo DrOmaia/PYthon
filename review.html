@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review deck — Py30</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23E0357A%22/><text x=%2250%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22>py</text></svg>">
+<link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="wrap narrow" style="padding-top:26px">
+<h1>Review deck</h1>
+<p>Cards come back just before you would forget them: after 1, 2, 4, 8 and 16 days. Be honest with yourself — "Not yet" is how the system helps you.</p>
+<div id="rv"><p class="muted">Loading cards…</p></div>
+</main>
+<script>Py30.renderTopbar("review"); Py30.requireProfile();</script>
+<script src="js/curriculum.js"></script>
+<script>
+(function(){
+  const st = Py30.state, esc = Py30.esc, md = s => esc(Py30.T(s)).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\n/g,"<br>");
+  const rv = document.getElementById("rv");
+  const allIds = Object.keys(st.cards);
+  const dayNums = [...new Set(allIds.map(id => +id.split(":")[0]))];
+  window.DAYS = window.DAYS || {};
+  let left = dayNums.length;
+  if (!left) { rv.innerHTML = `<div class="panel"><p>Your deck is empty. Cards are added when you open a lesson.</p><a class="btn btn-primary" href="index.html">Start learning</a></div>`; return; }
+  dayNums.forEach(n => { const s = document.createElement("script"); s.src = `js/days/day${String(n).padStart(2,"0")}.js`; s.onload = s.onerror = () => { if (--left === 0) start(); }; document.head.appendChild(s); });
+  let mode = "due";
+  function start(){
+    const ids = (mode === "due" ? Py30.dueCards() : allIds).filter(id => { const [d,i] = id.split(":"); return DAYS[d] && DAYS[d].cards && DAYS[d].cards[i]; });
+    if (!ids.length) { rv.innerHTML = `<div class="panel"><h3>Nothing due today 🌸</h3><p>You have ${allIds.length} cards in total. The next ones come back soon.</p><button class="btn btn-soft" id="all">Practice all ${allIds.length} cards anyway</button></div>`; rv.querySelector("#all").onclick = () => { mode = "all"; start(); }; return; }
+    let k = 0, knew = 0;
+    function show(){
+      if (k >= ids.length) { rv.innerHTML = `<div class="panel"><h3>Session done: ${knew} / ${ids.length} known</h3><p class="ar">${Py30.T("{{g:أحسنت|أحسنتِ}}! المراجعة القصيرة كل يوم أقوى من المراجعة الطويلة مرة واحدة.")}</p><a class="btn btn-primary" href="index.html">Back to journey</a></div>`; return; }
+      const [d,i] = ids[k].split(":"), c = DAYS[d].cards[i];
+      rv.innerHTML = `<p class="muted">Card ${k+1} of ${ids.length}</p><div class="card3d"><div class="card-inner" tabindex="0" role="button" aria-label="Flip card"><div class="face"><div class="fc-from">Day ${d} · tap to flip</div><div style="font-size:1.25rem;font-weight:700">${md(c.f)}</div></div><div class="face back"><div class="fc-from">Answer</div><div>${md(c.b)}</div></div></div></div>
+        <div style="display:flex;gap:10px;justify-content:center"><button class="btn btn-ghost" id="no" type="button">Not yet</button><button class="btn btn-ok" id="yes" type="button">I knew it</button></div>`;
+      const inner = rv.querySelector(".card-inner");
+      inner.onclick = () => inner.classList.toggle("flip");
+      inner.onkeydown = e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); inner.classList.toggle("flip"); } };
+      rv.querySelector("#yes").onclick = () => { if (mode==="due") Py30.gradeCard(ids[k], true); knew++; k++; show(); };
+      rv.querySelector("#no").onclick = () => { if (mode==="due") Py30.gradeCard(ids[k], false); k++; show(); };
+    }
+    show();
+  }
+})();
+Py30.renderFooter();
+</script></body></html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet — Py30</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23E0357A%22/><text x=%2250%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22>py</text></svg>">
+<link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="wrap" style="padding-top:26px" id="cs"></main>
+<script src="js/cheatsheets.js"></script>
+<script>Py30.renderTopbar("cheat");
+(function(){ const w = +(new URLSearchParams(location.search).get("week") || 1), esc = Py30.esc, el = document.getElementById("cs");
+  const tabs = [1,2,3,4].map(k => CHEATSHEETS[k] ? `<a class="btn ${k===w?"btn-primary":"btn-soft"} btn-sm" href="?week=${k}">Week ${k}</a>` : `<span class="btn btn-ghost btn-sm" aria-disabled="true">Week ${k} (soon)</span>`).join(" ");
+  const c = CHEATSHEETS[w];
+  el.innerHTML = `<div class="no-print" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">${tabs}<button class="btn btn-soft btn-sm" style="margin-left:auto" onclick="print()">Print</button></div>` +
+    (c ? `<h1>${esc(c.title)}</h1><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">${c.blocks.map(b => `<div class="panel" style="padding:14px"><h3>${esc(b[0])}</h3><pre class="code-static" style="margin:0">${esc(b[1])}</pre></div>`).join("")}</div>` : `<h1>Coming soon</h1><p>This week's cheat sheet arrives with its lessons.</p>`);
+})(); Py30.renderFooter();</script></body></html>

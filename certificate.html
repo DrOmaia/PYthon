@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate — Py30</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23E0357A%22/><text x=%2250%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22>py</text></svg>">
+<link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<style>
+.cert-wrap{padding:30px 0 50px}
+.cert{position:relative;max-width:980px;margin:0 auto;aspect-ratio:1.414/1;background:#fff;color:#2B1330;border-radius:6px;padding:5.5% 7%;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;text-align:center}
+.cert::before{content:"";position:absolute;inset:18px;border:2px solid #E0357A;border-radius:4px;pointer-events:none}
+.cert::after{content:"";position:absolute;inset:26px;border:1px solid #F2C6D8;border-radius:2px;pointer-events:none}
+.cert .band{position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:#FFE6F0}
+.cert .band2{position:absolute;left:-80px;bottom:-80px;width:260px;height:260px;border-radius:50%;background:#FFF0F6}
+.cert .band,.cert .band2{z-index:0}
+.cert::before,.cert::after{z-index:1}
+.cert > *:not(.band):not(.band2){position:relative;z-index:2}
+.cert .brand{display:flex;align-items:center;justify-content:center;gap:10px;font:800 1.2rem "Bricolage",sans-serif}
+.cert .brand .mark{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:#E0357A;color:#fff;font:600 1rem "JBMono",monospace}
+.cert .kind{font:600 1rem "Figtree",sans-serif;color:#7A5C72;margin-top:6px}
+.cert .name{font:800 clamp(2rem,6vw,4.2rem)/1.05 "Bricolage",sans-serif;color:#B81F5F;margin:.2em 0 .15em}
+.cert .line{font:500 clamp(.95rem,1.8vw,1.15rem)/1.6 "Figtree",sans-serif;max-width:640px;margin:0 auto}
+.cert .code{font:600 clamp(.9rem,1.8vw,1.1rem) "JBMono",monospace;background:#26122B;color:#F6E6EF;border-radius:10px;padding:8px 14px;display:inline-block;margin:8px auto 0}
+.cert .code .k{color:#9FD8FF}.cert .code .s{color:#FFD68A}
+.cert .ar{font-family:"PlexArabic",sans-serif;direction:rtl;text-align:center;color:#5B1E57;font-size:clamp(.95rem,1.8vw,1.15rem)}
+.cert .meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;font:600 .85rem "Figtree",sans-serif;color:#7A5C72}
+.cert .meta b{display:block;font:800 1.25rem "Bricolage",sans-serif;color:#2B1330}
+@media (max-width:640px){.cert{aspect-ratio:auto;gap:18px;padding:40px 30px}.cert .meta{grid-template-columns:1fr 1fr}}
+@media print{@page{size:A4 landscape;margin:0} body{background:#fff} .cert-wrap{padding:0} .cert{box-shadow:none;max-width:none;width:297mm;height:210mm;aspect-ratio:auto;border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+<main class="wrap cert-wrap" id="main"></main>
+<script src="js/curriculum.js"></script>
+<script>
+Py30.renderTopbar("cert"); Py30.requireProfile();
+(function(){
+  const st = Py30.state, p = st.profile || {name:"Student", gender:"m"}, esc = Py30.esc, T = Py30.T;
+  const doneDays = CURRICULUM.days.filter(d => st.days[d.d] && st.days[d.d].done).length;
+  const solved = Object.values(st.days).reduce((a, d) => a + Object.keys(d.ex || {}).length, 0);
+  const quizzes = Object.values(st.days).filter(d => d.quiz);
+  const quizAvg = quizzes.length ? Math.round(100 * quizzes.reduce((a, d) => a + d.quiz.score / d.quiz.total, 0) / quizzes.length) : null;
+  const projects = { adventure: "Text adventure game", library: "Library management system", ai: "AI wine classifier & study buddy" };
+  const capstone = projects[st.capstone] || "Capstone project";
+  const main = document.getElementById("main");
+  const unlocked = st.days[30] && st.days[30].done;
+  if (!unlocked) {
+    main.innerHTML = `<div class="narrow" style="margin:0 auto"><h1>Your certificate is waiting</h1>
+      <p>It unlocks when you mark <b>Day 30</b> as complete. So far you have completed <b>${doneDays}</b> of 30 days and solved <b>${solved}</b> problems.</p>
+      <p class="ar">${esc(T("{{g:استمر|استمري}} يا {{name}}، الشهادة في انتظارك في نهاية اليوم الثلاثين!"))}</p>
+      <a class="btn btn-primary" href="${doneDays >= 29 ? "lesson.html?day=30" : "index.html"}">${doneDays >= 29 ? "Go to Day 30" : "Back to my journey"}</a></div>`;
+    return;
+  }
+  if (!st.completedOn) { st.completedOn = Py30.today(); Py30.save(); }
+  const dateTxt = new Date(st.completedOn + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  let h = 0; for (const ch of p.name + st.completedOn + (p.started || "")) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const certId = "PY30-" + h.toString(36).toUpperCase().padStart(7, "0").slice(0, 7);
+  main.innerHTML = `<div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
+      <h1 style="margin:0 auto 0 0;font-size:1.8rem">${esc(T("Congratulations, {{name}}! 🎉"))}</h1>
+      <button class="btn btn-primary" onclick="print()" type="button">Print or save as PDF</button></div>
+    <article class="cert" aria-label="Certificate of completion">
+      <span class="band"></span><span class="band2"></span>
+      <div><div class="brand"><span class="mark">py</span>Py30</div><div class="kind">Certificate of completion</div></div>
+      <div>
+        <div class="line">This certifies that</div>
+        <div class="name">${esc(p.name)}</div>
+        <div class="line">has completed <b>Python in 30 Days</b> — from the first <code style="background:none;color:inherit;padding:0">print()</code> to object-oriented programming and machine learning with scikit-learn — and built a capstone project: <b>${esc(capstone)}</b>.</div>
+        <div class="code"><span class="k">print</span>(<span class="s">"${esc(p.name)} can code!"</span>)</div>
+      </div>
+      <div class="ar">${esc(T("{{g:أتمّ|أتمّت}} {{name}} برنامج بايثون في ٣٠ يومًا بنجاح. مبارك، والقادم أجمل! 🌸"))}</div>
+      <div class="meta">
+        <div><b>${doneDays}/30</b>days completed</div>
+        <div><b>${solved}</b>problems solved</div>
+        <div><b>${quizAvg === null ? "—" : quizAvg + "%"}</b>average quiz score</div>
+        <div><b>${esc(dateTxt)}</b>${esc(certId)}</div>
+      </div>
+    </article>
+    <p class="muted no-print" style="text-align:center;margin-top:14px;font-size:.9rem">Tip: in the print window choose <b>Landscape</b> and enable <b>Background graphics</b> for the colors.</p>`;
+})();
+Py30.renderFooter();
+</script>
+</body></html>

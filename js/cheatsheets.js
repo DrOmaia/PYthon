@@ -1,0 +1,43 @@
+/* Py30 weekly cheat sheets */
+window.CHEATSHEETS = {
+  1: { title: "Week 1 cheat sheet — First steps", blocks: [
+    ["Printing", 'print("Hello")            # text\nprint(3 + 4)               # 7\nprint("a", "b", sep="-")   # a-b\nprint("no newline", end="")\n# comments start with #'],
+    ["Variables and types", 'name = "Sara"     # str\nage = 19          # int\ngpa = 4.5         # float\nis_ready = True   # bool\nprint(type(age))  # <class \'int\'>'],
+    ["Input and conversion", 'text = input("Name: ")          # always str\nage = int(input("Age: "))       # whole number\nprice = float(input("Price: ")) # decimal\nstr(10)  ->  "10"'],
+    ["Math operators", '7 + 2   # 9      7 - 2   # 5\n7 * 2   # 14     7 / 2   # 3.5\n7 // 2  # 3      7 % 2   # 1 (remainder)\n2 ** 3  # 8      round(3.456, 2)  # 3.46\nx += 1  # same as x = x + 1'],
+    ["Strings", 's = "Python"\ns[0]  # "P"    s[-1]  # "n"\ns[0:3]  # "Pyt"   s[::-1]  # "nohtyP"\nlen(s)  # 6\ns.upper() s.lower() s.strip() s.replace("P","J")\n"th" in s  # True'],
+    ["f-strings", 'f"Hi {name}, you are {age}"\nf"{gpa:.2f}"      # 2 decimals\nf"{1500000:,}"    # 1,500,000\nf"{name:>10}"     # right-align in 10'],
+    ["Decisions", 'if score >= 90:\n    print("A")\nelif score >= 80:\n    print("B")\nelse:\n    print("Keep going")\n\n== != < > <= >=     and  or  not'],
+    ["Error quick guide", 'SyntaxError      -> grammar: ( ) " : missing\nIndentationError -> spaces at line start\nNameError        -> unknown name / typo / no quotes\nTypeError        -> mixing str and int\nValueError       -> int("abc")\nZeroDivisionError-> x / 0'],
+  ]},
+  2: { title: "Week 2 cheat sheet — Loops and collections", blocks: [
+    ["while", 'i = 1\nwhile i <= 5:\n    print(i)\n    i += 1\n\nwhile True:\n    x = input()\n    if x == "end":\n        break'],
+    ["for and range", 'for ch in "abc": ...\nrange(5)         # 0..4\nrange(1, 6)      # 1..5\nrange(0, 10, 2)  # 0 2 4 6 8\nrange(5, 0, -1)  # 5..1\nfor i, x in enumerate(items): ...'],
+    ["Loop patterns", 'total = 0          # accumulator\ncount = 0          # counter\nbest = items[0]    # champion\nfor x in items:\n    total += x\n    if x > best:\n        best = x'],
+    ["Lists", 'a = [3, 1, 2]\na.append(4); a.insert(0, 9)\na.remove(9); a.pop()\na.sort(); sorted(a)\nsum(a) max(a) min(a) len(a)\n[x * 2 for x in a if x > 1]'],
+    ["Strings <-> lists", '"a b c".split()        # [\'a\', \'b\', \'c\']\n"4,5".split(",")\n" ".join(words)\n[int(x) for x in input().split()]'],
+    ["Tuples and sets", 't = (3, 7); x, y = t\ns = set(); s.add(1)\na & b   a | b   a - b\nlen(set(items))   # unique count'],
+    ["Dictionaries", 'd = {"sara": 95}\nd["omar"] = 82\nd.get("x", 0)\nfor k, v in d.items(): ...\nmax(d, key=d.get)'],
+    ["Counting pattern", 'counts = {}\nfor w in words:\n    counts[w] = counts.get(w, 0) + 1'],
+  ]},
+  3: { title: "Week 3 cheat sheet — Organize like a pro", blocks: [
+    ["Functions", 'def area(w, h=1):\n    """Return w * h."""\n    return w * h\n\narea(3, 4)      # 12\narea(h=2, w=5)  # keywords\nreturn a, b     # tuple'],
+    ["print vs return", 'print -> shows, gives None\nreturn -> sends value back, ends function'],
+    ["Modules", 'import math          # math.sqrt(9)\nfrom random import randint\nimport numpy as np\nrandom.seed(42)      # repeatable'],
+    ["lambda and key", 'sorted(words, key=len)\nsorted(pairs, key=lambda p: p[1], reverse=True)\nmax(d, key=d.get)'],
+    ["Recursion", 'def fact(n):\n    if n <= 1:          # base case\n        return 1\n    return n * fact(n - 1)'],
+    ["Exceptions", 'try:\n    x = int(text)\nexcept ValueError as e:\n    print("bad:", e)\nelse: ...\nfinally: ...\nraise ValueError("msg")'],
+    ["Files", 'with open("f.txt", "w") as f:   # r / w / a\n    f.write("line\\n")\nwith open("f.txt") as f:\n    for line in f:\n        line.strip()\nimport csv; csv.DictReader(f)'],
+    ["Classes", 'class Student(Person):\n    def __init__(self, name, major):\n        super().__init__(name)\n        self.major = major\n    def __str__(self):\n        return f"{self.name} ({self.major})"'],
+  ]},
+  4: { title: "Week 4 cheat sheet — Algorithms and AI", blocks: [
+    ["Searching", 'linear: check each item      O(n)\nbinary (sorted!):\n  mid = (lo + hi) // 2\n  lo = mid + 1  /  hi = mid - 1   O(log n)\nimport bisect'],
+    ["Big-O", 'O(1)      d[key], lst[i]\nO(log n)  binary search\nO(n)      one loop\nO(n log n) sorted()\nO(n²)     nested loops'],
+    ["numpy", 'import numpy as np\na = np.array([1, 2, 3]); a * 2\nm[r]  m[:, c]  m.mean(axis=0)\na[(a > 1) & (a < 5)]\na @ w   np.argmax(a)'],
+    ["ML vocabulary", 'X = features (2D), y = labels\ntrain / test split, accuracy\nbaseline = majority class\noverfitting = memorizing'],
+    ["scikit-learn", 'from sklearn.model_selection import train_test_split\nX_tr, X_te, y_tr, y_te = train_test_split(\n    X, y, test_size=0.25, random_state=0)\nm = Model().fit(X_tr, y_tr)\nm.predict(X_te); m.score(X_te, y_te)'],
+    ["Models", 'KNeighborsClassifier(n_neighbors=5)\nDecisionTreeClassifier(max_depth=3)\nLogisticRegression(max_iter=1000)\nLinearRegression()\nmake_pipeline(StandardScaler(), model)'],
+    ["Text", 'vec = CountVectorizer()   # or TfidfVectorizer\nX = vec.fit_transform(train_texts)\nX_new = vec.transform(new_texts)\nmake_pipeline(CountVectorizer(), MultinomialNB())'],
+    ["Evaluate", 'confusion_matrix(y_true, y_pred)\ncross_val_score(m, X, y, cv=5)\npredict_proba -> probabilities\nprecision vs recall'],
+  ]},
+};

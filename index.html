@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Py30 — Learn Python in 30 days</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23E0357A%22/><text x=%2250%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22>py</text></svg>">
+<link rel="stylesheet" href="assets/vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero" id="hero"></section>
+  <section id="map"></section>
+  <section>
+    <h2>Your toolbox</h2>
+    <div class="tools">
+      <a class="tool" href="review.html"><b>Review deck</b><span>Spaced-repetition cards from the days you studied.</span></a>
+      <a class="tool" href="playground.html"><b>Playground</b><span>A free editor to try anything, with the visualizer.</span></a>
+      <a class="tool" href="glossary.html"><b>Glossary</b><span>Every term in English with a short Arabic explanation.</span></a>
+      <a class="tool" href="cheatsheet.html?week=1"><b>Cheat sheets</b><span>One printable page per week.</span></a>
+      <a class="tool" href="notes.html"><b>My notes</b><span>Everything you wrote, day by day.</span></a>
+      <a class="tool" href="certificate.html"><b>Certificate</b><span>Your personal certificate, unlocked after Day 30.</span></a>
+      <a class="tool" href="setup.html"><b>Setup and help</b><span>Install Python on your computer, backup your progress.</span></a>
+    </div>
+  </section>
+</main>
+<script src="js/curriculum.js"></script>
+<script>
+Py30.renderTopbar("home"); Py30.requireProfile();
+(function(){
+  const st = Py30.state, p = st.profile || {name:"Student", gender:"m"}, esc = Py30.esc, T = Py30.T;
+  const C = CURRICULUM;
+  const doneDays = C.days.filter(d => st.days[d.d] && st.days[d.d].done).map(d => d.d);
+  const current = (C.days.find(d => !(st.days[d.d] && st.days[d.d].done)) || C.days[29]);
+  const finished = !!(st.days[30] && st.days[30].done);
+  const solved = Object.values(st.days).reduce((a, d) => a + Object.keys(d.ex || {}).length, 0);
+  const streak = st.streak && (st.streak.last === Py30.today() || st.streak.last === Py30.addDays(Py30.today(), -1)) ? st.streak.count : 0;
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  document.getElementById("hero").innerHTML = `
+    <h1>${greet}, ${esc(p.name)}.</h1>
+    <div class="hero-line" aria-label="Python code greeting you"><span class="k">print</span><span class="p">(</span><span class="s">"${finished ? "I did it" : "Day " + current.d + ": let's go"}, ${esc(p.name)}!"</span><span class="p">)</span><span class="caret" aria-hidden="true"></span></div>
+    <div class="hero-out">${finished ? "I did it" : "Day " + current.d + ": let's go"}, ${esc(p.name)}!</div>
+    <div class="hero-grid">
+      <div class="panel">
+        <h3 style="margin-bottom:6px">${finished ? "You finished Py30! 🎓" : "Next up — Day " + current.d}</h3>
+        <p style="font-size:1.1rem;margin-bottom:12px">${finished ? "All 30 days done. Your certificate is ready." : esc(current.title)}</p>
+        ${finished ? `<a class="btn btn-primary" href="certificate.html">🎓 View my certificate</a> <a class="btn btn-soft" href="review.html">Keep reviewing</a>` : current.ready ? `<a class="btn btn-primary" href="lesson.html?day=${current.d}">${st.days[current.d] && st.days[current.d].visited ? "Continue" : "Start"} Day ${current.d}</a>` : `<span class="chip">Coming in the next update</span>`}
+        <p class="ar muted" style="margin:12px 0 0">${T("خطتك: ساعتان يوميًا. ٥ أيام دروس، يوم مراجعة ومشروع، ويوم راحة. {{g:جاهز|جاهزة}}؟")}</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">${doneDays.length}</div><div class="l">days done of 30</div></div>
+        <div class="stat"><div class="v">${solved}</div><div class="l">problems solved</div></div>
+        <div class="stat"><div class="v">${streak}</div><div class="l">day streak</div></div>
+      </div>
+    </div>`;
+  const map = document.getElementById("map");
+  map.innerHTML = `<h2>Your 30-day journey</h2>` + C.weeks.map(w => {
+    const days = C.days.filter(d => d.w === w.n);
+    return `<div class="week"><div class="week-head"><h3>${esc(w.title)}</h3><span class="ar muted">${esc(w.ar)}</span>${w.n <= 4 ? `<a class="muted" href="cheatsheet.html?week=${w.n}" style="font-size:.88rem">Cheat sheet</a>` : ""}</div>
+      <div class="days">${days.map(d => {
+        const ds = st.days[d.d] || {};
+        const cls = ["day", d.type, ds.done ? "done" : "", d.d === current.d ? "current" : "", d.ready ? "" : "soon"].join(" ");
+        const status = ds.done ? "✓ Done" : !d.ready ? "Soon" : d.type === "rest" ? "Rest and review" : ds.visited ? "In progress" : "";
+        return `<a class="${cls}" href="lesson.html?day=${d.d}"><span class="dn">Day ${d.d}</span><span class="dt">${esc(d.title)}</span><span class="ds">${status}</span></a>`;
+      }).join("")}</div></div>`;
+  }).join("");
+})();
+Py30.renderFooter();
+</script>
+</body></html>
