@@ -96,10 +96,13 @@
     bar.querySelector("#profileBtn").onclick = () => welcome(true);
   }
 
+  const REPO_URL = "https://github.com/dromaia/PYthon";
+  const STAR_SVG = '<svg aria-hidden="true" viewBox="0 0 16 16" width="15" height="15"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>';
+
   function renderFooter() {
     const f = document.createElement("footer");
     f.className = "footer";
-    f.innerHTML = `<div class="wrap">Python runs right in your browser. Your progress is saved in this browser only. <a href="setup.html">Setup &amp; help</a></div>`;
+    f.innerHTML = `<div class="wrap">Python runs right in your browser. Your progress is saved in this browser only. <a href="setup.html">Setup &amp; help</a> <a class="gh-star" href="${REPO_URL}" target="_blank" rel="noopener" aria-label="Star Py30 on GitHub (opens in a new tab)">${STAR_SVG}Star on GitHub</a></div>`;
     document.body.appendChild(f);
   }
 
@@ -154,7 +157,7 @@
 
   window.Py30 = {
     get state() { return state; }, save, esc, T, day, today, addDays,
-    touchStreak, addCards, dueCards, gradeCard, toast, renderTopbar, renderFooter, welcome, requireProfile, toggleTheme,
+    REPO_URL, STAR_SVG, touchStreak, addCards, dueCards, gradeCard, toast, renderTopbar, renderFooter, welcome, requireProfile, toggleTheme,
     reset() { if (confirm("Delete all your progress, code and notes in this browser?")) { localStorage.removeItem(KEY); location.href = "index.html"; } },
     exportData() { return JSON.stringify(state, null, 2); },
     importData(txt) { state = Object.assign(blank(), JSON.parse(txt)); save(); },

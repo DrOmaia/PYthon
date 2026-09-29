@@ -310,3 +310,9 @@ table.gl th{background:var(--tint);font-family:var(--font-display)}
 /* Beginners must see exactly the characters they type: no programming ligatures */
 code, pre, kbd, .CodeMirror, .code-static, .pline, .viz-code, .hero-line, .hero-out, .cb-out, .diff .col, .vars, .viz-out, .predict textarea, .cb-stdin textarea{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
 @media (max-width:600px){.hero-line{white-space:normal;word-break:break-word;font-size:1.15rem;padding:18px}}
+
+/* GitHub star invitation */
+.gh-star{display:inline-flex;align-items:center;gap:6px;margin-left:6px;padding:4px 11px;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-weight:700;text-decoration:none;background:var(--surface)}
+.gh-star:hover,.gh-star:focus-visible{border-color:var(--pink-2)}
+.gh-star svg,.tool-star svg{color:#D99A00;vertical-align:-2px}
+.tool-star .ar{display:block;margin-top:4px;font-family:var(--font-ar);direction:rtl;text-align:right}
