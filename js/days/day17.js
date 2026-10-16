@@ -150,8 +150,8 @@ with open("marks.csv") as f:
     for row in reader:
         print(row["name"], row["mark"])
         total += int(row["mark"])
-print("Average:", total / 3)`, note: "<p><code>DictReader</code> turns each row into a dictionary using the header line. Every value is read as a <b>string</b>, so convert numbers with <code>int()</code>.</p>" },
-    { t: "steps", title: "A scores file that survives", problem: "<p>Build two functions for a quiz game: <code>save_score(name, score)</code> adds a line to <code>quiz_scores.txt</code>, and <code>best_score()</code> returns the best line — or <code>None</code> if there is no file yet. Bad lines in the file must not crash it.</p>", steps: [
+print("Average:", total / 3)`, before: "<p>Two halves. <b>Writing</b>: <code>csv.writer(f)</code> makes a writer for the open file, and <code>writerows</code> writes a list of rows (each row is a list); <code>newline=\"\"</code> is the recommended setting for CSV files (it stops extra empty lines on Windows). <b>Reading</b>: <code>csv.DictReader(f)</code> gives the rows one by one.</p>", note: "<p><code>DictReader</code> turns each row into a dictionary using the header line. Every value is read as a <b>string</b>, so convert numbers with <code>int()</code>.</p>" },
+    { t: "steps", title: "A scores file that survives", problem: "<p>Build two functions for a quiz game: <code>save_score(name, score)</code> adds a line to <code>quiz_scores.txt</code>, and <code>best_score()</code> returns the best <code>(name, score)</code> pair — or <code>None</code> if there is no file yet. Bad lines in the file must not crash it.</p>", steps: [
       { html: "<p><b>Choose the format.</b> One score per line: <code>Sara,95</code>. Easy to write, easy to split.</p>" },
       { html: "<p><b>Saving</b> must keep old scores, so use mode <code>\"a\"</code> and end each line with <code>\\n</code>.</p>", code: c`def save_score(name, score):
     with open("quiz_scores.txt", "a") as f:

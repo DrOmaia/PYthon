@@ -160,7 +160,7 @@ class Triangle(Shape):
 
 shapes = [Square(3), Triangle(4, 5), Square(1)]
 for s in shapes:
-    print(type(s).__name__, s.area())`, before: "<p>The loop doesn't care what kind of shape it has — it just calls <code>area()</code>. Visualize it and watch which <code>area</code> runs each time around the loop.</p>" },
+    print(type(s).__name__, s.area())`, before: "<p>The loop doesn't care what kind of shape it has — it just calls <code>area()</code>. Visualize it and watch which <code>area</code> runs each time around the loop. (<code>type(s).__name__</code> just gives the class name as text, like <code>Square</code>, so you can see which shape is printed.)</p>" },
     { t: "ar", html: "تعدد الأشكال: نفس الاستدعاء s.area() على كائنات مختلفة، وكل كائن ينفّذ نسخته الخاصة. هذا يجعل الحلقة بسيطة جدًا." },
     { t: "check", q: "What does this print?", code: c`class Cat:
     def sound(self):

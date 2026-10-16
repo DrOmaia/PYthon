@@ -74,7 +74,7 @@ def make_data(n=300, seed=7):
 
 X, y = make_data()
 print(X.shape, "pass rate:", y.mean().round(2))
-print(X[:3].round(1), y[:3])` },
+print(X[:3].round(1), y[:3])`, note: "<p>You don't need to memorize <code>make_data</code>; it only creates practice data. <code>rng.uniform(a, b, n)</code> gives n random decimals between a and b, <code>rng.normal(0, 10, n)</code> adds random noise, <code>(score &gt; 100)</code> is a mask (Day 23) and <code>.astype(int)</code> turns its True/False into 1/0, and <code>np.column_stack</code> glues the three feature arrays side by side into a table with one row per student.</p>" },
     { t: "h", text: "The workflow" },
     { t: "static", code: c`1. Data        make_data()
 2. Explore     averages of passed vs failed students

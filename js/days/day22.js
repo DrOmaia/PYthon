@@ -29,7 +29,7 @@ print(linear_search(ids, 999))`, before: "<p>The function returns the <b>positio
       ["    return -1", "This line is <b>after</b> the loop (less indented). We only reach it when the loop finished without finding the target."],
     ] },
     { t: "ar", html: "البحث الخطي يمر على العناصر واحدًا واحدًا. انتبه{{g:|ي}}: سطر return -1 يكون بعد الحلقة وليس داخلها، وإلا سيتوقف البحث بعد أول عنصر." },
-    { t: "check", q: "What does this print?", code: c`print(linear_search([7, 3, 7, 1], 7))`, o: ["`0`", "`2`", "`[0, 2]`", "`-1`"], a: 0, e: "The search stops at the <b>first</b> match, index 0. It never reaches the second 7.", hint: "`return` ends the function the moment a match is found." },
+    { t: "check", q: "What does this print?", code: c`print(linear_search([7, 3, 7, 1], 7))`, o: ["`0`", "`2`", "`[0, 2]`", "`-1`"], a: 0, e: "The search stops at the **first** match, index 0. It never reaches the second 7.", hint: "`return` ends the function the moment a match is found." },
 
     { t: "h", text: "Counting the work: Big-O" },
     { t: "p", html: "<p>Seconds depend on the computer, so programmers count <b>steps</b> instead. For linear search, the worst case is a target that is missing or at the very end: it checks <b>every</b> item. 10 items → 10 checks, a million items → a million checks. The work grows in the same proportion as <b>n</b>, the size of the data. We write that as <b>O(n)</b> (say \"order n\"). This way of describing growth is called <b>Big-O</b>.</p>" },

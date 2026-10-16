@@ -316,7 +316,7 @@ def classify(train, labels, new):
     model = MultinomialNB().fit(X, labels)
     X_new = CountVectorizer().fit_transform(new)
     return model.predict(new)`, tests: [{ after: "print(list(classify(['good nice', 'bad awful', 'nice fun', 'awful sad'], ['pos', 'neg', 'pos', 'neg'], ['fun and nice', 'sad awful day'])))", expected: "['pos', 'neg']" }],
-      hint: "Two bugs, both in the last two lines. Which vectorizer knows the training vocabulary? What does the model understand: text or numbers?", ar: "استخدم{{g:|ي}} نفس vec مع transform، وتنبأ{{g:|ي}} على الأرقام وليس النص.",
+      hint: "Two bugs, both in the last two lines. Which vectorizer knows the training vocabulary? What does the model understand: text or numbers?", ar: "استخدم{{g:|ي}} نفس vec مع transform، {{g:وتنبّأ|وتنبّئي}} على الأرقام وليس النص.",
       solutions: [{ name: "Fixed", code: c`from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 

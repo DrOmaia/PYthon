@@ -21,7 +21,7 @@ print(math.pi)`, before: "<p>One import, then every tool is used with the module
       ["math.sqrt(81)", "Module name, a dot, then the function. The dot means \"from inside\". Result: <code>9.0</code>."],
       ["math.ceil(4.1)", "Another function from the same box: round up → <code>5</code>."],
       ["math.pi", "No parentheses: <code>pi</code> is not a function but a <b>value</b> stored in the module (3.14159…)."]] },
-    { t: "ar", html: "لا تعيد{{g:|ي}} اختراع العجلة! مكتبة بايثون القياسية فيها آلاف الدوال الجاهزة. استورد{{g:|ي}}ها بـ import ثم استخدم{{g:|ي}} اسم الوحدة ونقطة واسم الدالة." },
+    { t: "ar", html: "لا {{g:تُعِد|تعيدي}} اختراع العجلة! مكتبة بايثون القياسية فيها آلاف الدوال الجاهزة. استورد{{g:|ي}}ها بـ import ثم استخدم{{g:|ي}} اسم الوحدة ونقطة واسم الدالة." },
     { t: "check", q: "A class of 45 students goes on a trip. Each bus holds 20. Which line gives the number of buses needed?", o: ["`math.floor(45 / 20)`", "`math.ceil(45 / 20)`", "`45 // 20`"], a: 1, e: "45 / 20 is 2.25, and you can't leave 5 students behind — round **up** to 3 with `math.ceil`.", hint: "2 buses carry only 40 students." },
     { t: "h", text: "Three ways to import" },
     { t: "p", html: "<p>Sometimes you use one function many times and <code>math.</code> in front gets long. <code>from math import sqrt</code> imports just that name, so you write <code>sqrt(9)</code>. And for modules with long names, <code>as</code> gives a short nickname.</p>" },
@@ -30,7 +30,7 @@ import datetime as dt
 
 print(mean([80, 90, 70]))
 print(median([3, 9, 1]))
-print(dt.date(2026, 12, 31))` },
+print(dt.date(2026, 12, 31))`, note: "<p><code>mean</code> and <code>median</code> were imported by name, so they are used without <code>statistics.</code> in front. <code>dt</code> is the nickname for <code>datetime</code>, so <code>dt.date</code> means <code>datetime.date</code>. Output: <code>80</code>, <code>3</code>, <code>2026-12-31</code>.</p>" },
     { t: "table", head: ["Style", "Use as", "When"], rows: [["`import math`", "`math.sqrt(9)`", "clear where it comes from (recommended)"], ["`from math import sqrt`", "`sqrt(9)`", "a few functions you use a lot"], ["`import numpy as np`", "`np.array(...)`", "long names (you'll see this in Week 4)"]] },
     { t: "check", q: "After `from math import sqrt`, which line works?", o: ["`math.sqrt(16)`", "`sqrt(16)`", "both"], a: 1, e: "Only the name `sqrt` was imported. The name `math` itself was not, so `math.sqrt` gives `NameError`." },
     { t: "h", text: "random and datetime" },
@@ -134,7 +134,8 @@ print(total(5), total(5, 10, 20))
 def profile(name, **info):
     print(name, info)
 
-profile("{{name}}", major="CS", year=1)` },
+profile("{{name}}", major="CS", year=1)`, note: "<p><code>total(5, 10, 20)</code> puts all three numbers into the tuple <code>prices</code> = <code>(5, 10, 20)</code>, so it returns 35. In <code>profile</code>, the keyword arguments (Day 15) <code>major=\"CS\", year=1</code> are collected into the dictionary <code>info</code> = <code>{'major': 'CS', 'year': 1}</code>. You will use <code>*args</code> much more often than <code>**kwargs</code>.</p>" },
+    { t: "check", q: "What does `total(2, 4, 6)` return with the `total(*prices)` function above?", o: ["`2`", "`12`", "`(2, 4, 6)`"], a: 1, e: "`*prices` collects the three numbers into the tuple `(2, 4, 6)`, and `sum` adds them: 12.", ar: "النجمة * تجمع كل القيم في tuple واحدة." },
     { t: "steps", title: "Class leaderboard", problem: "<p>You have each student's marks in three quizzes. Print the students from best to worst average, with the average to 1 decimal, and the class median.</p>", steps: [
       { html: "<p><b>Plan.</b> Store data as a dict: name → list of marks. We need an average per student (<code>statistics.mean</code>), then sort by that average.</p>" },
       { html: "<p><b>Build the averages</b> into a list of tuples <code>(name, average)</code>.</p>", code: c`averages = []

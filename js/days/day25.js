@@ -202,7 +202,7 @@ from sklearn.linear_model import LogisticRegression
 X, y = load_iris(return_X_y=True)
 for m in [KNeighborsClassifier(), DecisionTreeClassifier(random_state=0), LogisticRegression(max_iter=500)]:
     print(type(m).__name__, cross_val_score(m, X, y, cv=5).mean().round(3))` },
-    { title: "How sure is the model? predict_proba", html: "Classifiers can also give the probability of each class. With k = 3, \"2 of 3 neighbours passed\" becomes 0.67.", code: c`from sklearn.neighbors import KNeighborsClassifier
+    { title: "How sure is the model? predict_proba", html: "Classifiers can also give the probability of each class. With k = 3, \"2 of my 3 neighbours failed\" becomes a probability of 0.67 for <code>fail</code> (for 4.2, the nearest are 3, 2 and 7). The columns follow <code>model.classes_</code>.", code: c`from sklearn.neighbors import KNeighborsClassifier
 X = [[1], [2], [3], [7], [8], [9]]
 y = ["fail", "fail", "fail", "pass", "pass", "pass"]
 model = KNeighborsClassifier(n_neighbors=3).fit(X, y)
