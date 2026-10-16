@@ -91,6 +91,19 @@ pre code{background:none;color:inherit;padding:0}
 .callout.mistake{background:var(--err-bg);border-color:color-mix(in srgb,var(--err) 35%,transparent)}
 .callout.ok{background:var(--ok-bg);border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
 .callout p:last-child{margin-bottom:0}
+.callout.check{background:var(--surface)}
+.callout.worked{background:var(--surface);border-color:var(--pink-2)}
+.wsteps{margin:10px 0 6px;padding-left:22px}
+.wsteps li{margin:8px 0}
+.wbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.callout.remember{background:var(--ok-bg);border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.callout.remember ul{margin:4px 0 0;padding-left:20px}
+.lines{margin:16px 0;border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;background:var(--surface)}
+.lines .ttl{font-weight:700;margin-bottom:6px}
+.lines .ln{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px;align-items:start;padding:6px 0;border-top:1px dashed var(--line)}
+.lines .ttl + .ln{border-top:0}
+.lines .ln pre{margin:0;white-space:pre-wrap;word-break:break-word}
+@media (max-width:640px){.lines .ln{grid-template-columns:1fr;gap:4px}}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:700px){.two-col{grid-template-columns:1fr}}
 .label-wrong{color:var(--err);font-weight:700;font-size:.85rem}
@@ -211,14 +224,14 @@ details.fold > .fold-body{padding:0 14px 14px}
 
 /* Quiz */
 .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin:12px 0}
-.q .qtext{font-weight:700;margin-bottom:10px}
-.q .opts{display:grid;gap:8px}
-.q .opt{text-align:left;font:500 .95rem var(--font-body);background:var(--tint-2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer}
-.q .opt:hover:not([disabled]){border-color:var(--pink-2)}
-.q .opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700}
-.q .opt.wrong{background:var(--err-bg);border-color:var(--err);color:var(--err)}
-.q .opt code{background:transparent}
-.q .explain{margin-top:10px;font-size:.93rem}
+.q .qtext, .check .qtext{font-weight:700;margin-bottom:10px}
+.q .opts, .check .opts{display:grid;gap:8px}
+.q .opt, .check .opt{text-align:left;font:500 .95rem var(--font-body);background:var(--tint-2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer}
+.q .opt:hover:not([disabled]), .check .opt:hover:not([disabled]){border-color:var(--pink-2)}
+.q .opt.right, .check .opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.q .opt.wrong, .check .opt.wrong{background:var(--err-bg);border-color:var(--err);color:var(--err)}
+.q .opt code, .check .opt code{background:transparent}
+.q .explain, .check .explain{margin-top:10px;font-size:.93rem}
 .score-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-md);background:var(--tint);font-weight:700}
 
 /* Parsons */

@@ -63,7 +63,7 @@ print(low, high, avg)` },
     return secret + 1
 
 print(calc())
-print(secret)`, note: "<p>Variables created inside a function are <b>local</b>: they exist only while the function runs. This is a feature — functions can't accidentally mess up each other's variables. The error at the end is expected.</p>" },
+print(secret)`, error: true, note: "<p>Variables created inside a function are <b>local</b>: they exist only while the function runs. This is a feature — functions can't accidentally mess up each other's variables. The error at the end is expected.</p>" },
     { t: "tip", title: "Docstrings", html: "Describe what a function does in a string right under <code>def</code>. Editors and <code>help()</code> show it.", code: c`def bmi(weight, height):
     """Return body mass index from kg and meters."""
     return weight / height ** 2` },

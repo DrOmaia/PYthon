@@ -38,11 +38,60 @@
         wrap.appendChild(CodeBox({ id: `d${n}-${key}`, code: item.code, stdin: item.stdin, persist: true }));
         return wrap;
       }
+      case "lines": return h(`<div class="lines"><div class="ttl">🔍 ${esc(T(item.title || "Read it like a programmer"))}</div>${item.rows.map(r => `<div class="ln"><pre class="code-static">${esc(T(r[0]))}</pre><div>${T(r[1])}</div></div>`).join("")}</div>`);
+      case "check": return check(item);
+      case "steps": return steps(item, key);
       case "mistake": return mistake(item);
       case "predict": return Predict(Object.assign({ id: key }, item), n);
       case "parsons": return Parsons(Object.assign({ id: key }, item), n);
       default: return h(`<div></div>`);
     }
+  }
+
+  // Quick check after a section: one multiple-choice question, not scored
+  function check(q) {
+    const el = h(`<div class="callout check"><div class="ttl">✅ Quick check</div><div class="qtext">${md(q.q)}</div>${q.code ? `<pre class="code-static">${esc(T(q.code))}</pre>` : ""}<div class="opts"></div><div class="explain" aria-live="polite"></div></div>`);
+    const opts = el.querySelector(".opts"), ex = el.querySelector(".explain");
+    q.o.forEach((o, oi) => {
+      const b = h(`<button type="button" class="opt">${md(o)}</button>`);
+      b.onclick = () => {
+        if (oi === q.a) {
+          opts.querySelectorAll(".opt").forEach((x, k) => { x.disabled = true; if (k === q.a) x.classList.add("right"); });
+          ex.innerHTML = `✓ Correct. ${md(q.e || "")}${q.ar ? `<div class="ar">${T(q.ar)}</div>` : ""}`;
+        } else {
+          b.classList.add("wrong"); b.disabled = true;
+          ex.innerHTML = `✗ Not quite — ${q.hint ? md(q.hint) : "read the code again and try another answer."}`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    return el;
+  }
+
+  // Worked example: the solution is revealed one step at a time
+  function steps(w, key) {
+    const el = h(`<div class="callout worked"><div class="ttl">🧭 Worked example: ${esc(T(w.title || ""))}</div><div>${T(w.problem || "")}</div><ol class="wsteps"></ol>
+      <div class="wbtns"><button class="btn btn-primary btn-sm" type="button" data-w="next">Show step 1 ▶</button><button class="btn btn-ghost btn-sm" type="button" data-w="all">Show all steps</button></div><div class="wfinal"></div></div>`);
+    const list = el.querySelector(".wsteps"), next = el.querySelector("[data-w=next]"), all = el.querySelector("[data-w=all]"), fin = el.querySelector(".wfinal");
+    let i = 0;
+    const one = () => {
+      const st = w.steps[i++];
+      list.appendChild(h(`<li><div>${T(st.html)}</div>${st.code ? `<pre class="code-static">${esc(T(st.code))}</pre>` : ""}</li>`));
+      if (i < w.steps.length) { next.textContent = `Show step ${i + 1} ▶`; return; }
+      el.querySelector(".wbtns").remove();
+      if (w.code) {
+        fin.appendChild(h(`<p><b>The full program</b> — run it, then change it:</p>`));
+        fin.appendChild(CodeBox({ id: `d${n}-${key}`, code: w.code, stdin: w.stdin, persist: false }));
+      }
+      if (w.ar) fin.appendChild(h(`<div class="ar" style="margin-top:8px">💡 ${T(w.ar)}</div>`));
+    };
+    next.onclick = one;
+    all.onclick = () => { while (i < w.steps.length) one(); };
+    return el;
+  }
+
+  function remember(D) {
+    return h(`<div class="callout remember"><div class="ttl">📌 Remember</div><ul>${D.remember.map(r => `<li>${md(r)}</li>`).join("")}</ul>${D.rememberAr ? `<div class="ar">${T(D.rememberAr)}</div>` : ""}</div>`);
   }
 
   function mistake(m) {
@@ -107,11 +156,11 @@
         <a href="#extra"><div class="mins">20m</div><div class="what">Make it yours</div></a>
         <a href="#notes"><div class="mins">—</div><div class="what">Reflect</div></a>
         <a href="#finish"><div class="mins">🎓</div><div class="what">${n === 30 ? "Certificate" : "Finish"}</div></a></nav>` : `<nav class="plan" aria-label="Today's 2-hour plan">
-        <a href="#learn"><div class="mins">20m</div><div class="what">Learn</div></a>
-        <a href="#practice"><div class="mins">40m</div><div class="what">Guided practice</div></a>
+        <a href="#learn"><div class="mins">35m</div><div class="what">Learn</div></a>
+        <a href="#practice"><div class="mins">35m</div><div class="what">Guided practice</div></a>
         <a href="#solve"><div class="mins">30m</div><div class="what">Solve problems</div></a>
-        <a href="#quiz"><div class="mins">15m</div><div class="what">Quiz</div></a>
-        <a href="#puzzle"><div class="mins">15m</div><div class="what">Puzzle</div></a></nav>`;
+        <a href="#quiz"><div class="mins">10m</div><div class="what">Quiz</div></a>
+        <a href="#puzzle"><div class="mins">10m</div><div class="what">Puzzle</div></a></nav>`;
     wrap.appendChild(h(`<div class="lesson-hero">
       <div class="meta"><span class="chip">Day ${n} of 30</span><span class="chip">${esc(week.title)}</span>${meta.type === "review" ? `<span class="chip">★ Review + project</span>` : ""}${meta.type === "project" ? `<span class="chip">🎓 Capstone</span>` : ""}</div>
       <h1>${esc(T(D.title || meta.title))}</h1>
@@ -121,14 +170,15 @@
       ${plan}</div>`));
 
     if (D.learn) {
-      const s = section("learn", isRest ? "" : "20 min", isRest ? "Today" : "Learn", "");
+      const s = section("learn", isRest ? "" : meta.type === "project" ? "15 min" : "35 min", isRest ? "Today" : "Learn", "");
       D.learn.forEach((it, k) => s.appendChild(block(it, "l" + k)));
       if (D.mistakes && D.mistakes.length) { s.appendChild(h(`<h3 style="margin-top:26px">Common mistakes</h3>`)); D.mistakes.forEach(m => s.appendChild(mistake(m))); }
       if (D.tricks && D.tricks.length) { s.appendChild(h(`<h3 style="margin-top:26px">Tricks worth knowing</h3>`)); D.tricks.forEach(t => s.appendChild(block(Object.assign({ t: "tip" }, t)))); }
+      if (D.remember && D.remember.length) s.appendChild(remember(D));
       wrap.appendChild(s);
     }
     if (D.practice) {
-      const s = section("practice", "40 min", "Guided practice", "Change the code, run it, predict, visualize. Breaking things on purpose is part of learning.");
+      const s = section("practice", "35 min", "Guided practice", "Change the code, run it, predict, visualize. Breaking things on purpose is part of learning.");
       D.practice.forEach((it, k) => s.appendChild(block(it, "p" + k)));
       wrap.appendChild(s);
     }
@@ -157,12 +207,12 @@
       wrap.appendChild(s);
     }
     if (D.quiz) {
-      const s = section("quiz", "15 min", "Quiz", "");
+      const s = section("quiz", "10 min", "Quiz", "");
       s.appendChild(Quiz(D.quiz, n));
       wrap.appendChild(s);
     }
     if (D.puzzle) {
-      const s = section("puzzle", "15 min", "Puzzle of the day", "");
+      const s = section("puzzle", "10 min", "Puzzle of the day", "");
       s.appendChild(Puzzle(D.puzzle, n));
       wrap.appendChild(s);
     }
