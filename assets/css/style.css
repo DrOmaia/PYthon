@@ -104,8 +104,8 @@ pre code{background:none;color:inherit;padding:0}
 .lines .ttl + .ln{border-top:0}
 .lines .ln pre{margin:0;white-space:pre-wrap;word-break:break-word}
 @media (max-width:640px){.lines .ln{grid-template-columns:1fr;gap:4px}}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:700px){.two-col{grid-template-columns:1fr}}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:700px){.two-col{grid-template-columns:minmax(0,1fr)}}
 .label-wrong{color:var(--err);font-weight:700;font-size:.85rem}
 .label-right{color:var(--ok);font-weight:700;font-size:.85rem}
 
@@ -235,8 +235,8 @@ details.fold > .fold-body{padding:0 14px 14px}
 .score-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-md);background:var(--tint);font-weight:700}
 
 /* Parsons */
-.parsons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:700px){.parsons{grid-template-columns:1fr}}
+.parsons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:700px){.parsons{grid-template-columns:minmax(0,1fr)}}
 .parsons .zone{border:2px dashed var(--line);border-radius:var(--r-md);padding:10px;min-height:120px;background:var(--tint-2)}
 .parsons .zone h5{margin:0 0 8px;font:700 .82rem var(--font-body);color:var(--muted)}
 .pline{display:block;width:100%;text-align:left;font:13.5px/1.4 var(--font-code);white-space:pre;background:var(--code-bg);color:var(--code-ink);border:0;border-radius:8px;padding:8px 10px;margin-bottom:6px;cursor:pointer;overflow-x:auto}
