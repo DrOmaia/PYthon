@@ -8,8 +8,9 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "tools", "shots")
 os.makedirs(OUT, exist_ok=True)
-H = functools.partial(http.server.SimpleHTTPRequestHandler, directory=ROOT)
-H.log_message = lambda *a: None
+class Quiet(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, *a): pass
+H = functools.partial(Quiet, directory=ROOT)
 srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), H)
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 BASE = f"http://127.0.0.1:{srv.server_port}"

@@ -225,8 +225,8 @@ details.fold > .fold-body{padding:0 14px 14px}
 /* Quiz */
 .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin:12px 0}
 .q .qtext, .check .qtext{font-weight:700;margin-bottom:10px}
-.q .opts, .check .opts{display:grid;gap:8px}
-.q .opt, .check .opt{text-align:left;font:500 .95rem var(--font-body);background:var(--tint-2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer}
+.q .opts, .check .opts{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.q .opt, .check .opt{text-align:left;font:500 .95rem var(--font-body);background:var(--tint-2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer;min-width:0;overflow-wrap:anywhere}
 .q .opt:hover:not([disabled]), .check .opt:hover:not([disabled]){border-color:var(--pink-2)}
 .q .opt.right, .check .opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700}
 .q .opt.wrong, .check .opt.wrong{background:var(--err-bg);border-color:var(--err);color:var(--err)}
