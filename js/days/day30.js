@@ -134,6 +134,102 @@ DAYS[30] = {
     { t: "h", text: "Polishing: the difference between a program and a product" },
     { t: "p", html: "<ul><li><b>Friendly messages:</b> tell the user what happened and what to do next.</li><li><b>No crashes:</b> every input the user can type should get a sensible answer (remember the Smart Calculator v2).</li><li><b>Clear code:</b> good names, small functions, a docstring or two. Future-you will read this code.</li><li><b>Your idea:</b> one feature nobody asked for, because you wanted it.</li></ul>" },
     { t: "ar", html: "البرنامج الجيد لا ينهار أبدًا مهما كتب المستخدم، ورسائله واضحة ولطيفة. وأضف{{g:|ي}} ميزة واحدة من أفكارك أنت." },
+    { t: "h", text: "Polishing your code: names, comments, edge cases" },
+    { t: "p", html: "<p>A program that works on your favourite example is only half done. Polishing means making it <b>easy to read</b> and <b>hard to break</b>. Here is a rough function that \"works\":</p>" },
+    { t: "static", code: c`def f(l):
+    return round(sum(l) / len(l), 1)` },
+    { t: "p", html: "<p>It has three problems: the names <code>f</code> and <code>l</code> say nothing, nobody knows what it is for, and an empty list crashes it with <code>ZeroDivisionError</code>. The polished version fixes all three:</p>" },
+    { t: "code", code: c`def average(marks):
+    """Return the average of a list of marks, or 0 for an empty list."""
+    if not marks:              # edge case: nothing to average
+        return 0
+    return round(sum(marks) / len(marks), 1)
+
+print(average([90, 85, 77]))   # a normal case
+print(average([100]))          # just one mark
+print(average([]))             # the empty list no longer crashes`, before: "<p>Look at three things: the clear names, the docstring that says what the function returns, and the <code>if</code> that handles the empty list.</p>", note: "<p>The comments explain <b>why</b> (\"edge case\"), not what every line does. Good names already tell the \"what\".</p>" },
+    { t: "table", head: ["Edge case to test", "Example"], rows: [["Empty input", "`\"\"`, `[]`, the user just presses Enter"], ["Just one item", "`[100]`, a one-letter word"], ["Zero or negative numbers", "`0`, `-5` minutes"], ["Text where a number is expected", "`\"abc\"`, `\"twelve\"`"], ["Upper case and extra spaces", "`\"  LATTE \"`"]] },
+    { t: "ar", html: "اختبر{{g:|ي}} برنامجك بالحالات الغريبة: مدخل فارغ، عنصر واحد، صفر أو رقم سالب، ونص بدل رقم. البرنامج المصقول لا ينهار مع أي منها." },
+    { t: "check", q: "Which input breaks this function?", code: c`def first_letter(word):
+    return word[0]`, o: ["`\"Sara\"`", "`\"a\"`", "`\"\"` (an empty string)", "`\"Riyadh\"`"], a: 2, e: "An empty string has no index 0, so `word[0]` raises an `IndexError`. A polished version checks `if not word:` first.", hint: "Try each one in your head: what is at index 0?" },
+    { t: "check", q: "Which name best describes a variable that holds the total minutes you exercised this week?", o: ["`x`", "`t2`", "`weekly_minutes`", "`data`"], a: 2, e: "`weekly_minutes` tells the reader exactly what is inside, so the code needs fewer comments.", ar: "الاسم الواضح يغني عن تعليقات كثيرة." },
+    { t: "steps", title: "From milestones to a polished gym tracker", problem: "<p>Build a tracker for gym sessions: the user types minutes for each workout, then <code>q</code>. Bad input must never crash it. At the end it prints a weekly report.</p>",
+      steps: [
+        { html: "<p><b>Plan the pieces.</b> Three jobs, so three parts: turn text into minutes safely, make the report, and a main loop that joins them. Data: a list of minutes.</p>" },
+        { html: "<p><b>Milestone 1: safe input.</b> <code>read_minutes(text)</code> returns an <code>int</code>, or <code>None</code> for anything that is not a sensible number. <code>try</code>/<code>except</code> catches the text case; an <code>if</code> catches the zero/negative case.</p>", code: c`def read_minutes(text):
+    """Turn the user's text into minutes (1-300), or None if it is not valid."""
+    try:
+        minutes = int(text.strip())
+    except ValueError:
+        return None
+    if minutes <= 0 or minutes > 300:
+        return None
+    return minutes` },
+        { html: "<p><b>Milestone 2: the report</b>, with the empty case handled first so it can never divide by zero.</p>", code: c`def weekly_report(sessions):
+    """Return a one-line summary of the week's workouts."""
+    if not sessions:
+        return "No workouts yet - today is a good day to start!"
+    total = sum(sessions)
+    return f"{len(sessions)} workouts, {total} minutes, average {total // len(sessions)} min"` },
+        { html: "<p><b>Test the edge cases</b> from the table before writing the loop. Every line should print <code>True</code>.</p>", code: c`print(read_minutes("45") == 45, read_minutes(" 30 ") == 30)
+print(read_minutes("abc") is None, read_minutes("-5") is None, read_minutes("") is None)
+print(weekly_report([]).startswith("No workouts"))` },
+        { html: "<p><b>Join and polish.</b> The main loop is short, and every message tells the user what happened and what to do next.</p>", code: c`sessions = []
+while True:
+    text = input("Minutes (or q to quit): ")
+    if text.strip().lower() == "q":
+        break
+    minutes = read_minutes(text)
+    if minutes is None:
+        print("Please type a number of minutes between 1 and 300.")
+    else:
+        sessions.append(minutes)
+        print("Saved:", minutes, "minutes")
+print(weekly_report(sessions))` },
+      ],
+      code: c`def read_minutes(text):
+    """Turn the user's text into minutes (1-300), or None if it is not valid."""
+    try:
+        minutes = int(text.strip())
+    except ValueError:
+        return None
+    if minutes <= 0 or minutes > 300:
+        return None
+    return minutes
+
+def weekly_report(sessions):
+    """Return a one-line summary of the week's workouts."""
+    if not sessions:
+        return "No workouts yet - today is a good day to start!"
+    total = sum(sessions)
+    return f"{len(sessions)} workouts, {total} minutes, average {total // len(sessions)} min"
+
+# Edge-case tests: every value should be True
+print(read_minutes("45") == 45, read_minutes(" 30 ") == 30)
+print(read_minutes("abc") is None, read_minutes("-5") is None, read_minutes("") is None)
+print(weekly_report([]).startswith("No workouts"))
+
+# The main program
+sessions = []
+while True:
+    text = input("Minutes (or q to quit): ")
+    if text.strip().lower() == "q":
+        break
+    minutes = read_minutes(text)
+    if minutes is None:
+        print("Please type a number of minutes between 1 and 300.")
+    else:
+        sessions.append(minutes)
+        print("Saved:", minutes, "minutes")
+print(weekly_report(sessions))`, stdin: "45\nabc\n30\n-5\nq",
+      ar: "نفس الطريقة: دوال صغيرة، اختبار كل دالة بالحالات الغريبة، ثم حلقة رئيسية قصيرة برسائل واضحة." },
+    { t: "check", q: "What does this print?", code: c`def safe_int(text):
+    try:
+        return int(text)
+    except ValueError:
+        return None
+
+print(safe_int("12"), safe_int("twelve"))`, o: ["`12 None`", "`12 twelve`", "A `ValueError` crash", "`None None`"], a: 0, e: "`int(\"12\")` works, so it returns 12. `int(\"twelve\")` raises `ValueError`, which `except` catches and turns into `None` — no crash.", hint: "What does the `except` part do with the error?" },
   ],
   exercises: [
     // ---------- Adventure ----------
@@ -286,5 +382,14 @@ def recommend(question):
     { f: "Program vs product", b: "Friendly messages, no crashes, clear code, and features users care about." },
     { f: "Save an object to JSON and back", b: "`json.dump(vars(obj), f)` and `Class(**d)`." },
   ],
+  remember: [
+    "Finish in milestones: small functions, each tested alone, then a short main loop.",
+    "Clear names (`weekly_minutes`, `average`) beat comments; comments explain **why**.",
+    "A docstring says what a function does and what it returns.",
+    "Test edge cases: empty input, one item, zero or negative numbers, text instead of a number, odd capitals and spaces.",
+    "A polished program never crashes on user input and always says what to do next.",
+    "Add one feature of your own — then keep building after Py30.",
+  ],
+  rememberAr: "الخلاصة: أسماء واضحة، تعليقات تشرح السبب، اختبار الحالات الغريبة، ورسائل لطيفة. {{g:أحسنت|أحسنتِ}} يا {{name}}، وهذه بداية الطريق!",
 };
 })();

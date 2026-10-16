@@ -11,11 +11,14 @@ DAYS[3] = {
     { t: "code", code: c`name = input("What is your name? ")
 print("Nice to meet you,", name)`, stdin: "{{name}}", before: "<p><code>input()</code> shows a message (the <b>prompt</b>), waits for the user to type, and gives back what they typed.</p>" },
     { t: "p", html: "<div class=\"callout\"><div class=\"ttl\">⌨️ How input works in Py30</div><p>Under every editor that uses <code>input()</code> there is an <b>Input</b> box. Write the answers there <b>before</b> you press Run, one line for each <code>input()</code> call. Try changing the name in the box above and run again.</p></div>" },
+    { t: "check", q: "In `city = input(\"Which city? \")`, what is `\"Which city? \"`?", o: ["The answer the user types", "The prompt: the message shown before the user types", "The name of the variable"], a: 1, e: "The text inside `input( )` is the prompt. What the user types is given back and stored in `city`.", ar: "النص داخل input هو السؤال الذي يظهر للمستخدم، وما يكتبه المستخدم يُخزَّن في المتغير." },
     { t: "h", text: "The big trap: input always gives text" },
     { t: "code", code: c`age = input("How old are you? ")
 print(type(age))
 print(age * 2)`, stdin: "19", note: "<p>The user typed 19, but <code>age</code> is the <b>string</b> <code>\"19\"</code>. So <code>age * 2</code> repeats the text: <code>1919</code>! To calculate, you must <b>convert</b> it.</p>" },
     { t: "ar", html: "أهم قاعدة اليوم: input() يرجع <b>نصًا دائمًا</b> حتى لو كتب المستخدم رقمًا. استخدم{{g:|ي}} int() للأعداد الصحيحة و float() للأعداد العشرية." },
+    { t: "check", q: "The user types `4`. What does this program print?", code: c`n = input()
+print(n + n)`, o: ["`8`", "`44`", "An error", "`n + n`"], a: 1, e: "`n` is the string `\"4\"`, and `+` between strings glues them: `44`. To get 8, write `n = int(input())`.", hint: "What type does `input()` always give back?" },
     { t: "h", text: "Converting types" },
     { t: "code", code: c`age = int(input("How old are you? "))
 print(age * 2)
@@ -23,7 +26,16 @@ height = float(input("Height in meters? "))
 print(height + 0.1)
 message = "You are " + str(age) + " years old"
 print(message)`, stdin: "19\n1.65" },
+    { t: "lines", title: "Read it like a programmer", rows: [
+      [c`age = int(input("How old are you? "))`, "Read from the inside out: <code>input()</code> gives the text <code>\"19\"</code>, then <code>int()</code> turns it into the number <code>19</code>, and <code>age</code> gets that number."],
+      ["print(age * 2)", "Now <code>age</code> is an <code>int</code>, so <code>*</code> multiplies: <code>38</code> (not <code>1919</code>)."],
+      [c`height = float(input("Height in meters? "))`, "Same idea with <code>float()</code>, because the answer <code>1.65</code> has a decimal point."],
+      ["print(height + 0.1)", "Real math on a decimal number: 1.65 + 0.1 = <code>1.75</code>."],
+      [c`message = "You are " + str(age) + " years old"`, "<code>+</code> can only glue text to text, so <code>str(age)</code> turns 19 back into <code>\"19\"</code> first."],
+      ["print(message)", "Shows <code>You are 19 years old</code>."],
+    ] },
     { t: "table", head: ["Function", "Converts to", "Example"], rows: [["`int()`", "whole number", "`int(\"42\")` → `42`"], ["`float()`", "decimal number", "`float(\"2.5\")` → `2.5`"], ["`str()`", "text", "`str(99)` → `\"99\"`"], ["`int()` on a float", "drops the decimals", "`int(7.9)` → `7`"]] },
+    { t: "check", q: "Which line turns the text `\"3.5\"` into a number you can calculate with?", o: ["`int(\"3.5\")`", "`float(\"3.5\")`", "`str(\"3.5\")`"], a: 1, e: "`float()` reads numbers with a decimal point. `int(\"3.5\")` fails with a `ValueError`, and `str()` keeps it as text.", hint: "Which type is for numbers with a decimal point?" },
     { t: "h", text: "Math operators" },
     { t: "table", head: ["Operator", "Meaning", "Example", "Result"], rows: [["`+`", "add", "`7 + 2`", "`9`"], ["`-`", "subtract", "`7 - 2`", "`5`"], ["`*`", "multiply", "`7 * 2`", "`14`"], ["`/`", "divide (always float)", "`7 / 2`", "`3.5`"], ["`//`", "floor division (whole part)", "`7 // 2`", "`3`"], ["`%`", "remainder (modulo)", "`7 % 2`", "`1`"], ["`**`", "power", "`2 ** 3`", "`8`"]] },
     { t: "analogy", title: "// and % with sweets", html: "<p>You have 17 sweets and 5 friends. Each friend gets <code>17 // 5 = 3</code> sweets, and <code>17 % 5 = 2</code> sweets are left over for you. These two operators solve a surprising number of problems: even/odd, minutes and seconds, digits of a number, clocks…</p>" },
@@ -32,12 +44,20 @@ friends = 5
 print("Each friend gets", sweets // friends)
 print("Left over:", sweets % friends)
 print("Is 17 even?", 17 % 2 == 0)` },
+    { t: "lines", title: "Read it like a programmer", rows: [
+      ["sweets // friends", "How many <b>whole</b> times does 5 fit in 17? <code>3</code> — each friend gets 3."],
+      ["sweets % friends", "What is <b>left over</b> after that? 17 − 5×3 = <code>2</code>."],
+      ["17 % 2 == 0", "A number is even when the remainder after dividing by 2 is 0. Here it is 1, so the answer is <code>False</code>."],
+    ] },
+    { t: "ar", html: "// تعطي عدد المرات الكاملة، و % تعطي الباقي. استخدم{{g:|ي}} n % 2 == 0 لمعرفة هل العدد زوجي." },
+    { t: "check", q: "What does this print?", code: c`print(23 // 4, 23 % 4)`, o: ["`5 3`", "`5.75 3`", "`6 1`", "`3 5`"], a: 0, e: "4 fits into 23 five whole times (20), and 3 is left over: `5 3`.", hint: "23 = 4 × ? + ?" },
     { t: "h", text: "Order of operations" },
     { t: "p", html: "<p>Python follows math rules: <b>parentheses</b> first, then <code>**</code>, then <code>* / // %</code>, then <code>+ -</code>. When in doubt, add parentheses — they make your intention clear.</p>" },
     { t: "code", code: c`print(2 + 3 * 4)
 print((2 + 3) * 4)
 print(10 - 4 - 3)
 print(2 ** 3 ** 2)` },
+    { t: "check", q: "What does this print?", code: c`print(10 - 2 * 3)`, o: ["`24`", "`4`", "`18`", "`-4`"], a: 1, e: "Multiplication comes before subtraction: 2 * 3 = 6, then 10 - 6 = `4`. For 24 you would write `(10 - 2) * 3`.", hint: "Which operator does Python do first, `-` or `*`?" },
     { t: "h", text: "Useful extras" },
     { t: "code", code: c`import math
 print(round(3.14159, 2))
@@ -46,6 +66,30 @@ print(max(4, 9, 2), min(4, 9, 2))
 print(math.sqrt(144))
 print(math.pi)` },
     { t: "p", html: "<p><code>import math</code> loads Python's math toolbox. You will learn more about modules later — for now, just know that <code>math.sqrt()</code> and <code>math.pi</code> are there when you need them.</p>" },
+    { t: "steps", title: "Split the restaurant bill", problem: "<p>You and your friends had dinner. Write a program that asks for the bill and the number of friends, adds a 10% tip, and prints the tip, the total and what each person pays (rounded to 2 decimals).</p>",
+      steps: [
+        { html: "<p><b>Understand.</b> Inputs: the bill (can have decimals) and the number of friends (a whole number). Outputs: tip, total, share per person. This is the <b>input → process → output</b> pattern.</p>" },
+        { html: "<p><b>Read and convert.</b> <code>input()</code> gives text, so convert right away: <code>float</code> for money, <code>int</code> for people.</p>", code: c`bill = float(input("Total bill in riyals: "))
+people = int(input("How many friends? "))` },
+        { html: "<p><b>Calculate step by step.</b> One small line per idea, with clear names. Parentheses are not needed here, but they never hurt.</p>", code: c`tip = bill * 10 / 100
+total = bill + tip
+share = total / people` },
+        { html: "<p><b>Print, rounding the share.</b> <code>round(share, 2)</code> keeps two decimals, like real money.</p>", code: c`print("Tip:", tip)
+print("Total with tip:", total)
+print("Each person pays:", round(share, 2))` },
+        { html: "<p><b>Check by hand.</b> For 250 riyals and 3 friends: tip <code>25.0</code>, total <code>275.0</code> (floats, because <code>bill</code> is a float), and 275 / 3 = 91.666… → <code>91.67</code>. Change the numbers in the Input box and test again.</p>" },
+      ],
+      code: c`bill = float(input("Total bill in riyals: "))
+people = int(input("How many friends? "))
+
+tip = bill * 10 / 100
+total = bill + tip
+share = total / people
+
+print("Tip:", tip)
+print("Total with tip:", total)
+print("Each person pays:", round(share, 2))`, stdin: "250\n3",
+      ar: "اقرأ{{g:|ي}} المدخلات وحوّلها فورًا، ثم احسب{{g:|ي}} خطوة خطوة بأسماء واضحة، ثم اطبع{{g:|ي}} النتيجة وتحقق{{g:|ي}} منها بالآلة الحاسبة." },
   ],
   mistakes: [
     { title: "Math on input without converting", html: "<code>input()</code> text + a number → <code>TypeError</code>.", wrong: c`age = input("Age: ")
@@ -174,5 +218,14 @@ print("Average:", average)`, note: "Bug 1 (crash): mark1 was never converted. Bu
     { f: "Last digit of a number `n`?", b: "`n % 10`" },
     { f: "What does `/` always return?", b: "A float, e.g. `10 / 2` is `5.0`." },
   ],
+  remember: [
+    "`input(\"prompt\")` shows a message, waits, and gives back what the user typed — **always as text**.",
+    "Convert before you calculate: `int()` for whole numbers, `float()` for decimals, `str()` to turn a number into text.",
+    "`/` always gives a float; `//` gives the whole part and `%` the remainder (`17 // 5 = 3`, `17 % 5 = 2`).",
+    "`**` is power, and `n % 2 == 0` tells you if `n` is even.",
+    "Order: parentheses, then `**`, then `* / // %`, then `+ -`. When in doubt, add parentheses.",
+    "Most programs follow **input → process → output**.",
+  ],
+  rememberAr: "الخلاصة: input يرجع نصًا دائمًا فحوّله بـ int أو float قبل الحساب. // للقسمة الصحيحة و % للباقي و ** للأس، والأقواس أولًا.",
 };
 })();

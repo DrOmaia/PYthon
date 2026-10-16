@@ -16,6 +16,7 @@ print("Welcome,", student)` },
     { t: "analogy", title: "Labeled boxes", html: "<p>Imagine a box with a label on it. <code>year = 2026</code> means: <i>take the value 2026 and put the label <b>year</b> on it</i>. Later, whenever you write <code>year</code>, Python goes to the box and uses what is inside.</p>" },
     { t: "p", html: "<p>The <code>=</code> sign is called <b>assignment</b>. It does <b>not</b> mean \"equals\" like in math. Read it as <i>\"gets\"</i>: <code>year = 2026</code> → \"year gets 2026\". Python always calculates the <b>right side first</b>, then stores the result in the name on the left.</p>" },
     { t: "ar", html: "علامة = في البرمجة معناها \"خزّن\" وليست \"يساوي\" كما في الرياضيات. بايثون يحسب الجهة اليمنى أولًا ثم يضع النتيجة في المتغير على اليسار." },
+    { t: "check", q: "What does the line `year = 2026` do?", o: ["It checks whether `year` equals 2026", "It stores the value 2026 under the name `year`", "It prints 2026", "It is a math fact that Python ignores"], a: 1, e: "`=` is assignment: \"year gets 2026\". Python puts the value from the right side into the name on the left.", hint: "Read `=` as \"gets\", not as \"equals\"." },
     { t: "h", text: "Variables can change" },
     { t: "viz", code: c`score = 10
 print(score)
@@ -23,6 +24,19 @@ score = score + 5
 print(score)
 score = score * 2
 print(score)`, before: "<p>This line looks impossible in math: <code>score = score + 5</code>. In Python it makes perfect sense: take the current score, add 5, store the result back in score. Visualize it and watch the value change.</p>" },
+    { t: "lines", title: "Read it like a programmer", rows: [
+      ["score = 10", "Create the box <code>score</code> and put <code>10</code> inside."],
+      ["print(score)", "No quotes, so Python opens the box and shows what is inside: <code>10</code>."],
+      ["score = score + 5", "Right side first: the current score (10) + 5 = 15. Then 15 goes back into <code>score</code>. The old 10 is gone."],
+      ["print(score)", "Shows <code>15</code>."],
+      ["score = score * 2", "Right side first again: 15 * 2 = 30, stored in <code>score</code>."],
+      ["print(score)", "Shows <code>30</code>. One name, three different values over time."],
+    ] },
+    { t: "ar", html: "في السطر score = score + 5 بايثون يحسب الجهة اليمنى بالقيمة القديمة أولًا، ثم يخزن النتيجة الجديدة مكانها." },
+    { t: "check", q: "What does this program print?", code: c`coins = 4
+coins = coins + 3
+coins = coins * 2
+print(coins)`, o: ["`8`", "`11`", "`14`", "`coins`"], a: 2, e: "4 + 3 = 7, then 7 * 2 = `14`. Each line uses the value the box has **at that moment**.", hint: "Follow the box line by line: 4, then …, then …" },
     { t: "h", text: "The four basic data types" },
     { t: "table", head: ["Type", "What it is", "Examples"], rows: [["`int`", "whole numbers", "`19`, `-3`, `2026`"], ["`float`", "numbers with a decimal point", "`3.14`, `4.5`, `2.0`"], ["`str`", "text (string)", "`\"Riyadh\"`, `'CS'`, `\"42\"`"], ["`bool`", "truth values", "`True`, `False`"]] },
     { t: "code", code: c`name = "{{name}}"
@@ -35,15 +49,41 @@ print(type(gpa))
 print(type(is_student))` },
     { t: "p", html: "<p><code>type()</code> tells you what kind of value you have. This matters because types decide what you can do: you can divide numbers, but not names; you can make text uppercase, but not numbers.</p>" },
     { t: "tip", title: "\"42\" is not 42", html: "Quotes make a string, even if it only has digits. <code>\"42\"</code> is text; <code>42</code> is a number. Tomorrow you will convert between them." },
+    { t: "check", q: "What is the type of `\"4.5\"`?", o: ["`int`", "`float`", "`str`", "`bool`"], a: 2, e: "It has quotes, so it is text: `str`. Without the quotes, `4.5` would be a `float`.", ar: "علامات التنصيص تجعل القيمة نصًا حتى لو كانت أرقامًا." },
     { t: "h", text: "Naming rules" },
     { t: "table", head: ["Rule", "OK", "Not allowed"], rows: [["letters, digits and `_` only", "`total_price`", "`total-price`, `my score`"], ["cannot start with a digit", "`player1`", "`1player`"], ["not a Python keyword", "`class_name`", "`class`, `if`, `for`"], ["case matters", "`name` and `Name` are different", ""]] },
     { t: "p", html: "<p>Python programmers use <b>snake_case</b>: lowercase words joined with underscores, like <code>first_name</code> or <code>total_price</code>. Choose names that explain the value: <code>price</code> is better than <code>p</code>, and <code>seconds_left</code> is better than <code>x</code>.</p>" },
     { t: "ar", html: "اختر{{g:|ي}} أسماء واضحة تشرح القيمة. الاسم الجيد يوفّر عليك تعليقات كثيرة لاحقًا." },
+    { t: "check", q: "You need a variable for the number of students in a class. Which name is valid **and** good?", o: ["`2students`", "`number-of-students`", "`student_count`", "`class`"], a: 2, e: "`student_count` is snake_case and explains the value. `2students` starts with a digit, `-` is not allowed, and `class` is a Python keyword.", hint: "Check each rule: letters, digits and `_` only; no digit first; no keywords." },
     { t: "h", text: "Several at once" },
     { t: "code", code: c`a, b, c = 1, 2, 3
 x = y = 0
 print(a, b, c)
 print(x, y)` },
+    { t: "check", q: "What does this program print?", code: c`x = y = 5
+x = x + 1
+print(x, y)`, o: ["`6 6`", "`6 5`", "`5 5`", "`5 6`"], a: 1, e: "Both start at 5. Only `x` gets a new value (6); `y` keeps its 5.", hint: "The second line changes only the name on its left." },
+    { t: "steps", title: "Coffee money for the week", problem: "<p>A latte costs 14 riyals. You buy 3 this week and you start with 50 riyals in your wallet. Write a program that prints the total cost and how much money is left — using variables, so next week you only change one number.</p>",
+      steps: [
+        { html: "<p><b>Understand.</b> What do we know? A price, a number of cups, a wallet. What do we want? The total cost and the money left.</p>" },
+        { html: "<p><b>Name the values.</b> One variable for each fact, with clear snake_case names.</p>", code: c`latte_price = 14
+cups = 3
+wallet = 50` },
+        { html: "<p><b>Calculate.</b> Python works out the right side first and stores it in <code>total_cost</code>.</p>", code: c`total_cost = latte_price * cups` },
+        { html: "<p><b>Update the wallet.</b> The wallet gets its old value minus the cost — the same pattern as <code>score = score + 5</code>.</p>", code: c`wallet = wallet - total_cost` },
+        { html: "<p><b>Show the result</b> and check by hand: 14 × 3 = 42, and 50 − 42 = 8.</p>", code: c`print("Total cost:", total_cost, "riyals")
+print("Money left:", wallet, "riyals")` },
+      ],
+      code: c`latte_price = 14
+cups = 3
+wallet = 50
+
+total_cost = latte_price * cups
+wallet = wallet - total_cost
+
+print("Total cost:", total_cost, "riyals")
+print("Money left:", wallet, "riyals")`,
+      ar: "سمِّ{{g:|ي}} كل قيمة باسم واضح، ثم احسب{{g:|ي}}، ثم اطبع{{g:|ي}}. غيّر{{g:|ي}} عدد الأكواب إلى 2 وشغّل{{g:|ي}} البرنامج مرة أخرى." },
   ],
   mistakes: [
     { title: "Quotes around the variable name", html: "With quotes you print the <i>word</i>, not the value inside the box.", wrong: c`city = "Jeddah"
@@ -199,5 +239,14 @@ print(a, b)`, answers: ["3 6"], hint: "Go line by line and write the values of a
     { f: "Swap `a` and `b` in one line", b: "`a, b = b, a`" },
     { f: "What is snake_case?", b: "Lowercase words joined by underscores: `total_price`." },
   ],
+  remember: [
+    "A variable is a **name for a value**: `year = 2026`.",
+    "`=` means \"gets\": Python calculates the right side first, then stores it in the name on the left.",
+    "A variable can change: `score = score + 5` uses the old value to make the new one.",
+    "Four basic types: `int` (19), `float` (4.75), `str` (\"Riyadh\"), `bool` (True / False). `type()` tells you which.",
+    "Quotes make text: `\"42\"` is a `str`, `42` is an `int`.",
+    "Use clear snake_case names (`total_price`); no digit first, no spaces, no keywords; `name` and `Name` are different.",
+  ],
+  rememberAr: "الخلاصة: المتغير اسم لقيمة، و = تعني خزّن، والأنواع الأساسية أربعة: int و float و str و bool. واختر{{g:|ي}} أسماء واضحة.",
 };
 })();

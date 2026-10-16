@@ -17,27 +17,40 @@ DAYS[1] = {
     { t: "p", html: "<p>A <b>program</b> is a list of instructions for the computer. The computer is extremely fast, but it is also extremely literal: it does <i>exactly</i> what you write, in the order you write it — not what you meant.</p>" },
     { t: "analogy", title: "A program is like a recipe", html: "<p>A recipe lists steps in order: <i>boil water, add pasta, wait 10 minutes</i>. If you swap two steps, you get a different (probably bad) result. Python reads your code the same way: <b>from top to bottom, one line at a time</b>.</p>" },
     { t: "p", html: "<p>Python is one of the most popular languages in the world. It is used for websites, automation, data science and — most famously — artificial intelligence. It was designed to be easy to read, which makes it perfect for your first language.</p>" },
+    { t: "check", q: "In what order does Python run the lines of your program?", o: ["From top to bottom, one line at a time", "From bottom to top", "All lines at the same moment", "The shortest lines first"], a: 0, e: "Like a recipe: step 1, then step 2, then step 3. Change the order of the lines and you change the result.", ar: "بايثون يقرأ الكود من الأعلى للأسفل، سطرًا بعد سطر." },
     { t: "h", text: "Your first program" },
     { t: "code", code: c`print("Hello, {{name}}!")`, before: "<p>Press <b>▶ Run</b>. (The very first run wakes Python up and takes a few seconds.)</p>" },
     { t: "p", html: "<p>Let's read that line like a programmer:</p><ul><li><code>print</code> is a <b>function</b> — a built-in tool that does a job. Its job: show something on the screen.</li><li>The <b>parentheses</b> <code>( )</code> hold what you give to the function. This is called an <b>argument</b>.</li><li><code>\"Hello, {{name}}!\"</code> is a <b>string</b> — a piece of text. Text always goes between quotes: <code>\"double\"</code> or <code>'single'</code>, as long as both sides match.</li></ul>" },
     { t: "ar", html: "النص في بايثون لازم يكون بين علامتي تنصيص. الأرقام لا تحتاج علامات تنصيص. و print هي دالة تعرض أي شيء نعطيه لها داخل الأقواس." },
+    { t: "check", q: "In `print(\"Good morning\")`, which part is the **string**?", o: ["`print`", "`\"Good morning\"`", "the parentheses `( )`"], a: 1, e: "The string is the text between the quotes. `print` is the function, and the parentheses hold the argument you give it.", hint: "A string is text, and text always lives between quotes." },
     { t: "h", text: "Text vs numbers" },
     { t: "code", code: c`print("3 + 4")
 print(3 + 4)
 print(2026)
 print(10 / 4)`, note: "<p>With quotes, Python shows the text <i>exactly as written</i>. Without quotes, Python <b>calculates</b> first, then shows the result. This small difference is one of the most important ideas in programming.</p>" },
+    { t: "check", q: "What does this line show?", code: c`print(10 / 4)`, o: ["`10 / 4`", "`2.5`", "`2`", "An error"], a: 1, e: "No quotes, so Python calculates first: 10 divided by 4 is `2.5`. With quotes it would show the text `10 / 4`.", hint: "Look for quotes. No quotes means Python calculates." },
     { t: "h", text: "Several values in one print" },
     { t: "code", code: c`print("Name:", "{{name}}")
 print("Day", 1, "of", 30)
 print("2026", "09", "29", sep="-")
 print("Loading", end="...")
 print("done!")` },
+    { t: "lines", title: "Read it like a programmer", rows: [
+      [c`print("Name:", "{{name}}")`, "Two values separated by a comma. <code>print</code> shows them with <b>one space</b> between: <code>Name: {{name}}</code>."],
+      [c`print("Day", 1, "of", 30)`, "You can mix text and numbers in one <code>print</code>. The numbers <code>1</code> and <code>30</code> have no quotes, and that is fine."],
+      [c`print("2026", "09", "29", sep="-")`, "<code>sep=\"-\"</code> puts a dash between the values instead of a space: <code>2026-09-29</code>."],
+      [c`print("Loading", end="...")`, "<code>end=\"...\"</code> prints three dots at the end <b>instead of</b> the new line, so the next output stays on the same line."],
+      [c`print("done!")`, "This continues right after the dots: the screen shows <code>Loading...done!</code>."],
+    ] },
     { t: "p", html: "<p>Separate values with commas and <code>print</code> puts <b>one space</b> between them. You can change that:</p><ul><li><code>sep=\"-\"</code> changes the separator between values.</li><li><code>end=\"...\"</code> changes what comes at the end. Normally it is a new line, so each <code>print</code> starts on a new line.</li></ul>" },
+    { t: "check", q: "What does this line show?", code: c`print("A", "B", sep="+", end="!")`, o: ["`A B`", "`A+B!`", "`A+B`", "`A +B !`"], a: 1, e: "`sep=\"+\"` goes **between** the values and `end=\"!\"` goes **at the end**: `A+B!`.", ar: "sep بين القيم، و end في نهاية السطر." },
     { t: "h", text: "Comments: notes for humans" },
     { t: "code", code: c`# This is a comment. Python ignores it completely.
 print("Comments explain WHY the code does something")  # a comment can follow code
 # print("This line does not run")` },
     { t: "ar", html: "التعليقات تبدأ بعلامة # ويتجاهلها بايثون. نستخدمها لشرح الكود لأنفسنا ولغيرنا، ونستخدمها أيضًا لتعطيل سطر مؤقتًا." },
+    { t: "check", q: "What does this program print?", code: c`# print("one")
+print("two")  # print("three")`, o: ["`one` and `two`", "only `two`", "`two` and `three`", "nothing"], a: 1, e: "Everything after `#` is a comment. Line 1 is all comment, and on line 2 only `print(\"two\")` runs.", hint: "Python ignores everything from `#` to the end of the line." },
     { t: "h", text: "Special characters inside strings" },
     { t: "code", code: c`print("Line one\nLine two")
 print("Name:\t{{name}}")
@@ -48,6 +61,23 @@ print('It\'s day 1')` },
     { t: "viz", code: c`print("First")
 print("Second")
 print("Third")`, before: "<p>The visualizer lets you <b>see</b> Python working. Press Visualize, then click Next ▶ and watch the output grow line by line.</p>" },
+    { t: "steps", title: "A coffee receipt", problem: "<p>The café near campus asks you for a receipt that looks exactly like this:</p><pre class=\"code-static\">--- Coffee receipt ---\nItem:\tLatte\nPrice: 15 riyals\nThank you, {{name}}!\n----------------------</pre>",
+      steps: [
+        { html: "<p><b>Understand.</b> The receipt has 5 lines. Line 2 has a tab after <code>Item:</code>. Line 3 mixes text and a number. The top and bottom lines are borders.</p>" },
+        { html: "<p><b>Plan.</b> Programs run top to bottom, so write one <code>print</code> per line, in the same order as the receipt. Start with a comment that says what the program does.</p>", code: c`# A coffee receipt for {{name}}` },
+        { html: "<p><b>Build the first two lines.</b> The border is plain text. For the tab use <code>\\t</code> inside the string.</p>", code: c`print("--- Coffee receipt ---")
+print("Item:\tLatte")` },
+        { html: "<p><b>Mix text and a number.</b> Give <code>print</code> three values separated by commas; it adds the spaces for you.</p>", code: c`print("Price:", 15, "riyals")` },
+        { html: "<p><b>Finish and check.</b> Add the thank-you line and the bottom border, then run and compare with the receipt character by character.</p>", code: c`print("Thank you, {{name}}!")
+print("----------------------")` },
+      ],
+      code: c`# A coffee receipt for {{name}}
+print("--- Coffee receipt ---")
+print("Item:\tLatte")
+print("Price:", 15, "riyals")
+print("Thank you, {{name}}!")
+print("----------------------")`,
+      ar: "الطريقة: افهم{{g:|ي}} الشكل المطلوب، ثم اكتب{{g:|ي}} سطر print لكل سطر بالترتيب، ثم شغّل{{g:|ي}} وقارن{{g:|ي}} النتيجة." },
   ],
   mistakes: [
     { title: "Forgetting the quotes", html: "Without quotes, Python thinks <code>Hello</code> is the name of a variable and says <code>NameError</code>.", wrong: c`print(Hello)`, right: c`print("Hello")`, ar: "بدون علامات تنصيص يعتقد بايثون أن الكلمة اسم متغير." },
@@ -143,5 +173,14 @@ print("th", "on", sep="")
     { f: "How do you write a comment?", b: "Start the line (or the end of a line) with `#`. Python ignores it." },
     { f: "What does `\\n` mean inside a string?", b: "New line." },
   ],
+  remember: [
+    "Python runs your program **from top to bottom**, one line at a time.",
+    "`print()` shows values. Text goes between matching quotes; numbers do not need quotes.",
+    "With quotes Python shows the text as written; without quotes it **calculates** first: `print(\"3 + 4\")` vs `print(3 + 4)`.",
+    "Commas give `print` several values. `sep` goes between them, `end` goes at the end.",
+    "`#` starts a comment: a note for humans that Python ignores.",
+    "`\\n` is a new line and `\\t` is a tab. Errors are normal: read the message, fix one thing, run again.",
+  ],
+  rememberAr: "الخلاصة: print تعرض القيم، والنص بين علامتي تنصيص، و# للتعليقات، و sep و end للتحكم في شكل الناتج. والأخطاء جزء طبيعي من التعلم.",
 };
 })();

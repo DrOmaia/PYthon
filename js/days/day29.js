@@ -27,6 +27,83 @@ DAYS[29] = {
     { t: "h", text: "Your three options" },
     { t: "table", head: ["Project", "Day 29 (today)", "Day 30 (tomorrow)"], rows: [["🗺️ Text adventure", "world map, player, command parser", "playable game loop + your own rooms"], ["📚 Library system", "Book, Member classes, Library rules", "search, save/load, command interface"], ["🤖 AI classifier", "explore data, compare models, tune k", "final evaluation + study-buddy text AI"]] },
     { t: "tip", title: "Copy forward", html: "Each milestone's starter is self-contained. When a milestone passes, copy your code into the next one and extend it — that's exactly how real projects grow." },
+    { t: "h", text: "Worked example: a project in milestones" },
+    { t: "p", html: "<p>Before you start your own project, watch the method on a small one. The trick is always the same: <b>break the problem into small functions, test each one alone, then join them</b>. A bug in a 4-line function is easy to find; a bug somewhere in 60 lines is not.</p>" },
+    { t: "analogy", title: "Building with LEGO", html: "<p>You don't build a LEGO castle in one go. You build a tower, check it stands, build a wall, check it, and only then clip the pieces together. Each function is one LEGO piece you can test in your hand.</p>" },
+    { t: "steps", title: "A coffee-order app, milestone by milestone", problem: "<p>Build a small café app: the user types drink names one by one, then <code>done</code>. Unknown drinks get a polite message. At the end the program prints a receipt with a total.</p>",
+      steps: [
+        { html: "<p><b>Describe it in plain words, then choose the data.</b> What does the program remember? A menu (drink → price) and the current order (a list of drinks). A dict and a list are enough.</p>", code: c`MENU = {"latte": 14, "espresso": 10, "tea": 6, "water": 2}
+order = []` },
+        { html: "<p><b>Milestone 1: one small function.</b> <code>price(item)</code> returns the price, or <code>None</code> if the drink is not on the menu. Test it <b>right away</b> with cases you can check by hand — including a bad one.</p>", code: c`def price(item):
+    """Return the price of a drink, or None if it is not on the menu."""
+    return MENU.get(item.strip().lower())
+
+print(price("Latte") == 14)     # should be True
+print(price("pizza") is None)   # should be True` },
+        { html: "<p><b>Milestone 2: build on the first piece.</b> <code>total(order)</code> adds up the prices by calling <code>price()</code>, which we already trust.</p>", code: c`def total(order):
+    result = 0
+    for item in order:
+        result += price(item)
+    return result
+
+print(total(["tea", "tea", "water"]) == 14)   # should be True
+print(total([]) == 0)                          # an empty order costs 0` },
+        { html: "<p><b>Milestone 3: the output.</b> <code>receipt(order)</code> returns the text instead of printing it, so it is easy to test and reuse.</p>", code: c`def receipt(order):
+    lines = []
+    for item in order:
+        lines.append(f"{item}: {price(item)} SAR")
+    lines.append(f"Total: {total(order)} SAR")
+    return "\n".join(lines)` },
+        { html: "<p><b>Join the pieces.</b> Only now write the main loop. It is short because every hard part already lives in a tested function.</p>", code: c`while True:
+    item = input("Drink (or done): ")
+    if item.strip().lower() == "done":
+        break
+    if price(item) is None:
+        print("Sorry, we don't have", item)
+    else:
+        order.append(item.strip().lower())
+print(receipt(order))` },
+      ],
+      code: c`MENU = {"latte": 14, "espresso": 10, "tea": 6, "water": 2}
+
+def price(item):
+    """Return the price of a drink, or None if it is not on the menu."""
+    return MENU.get(item.strip().lower())
+
+def total(order):
+    result = 0
+    for item in order:
+        result += price(item)
+    return result
+
+def receipt(order):
+    lines = []
+    for item in order:
+        lines.append(f"{item}: {price(item)} SAR")
+    lines.append(f"Total: {total(order)} SAR")
+    return "\n".join(lines)
+
+# Test each piece before joining them (every line should print True)
+print(price("Latte") == 14, price("pizza") is None)
+print(total(["tea", "tea", "water"]) == 14, total([]) == 0)
+
+# Join the pieces: the main program
+order = []
+while True:
+    item = input("Drink (or done): ")
+    if item.strip().lower() == "done":
+        break
+    if price(item) is None:
+        print("Sorry, we don't have", item)
+    else:
+        order.append(item.strip().lower())
+print(receipt(order))`, stdin: "Latte\npizza\ntea\ndone",
+      ar: "الطريقة: قسّم{{g:|ي}} المشروع إلى دوال صغيرة، واختبر{{g:|ي}} كل دالة وحدها بأمثلة تعرف{{g:|ين}} جوابها، ثم اجمعها في البرنامج الرئيسي." },
+    { t: "check", q: "Your `total()` function gives a wrong answer. What is the best next step?", o: ["Move on to the next milestone and fix it at the end", "Test `total()` alone with a tiny example you can check by hand, fix it, then move on", "Delete everything and start again"], a: 1, e: "Fix bugs while the piece is small and fresh. Later milestones build on it, so a hidden bug would spread into everything that uses it.", hint: "Which way keeps the bug inside a few lines of code?" },
+    { t: "check", q: "Milestone 1 of the adventure uses a dict of exits. What does this print?", code: c`exits = {"north": "hall"}
+print(exits.get("west"))`, o: ["`None`", "A `KeyError`", "`hall`", "`west`"], a: 0, e: "`.get()` returns `None` when the key is missing, instead of crashing like `exits[\"west\"]` would. That is exactly what `move()` needs for \"no exit\".", ar: "get ترجع None إذا لم يوجد المفتاح، بدل أن يتوقف البرنامج بخطأ." },
+    { t: "check", q: "Why does `receipt()` **return** the text instead of printing it?", o: ["Because `print` does not work inside functions", "So you can test it (compare it with the expected text) and reuse it anywhere", "Returning is faster than printing"], a: 1, e: "A returned value can be checked, stored, joined or printed later. The automatic checks in today's milestones work the same way: most functions return messages.", hint: "`print` works fine inside functions — think about testing." },
+    { t: "ar", html: "قبل أن تكتب{{g:|ي}} أي كود: اكتب{{g:|ي}} في ملاحظاتك ماذا يفعل المستخدم، وما البيانات التي يحفظها البرنامج، وما الدوال التي تحتاجها." },
   ],
   exercises: [
     // ---------- Adventure ----------
@@ -231,5 +308,13 @@ def tune():
     { f: "Steps for a bigger project", b: "Describe, choose data structures, split into milestones, build and test one at a time, then extend." },
     { f: "Why tune on training data with cross-validation?", b: "So the test set stays unseen and the final score stays honest." },
   ],
+  remember: [
+    "Plan first: describe the program in plain words, then choose the data (dicts, lists, classes).",
+    "Break the problem into **small functions**, each with one job.",
+    "Test each piece alone with cases you can check by hand — including bad or empty input.",
+    "Join the pieces only when each one works; the main loop should be short.",
+    "Prefer functions that **return** values: they are easier to test and reuse.",
+  ],
+  rememberAr: "الخلاصة: خطّط{{g:|ي}} أولًا، قسّم{{g:|ي}} المشروع إلى دوال صغيرة، اختبر{{g:|ي}} كل جزء وحده، ثم اجمع{{g:|ي}} الأجزاء.",
 };
 })();
