@@ -15,6 +15,21 @@ DAYS[7] = {
     { t: "ar", html: "هذه المبادئ تلخص فلسفة بايثون: الكود الجميل البسيط المقروء أفضل من الكود المعقد. تذكّر{{g:|ي}} ذلك دائمًا عند كتابة حلولك." },
     { t: "h", text: "Look how far you came" },
     { t: "p", html: "<p>A week ago, <code>print(\"Hello\")</code> was new. Today you can read user input, calculate, format text professionally and make decisions. The Smart Calculator you built yesterday is a real program. Next week, loops will let your programs repeat — and suddenly you will be able to build games, process lists of data and automate boring work.</p>" },
+    { t: "h", text: "Week 1 self-check (5 minutes)" },
+    { t: "p", html: "<p>Five quick questions, one for each lesson day. No score, no pressure — just a mirror. If one surprises you, write it in your notes and look at that day again tomorrow.</p>" },
+    { t: "check", q: "Day 1: what does `print(\"Hi\", \"there\", sep=\"\")` show?", o: ["`Hi there`", "`Hithere`", "`Hi,there`", "`\"Hi\" \"there\"`"], a: 1, e: "`sep=\"\"` means nothing goes between the values, so they are glued: `Hithere`." },
+    { t: "check", q: "Day 2: which value is a `float`?", o: ["`7`", "`\"7.5\"`", "`7.5`", "`True`"], a: 2, e: "`7.5` is a decimal number. `\"7.5\"` has quotes, so it is a string; `7` is an `int`; `True` is a `bool`." },
+    { t: "check", q: "Day 3: the user types `8`. What does this print?", code: c`n = input()
+print(n * 2)`, o: ["`16`", "`88`", "An error", "`8 8`"], a: 1, e: "`input()` gives the string `\"8\"`, and a string times 2 repeats it: `88`. For 16 you need `int(input())`." },
+    { t: "check", q: "Day 4: what is `\"weekend\"[-3:]`?", o: ["`wee`", "`end`", "`ken`", "`d`"], a: 1, e: "`[-3:]` means the last 3 characters: `end`." },
+    { t: "check", q: "Day 5: what does this print?", code: c`x = 10
+if x > 5 and x < 8:
+    print("A")
+elif x >= 10:
+    print("B")
+else:
+    print("C")`, o: ["`A`", "`B`", "`C`", "`A` and `B`"], a: 1, e: "`x < 8` is False, so the `and` is False. Then `x >= 10` is True → `B`." },
+    { t: "ar", html: "هذه الأسئلة للمراجعة فقط وليست اختبارًا. إذا أخطأت{{g:|ِ}} في سؤال، اكتب{{g:|ي}} رقم اليوم في ملاحظاتك وراجع{{g:|ي}} درسه غدًا." },
   ],
   extraTitle: "Reflection and a bonus puzzle",
   extra: [
@@ -30,5 +45,15 @@ print("🌸" * 7)
     { f: "Who created Python, and where does the name come from?", b: "Guido van Rossum; named after the comedy show Monty Python." },
     { f: "Why does Python use indentation?", b: "Readability: code is read more often than written." },
   ],
+  remember: [
+    "`print()` shows values; text needs quotes; `sep` and `end` control the spacing.",
+    "Variables are names for values; the main types are `int`, `float`, `str` and `bool`.",
+    "`input()` always gives a string — convert with `int()` or `float()` before math.",
+    "`//` gives the whole part, `%` the remainder.",
+    "Strings: indexes start at 0, slices stop before the end index, methods return a new string.",
+    "f-strings format output: `f\"{price:.2f} SAR\"`.",
+    "`if / elif / else` runs only the first True branch; indentation shows what belongs to it.",
+  ],
+  rememberAr: "{{g:أحسنت|أحسنتِ}}! هذه خلاصة الأسبوع الأول. راجع{{g:|ي}}ها بهدوء، واسترح{{g:|ي}} اليوم، فالراحة جزء من التعلّم.",
 };
 })();
