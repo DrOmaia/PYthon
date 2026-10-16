@@ -13,6 +13,16 @@ DAYS[28] = {
     { t: "h", text: "From ELIZA to today" },
     { t: "p", html: "<p>In 1966, Joseph Weizenbaum at MIT wrote <b>ELIZA</b>, a chatbot that used keyword rules — just like the rule-based bot you wrote on Day 26. People were amazed and some even shared personal feelings with it, which worried Weizenbaum deeply. Sixty years later, AI assistants learn from huge amounts of text instead of hand-written rules, but his question is still important: how should people and AI systems relate to each other, and who is responsible for what they do?</p>" },
     { t: "ar", html: "أول روبوت محادثة (ELIZA عام 1966) كان يعمل بقواعد الكلمات المفتاحية مثل الذي كتبته{{g:|ِ}} في اليوم 26. التقنية تغيرت كثيرًا، لكن سؤال المسؤولية والأخلاق ما زال مهمًا." },
+    { t: "h", text: "Week 4 self-check (5 minutes)" },
+    { t: "p", html: "<p>No pressure, no score — just six quick questions to see what stuck from this week. If one surprises you, reread that day's \"Remember\" box before the capstone.</p>" },
+    { t: "check", q: "Binary search only works correctly when the list is…", o: ["short", "sorted", "made of numbers", "without duplicates"], a: 1, e: "Binary search decides which half to throw away by comparing with the middle item — that only makes sense if the list is sorted (Day 22).", hint: "How does it know which half to drop?" },
+    { t: "check", q: "What does this print?", code: c`import numpy as np
+a = np.array([[1, 2], [3, 4]])
+print(a.sum(axis=0))`, o: ["`10`", "`[3 7]`", "`[4 6]`", "`[1 2 3 4]`"], a: 2, e: "`axis=0` goes down the rows, giving one result per column: 1+3 = 4 and 2+4 = 6 (Day 23).", hint: "axis=0 → one answer per column." },
+    { t: "check", q: "A model predicts tomorrow's temperature in Riyadh from today's humidity and wind. Which is true?", o: ["Temperature is a feature; it is classification", "Temperature is the label; it is regression", "Humidity is the label; it is regression", "Wind is the label; it is classification"], a: 1, e: "The label is what we predict (temperature), and because it is a number, it is regression (Days 24–25).", hint: "Label = what we predict. Number → regression." },
+    { t: "check", q: "Why do we scale features before k-NN?", o: ["To make training faster", "So a feature with big numbers (like attendance 0–100) does not dominate the distance", "Because k-NN only accepts numbers between 0 and 1", "To remove the test set"], a: 1, e: "k-NN uses distances, which mix all features. Without scaling, the feature with the largest range decides almost everything (Day 24).", hint: "Think about what k-NN calculates." },
+    { t: "check", q: "A decision tree scores 1.0 on training data and 0.65 on test data. What should you try?", o: ["Report the 1.0", "A smaller `max_depth` (a simpler tree)", "Remove `random_state`", "Train on the test set too"], a: 1, e: "The big gap means overfitting; a simpler tree generalizes better (Day 25).", hint: "Memorizing vs learning." },
+    { t: "check", q: "A chatbot uses TF-IDF and cosine similarity. The best match for \"what is the weather\" has similarity 0.05 and the threshold is 0.2. What should the bot do?", o: ["Answer with the best match anyway", "Say it didn't understand", "Crash", "Pick a random answer"], a: 1, e: "Below the threshold the match is too weak, so an honest \"Sorry, I didn't understand\" is better than a confident wrong answer (Day 26).", hint: "Why do we have a threshold at all?" },
   ],
   extraTitle: "Reflection and free play",
   extra: [
@@ -29,5 +39,15 @@ else:
   cards: [
     { f: "What was ELIZA?", b: "A 1966 rule-based chatbot by Joseph Weizenbaum at MIT." },
   ],
+  remember: [
+    "Binary search: O(log n), needs a sorted list. Selection sort: O(n²). `sorted()`: O(n log n).",
+    "numpy: math on whole arrays, masks `a[a > 0]`, columns `X[:, 0]`, `axis=0` = one result per column.",
+    "ML vocabulary: features `X` (2D table), labels `y`; classification = category, regression = number.",
+    "The recipe: `train_test_split` → `fit` on train → `predict` → `score` on test → compare with the baseline.",
+    "Overfitting = great on training data, weak on new data. Scale features for k-NN, not for trees.",
+    "Text: vectorize with `CountVectorizer` / `TfidfVectorizer`; `transform` (not fit) for new text; cosine similarity for chatbots.",
+    "A model only knows its data: check for bias, protect privacy, and let people make the final decisions.",
+  ],
+  rememberAr: "خلاصة الأسبوع الرابع: خوارزميات البحث والترتيب، و numpy، وأساسيات التعلم الآلي (X و y، التقسيم، fit و predict و score)، وتحويل النص إلى أرقام. والأهم: الذكاء الاصطناعي المسؤول.",
 };
 })();
