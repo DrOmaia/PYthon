@@ -83,7 +83,7 @@ print("----------------------")`,
     { title: "Forgetting the quotes", html: "Without quotes, Python thinks <code>Hello</code> is the name of a variable and says <code>NameError</code>.", wrong: c`print(Hello)`, right: c`print("Hello")`, ar: "بدون علامات تنصيص يعتقد بايثون أن الكلمة اسم متغير." },
     { title: "Capital P in print", html: "Python is <b>case-sensitive</b>: <code>Print</code>, <code>PRINT</code> and <code>print</code> are three different names. Only <code>print</code> exists.", wrong: c`Print("Hi")`, right: c`print("Hi")` },
     { title: "Mixing quote types", html: "A string must end with the same quote it started with.", wrong: c`print("Hello')`, right: c`print("Hello")` },
-    { title: "Curly quotes from Word or WhatsApp", html: "Copying code from a document can bring “smart quotes”. Python only understands straight quotes <code>\"</code> and <code>'</code>.", wrong: "print(“Hello”)", right: c`print("Hello")`, ar: "لا تنسخ الكود من ملفات وورد أو واتساب؛ اكتب علامات التنصيص من الكيبورد الإنجليزي." },
+    { title: "Curly quotes from Word or WhatsApp", html: "Copying code from a document can bring “smart quotes”. Python only understands straight quotes <code>\"</code> and <code>'</code>.", wrong: "print(“Hello”)", right: c`print("Hello")`, ar: "لا تنسخ{{g:|ي}} الكود من ملفات وورد أو واتساب؛ اكتب{{g:|ي}} علامات التنصيص من الكيبورد الإنجليزي." },
   ],
   tricks: [
     { title: "Repeat text with *", html: "Multiplying a string repeats it. Perfect for lines and decorations.", code: c`print("=" * 20)

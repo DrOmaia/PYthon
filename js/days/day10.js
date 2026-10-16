@@ -96,6 +96,12 @@ print(sum(marks), max(marks), min(marks))
 print(sorted(marks))
 print(sorted(marks, reverse=True)[:3])
 print(marks)`, note: "<p>The last line shows that <code>sorted</code> did not change <code>marks</code>. <code>reverse=True</code> sorts from big to small, and the slice <code>[:3]</code> takes the top 3.</p>" },
+    { t: "lines", rows: [
+      ["sum(marks), max(marks), min(marks)", "Total, biggest and smallest item: <code>410 95 60</code>. No loop needed."],
+      ["sorted(marks)", "A <b>new</b> list from small to big: <code>[60, 78, 85, 92, 95]</code>."],
+      ["sorted(marks, reverse=True)[:3]", "Sort big to small, then slice the first 3: <code>[95, 92, 85]</code> — the top 3."],
+      ["print(marks)", "Still <code>[85, 92, 78, 95, 60]</code>: <code>sorted</code> never touches the original."],
+    ] },
     { t: "check", q: "After `x = [3, 1, 2]` and `y = sorted(x)`, what is `x`?", o: ["`[1, 2, 3]`", "`[3, 1, 2]`", "`None`", "`[3, 2, 1]`"], a: 1, e: "`sorted` returns a new list and leaves `x` unchanged. Only `x.sort()` would change it." },
 
     { t: "h", text: "Building a new list with a loop" },
@@ -324,7 +330,7 @@ print("Items:", len(prices))
 print(f"Total: {total:.2f}")`, note: "The long way: build the list with <code>append</code> and add with an accumulator." }] },
   ],
   quiz: [
-    { q: "After `a = [1, 2, 3]; a.append([4, 5])`, what is `len(a)`?", o: ["5", "4", "3", "An error"], a: 1, e: "The whole list [4, 5] is ONE item." },
+    { q: "After `a = [1, 2, 3]` and then `a.append([4, 5])`, what is `len(a)`?", o: ["5", "4", "3", "An error"], a: 1, e: "The whole list [4, 5] is ONE item." },
     { q: "What does `\"a,b,c\".split(\",\")` return?", o: ["`['a,b,c']`", "`['a', 'b', 'c']`", "`('a','b','c')`", "`abc`"], a: 1, e: "split cuts at the separator." },
     { q: "`nums.sort()` returns…", o: ["the sorted list", "`None`", "a copy", "an error"], a: 1, e: "It sorts in place." },
     { q: "What is `[x * 2 for x in [1, 2, 3]]`?", o: ["`[1,2,3,1,2,3]`", "`[2, 4, 6]`", "`6`", "`[1, 2, 3, 2]`"], a: 1, e: "A list comprehension." },

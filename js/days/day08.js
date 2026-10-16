@@ -32,7 +32,7 @@ while n <= 5:
     n = n + 1`, o: ["4", "5", "6", "Forever"], a: 1, e: "n takes the values 1, 2, 3, 4, 5 inside the loop. When n becomes 6, `6 <= 5` is False and the loop stops: **5** times.", hint: "Write down the value of n before each check: 1, 2, 3…" },
 
     { t: "h", text: "The three parts of every loop" },
-    { t: "p", html: "<p>Every <code>while</code> loop that stops correctly has three parts:</p><ol><li><b>Start</b> — a variable gets its first value <i>before</i> the loop.</li><li><b>Condition</b> — the question asked before each round.</li><li><b>Update</b> — a line <i>inside</i> the loop that moves the variable toward making the condition False.</li></ol><p>In this rocket countdown the update goes <b>down</b>, with the shortcut <code>-=</code> from Day 2.</p>" },
+    { t: "p", html: "<p>Every <code>while</code> loop that stops correctly has three parts:</p><ol><li><b>Start</b> — a variable gets its first value <i>before</i> the loop.</li><li><b>Condition</b> — the question asked before each round.</li><li><b>Update</b> — a line <i>inside</i> the loop that moves the variable toward making the condition False.</li></ol><p>In this rocket countdown the update goes <b>down</b>. It uses a shortcut you may have seen in a Day 2 solution: <code>n -= 1</code> means <code>n = n - 1</code>, and <code>n += 1</code> means <code>n = n + 1</code>.</p>" },
     { t: "code", code: c`n = 5
 while n > 0:
     print(n)

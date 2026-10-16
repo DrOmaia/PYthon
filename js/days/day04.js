@@ -67,7 +67,7 @@ print(name.strip().title())`, note: "<p>Notice the spaces that are still around 
     { t: "lines", rows: [
       [c`name.strip()`, "Removes spaces (and new lines) from <b>both ends</b>. Spaces in the middle stay."],
       [c`name.upper()`, "Every letter becomes a capital: <code>SARA ALHARBI</code>."],
-      [c`name.lower()`, "Every letter becomes small. Great before comparing: <code>\"SARA\".lower() == \"sara\"</code> is True."],
+      [c`name.lower()`, "Every letter becomes small. Great before comparing two names: <code>\"SARA\".lower()</code> and <code>\"sArA\".lower()</code> both give <code>\"sara\"</code>."],
       [c`name.strip().title()`, "<b>Chaining</b>: first strip, then <code>.title()</code> makes the first letter of every word a capital → <code>Sara Alharbi</code>."]] },
     { t: "h", text: "Strings never change (they are immutable)" },
     { t: "analogy", title: "A method gives you a photocopy", html: "<p>When you ask a string method for a change, Python does not write on the original. It hands you a <b>photocopy</b> with the change. If you do not keep the copy — store it in a variable — it is thrown away. That is what <b>immutable</b> means: a string can never be changed in place.</p>" },
@@ -261,7 +261,7 @@ print(s)`, o: ["`HI`", "`hi`", "`Hi`", "An error"], a: 1, e: "The uppercase resu
     { q: "`\"PSU\" in \"Prince Sultan University (PSU)\"` is…", o: ["`True`", "`False`", "An error", "`3`"], a: 0, e: "`in` checks whether a piece of text appears inside another." },
   ],
   puzzle: { title: "Secret message", q: "<p>A friend sent you a coded message. The rule: <b>reverse the string, then take every second character</b>. What does the code print?</p>", code: c`secret = "Xn*oxhYtFy?P"
-print(secret[::-1][::2])`, answers: ["python"], hint: "First reverse it (write it down backwards), then keep characters at positions 0, 2, 4, …", ar: "اعكس{{g:|ي}} النص أولًا، ثم خذ{{g:|ي}} حرفًا وأترك{{g:|ي}} حرفًا.", e: "Reversed: <code>P?yFtYhxo*nX</code>. Keeping every second character (indexes 0, 2, 4, 6, 8, 10) gives <code>P y t h o n</code> → <code>Python</code>. Chaining two slices like this is a neat trick — and a reminder that careful counting beats guessing." },
+print(secret[::-1][::2])`, answers: ["python"], hint: "First reverse it (write it down backwards), then keep characters at positions 0, 2, 4, …", ar: "اعكس{{g:|ي}} النص أولًا، ثم خذ{{g:|ي}} حرفًا واترك{{g:|ي}} حرفًا.", e: "Reversed: <code>P?yFtYhxo*nX</code>. Keeping every second character (indexes 0, 2, 4, 6, 8, 10) gives <code>P y t h o n</code> → <code>Python</code>. Chaining two slices like this is a neat trick — and a reminder that careful counting beats guessing." },
   cards: [
     { f: "Index of the first and last character?", b: "`s[0]` and `s[-1]`." },
     { f: "What does `s[2:5]` include?", b: "Indexes 2, 3 and 4 — the stop index is not included." },

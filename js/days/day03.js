@@ -47,7 +47,7 @@ print("Is 17 even?", 17 % 2 == 0)` },
     { t: "lines", title: "Read it like a programmer", rows: [
       ["sweets // friends", "How many <b>whole</b> times does 5 fit in 17? <code>3</code> — each friend gets 3."],
       ["sweets % friends", "What is <b>left over</b> after that? 17 − 5×3 = <code>2</code>."],
-      ["17 % 2 == 0", "A number is even when the remainder after dividing by 2 is 0. Here it is 1, so the answer is <code>False</code>."],
+      ["17 % 2 == 0", "A number is even when the remainder after dividing by 2 is 0. <code>==</code> asks \"are these equal?\" and answers <code>True</code> or <code>False</code> (a small preview: Day 5 teaches it properly). Here the remainder is 1, so the answer is <code>False</code>."],
     ] },
     { t: "ar", html: "// تعطي عدد المرات الكاملة، و % تعطي الباقي. استخدم{{g:|ي}} n % 2 == 0 لمعرفة هل العدد زوجي." },
     { t: "check", q: "What does this print?", code: c`print(23 // 4, 23 % 4)`, o: ["`5 3`", "`5.75 3`", "`6 1`", "`3 5`"], a: 0, e: "4 fits into 23 five whole times (20), and 3 is left over: `5 3`.", hint: "23 = 4 × ? + ?" },
@@ -56,7 +56,7 @@ print("Is 17 even?", 17 % 2 == 0)` },
     { t: "code", code: c`print(2 + 3 * 4)
 print((2 + 3) * 4)
 print(10 - 4 - 3)
-print(2 ** 3 ** 2)` },
+print(2 ** 3 ** 2)`, note: "<p><code>14</code> and <code>20</code> show the effect of parentheses. Operators of the same level run left to right: <code>10 - 4 - 3</code> is <code>(10 - 4) - 3 = 3</code>. The one exception is <code>**</code>, which runs right to left: <code>2 ** 3 ** 2</code> is <code>2 ** 9 = 512</code>.</p>" },
     { t: "check", q: "What does this print?", code: c`print(10 - 2 * 3)`, o: ["`24`", "`4`", "`18`", "`-4`"], a: 1, e: "Multiplication comes before subtraction: 2 * 3 = 6, then 10 - 6 = `4`. For 24 you would write `(10 - 2) * 3`.", hint: "Which operator does Python do first, `-` or `*`?" },
     { t: "h", text: "Useful extras" },
     { t: "code", code: c`import math
@@ -65,6 +65,13 @@ print(abs(-7))
 print(max(4, 9, 2), min(4, 9, 2))
 print(math.sqrt(144))
 print(math.pi)` },
+    { t: "lines", title: "Read it like a programmer", rows: [
+      ["round(3.14159, 2)", "Rounds to 2 decimal places: <code>3.14</code>."],
+      ["abs(-7)", "The absolute value (the distance from zero, never negative): <code>7</code>."],
+      ["max(4, 9, 2), min(4, 9, 2)", "The biggest and the smallest of the values: <code>9 2</code>."],
+      ["math.sqrt(144)", "The square root, always a float: <code>12.0</code>."],
+      ["math.pi", "The number π: <code>3.141592653589793</code>."],
+    ] },
     { t: "p", html: "<p><code>import math</code> loads Python's math toolbox. You will learn more about modules later — for now, just know that <code>math.sqrt()</code> and <code>math.pi</code> are there when you need them.</p>" },
     { t: "steps", title: "Split the restaurant bill", problem: "<p>You and your friends had dinner. Write a program that asks for the bill and the number of friends, adds a 10% tip, and prints the tip, the total and what each person pays (rounded to 2 decimals).</p>",
       steps: [

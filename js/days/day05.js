@@ -108,10 +108,10 @@ if day == "Fri" or day == "Sat":
     print("Weekend!")`, note: "<p>Only one part needs to be True. Notice that the full comparison <code>day == ...</code> is written on <b>both</b> sides of <code>or</code>.</p>" },
     { t: "code", code: c`is_raining = False
 if not is_raining:
-    print("Let's walk to the library")
-age = 20
+    print("Let's walk to the library")`, note: "<p><code>is_raining</code> is False, and <code>not False</code> is True, so the message appears. Read it like English: \"if it is not raining\".</p>" },
+    { t: "code", code: c`age = 20
 if 18 <= age <= 25:
-    print("Python allows chained comparisons like this")`, note: "<p><code>not False</code> is True, so the first message appears. <code>18 &lt;= age &lt;= 25</code> is a short way to write <code>18 &lt;= age and age &lt;= 25</code>.</p>" },
+    print("Between 18 and 25")`, before: "<p>One more shortcut: to ask \"is age between 18 and 25?\" you can chain two comparisons, just like in math.</p>", note: "<p><code>18 &lt;= age &lt;= 25</code> is a short way to write <code>18 &lt;= age and age &lt;= 25</code>. Both parts are True for 20, so the message appears.</p>" },
     { t: "table", head: ["Operator", "True when…", "Example"], rows: [["`and`", "both are True", "`age >= 18 and has_id`"], ["`or`", "at least one is True", "`day == \"Fri\" or day == \"Sat\"`"], ["`not`", "reverses True/False", "`not is_raining`"]] },
     { t: "ar", html: "and: لازم الشرطان صحيحان. or: يكفي شرط واحد صحيح. not: تعكس النتيجة. واكتب{{g:|ي}} المقارنة كاملة على جانبي or." },
     { t: "check", q: "What does this print?", code: c`age = 17

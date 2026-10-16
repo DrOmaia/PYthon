@@ -209,7 +209,7 @@ print(x)`, explain: "<code>7</code> is printed inside the function, then <code>N
 
 print(welcome("Sara"))
 print(welcome("Omar", "Salam"))`, explain: "The first call uses the default <code>\"Hello\"</code>; the second call replaces it: <code>Hello, Sara</code> then <code>Salam, Omar</code>." },
-    { t: "parsons", title: "Is it even?", prompt: "Build a function <code>is_even(n)</code> that returns True or False, then use it.", lines: ["def is_even(n):", "    return n % 2 == 0", "", "print(is_even(10))"], distractors: ["    print(n % 2 == 0)"], explain: "The comparison already gives a bool — return it directly." },
+    { t: "parsons", title: "Is it even?", prompt: "Build a function <code>is_even(n)</code> that returns True or False, then use it.", lines: ["def is_even(n):", "    return n % 2 == 0", "print(is_even(10))"], distractors: ["    print(n % 2 == 0)"], explain: "The comparison already gives a bool — return it directly." },
     { t: "parsons", title: "Average of a list", prompt: "Build <code>average(nums)</code> that returns the average, then print the average of three marks.", lines: ["def average(nums):", "    total = 0", "    for n in nums:", "        total += n", "    return total / len(nums)", "print(average([80, 90, 70]))"], distractors: ["        return total / len(nums)"], explain: "The <code>return</code> goes <b>after</b> the loop (4 spaces), not inside it (8 spaces). Output: <code>80.0</code>." },
     { t: "viz", code: c`def bonus(mark):
     if mark >= 90:

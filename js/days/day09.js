@@ -269,11 +269,11 @@ for row in range(n):
     print()`, note: "The inner loop prints one row; the empty <code>print()</code> ends the line." }] },
   ],
   quiz: [
-    { q: "What does `list(range(3, 8))` contain?", o: ["3..8", "3, 4, 5, 6, 7", "4..8", "3, 5, 7"], a: 1, e: "Stop not included." },
+    { q: "Which numbers does `range(3, 8)` give?", o: ["3, 4, 5, 6, 7, 8", "3, 4, 5, 6, 7", "4, 5, 6, 7, 8", "3, 5, 7"], a: 1, e: "The start 3 is included; the stop 8 is not." },
     { q: "How many stars?", code: c`for i in range(3):
     for j in range(4):
         print("*", end="")`, o: ["7", "12", "3", "4"], a: 1, e: "3 × 4." },
-    { q: "Which prints 10 down to 1?", o: ["`range(10, 1)`", "`range(10, 0, -1)`", "`range(1, 10, -1)`", "`range(10, 1, -1)`"], a: 1, e: "Stop at 0 so 1 is included; step -1." },
+    { q: "With `for i in ...: print(i)`, which range prints 10 down to 1?", o: ["`range(10, 1)`", "`range(10, 0, -1)`", "`range(1, 10, -1)`", "`range(10, 1, -1)`"], a: 1, e: "Stop at 0 so 1 is included; step -1." },
     { q: "An accumulator for a product should start at…", o: ["0", "1", "None", "It doesn't matter"], a: 1, e: "Anything × 0 = 0." },
     { q: "Best loop for \"ask until the password is correct\"?", o: ["for", "while", "Either", "Neither"], a: 1, e: "You don't know how many tries." },
     { q: "What does this print?", code: c`count = 0
