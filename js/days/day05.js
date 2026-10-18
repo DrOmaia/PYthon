@@ -7,71 +7,50 @@ DAYS[5] = {
   introAr: "اليوم البرنامج يتخذ قرارات! نتعلم الشروط if و elif و else، وعوامل المقارنة، وربط الشروط بـ and و or و not. وانتبه{{g:|ي}} جيدًا للإزاحة (المسافات) لأنها أساسية هنا.",
   goals: ["Compare values with `==`, `!=`, `<`, `>`, `<=`, `>=`", "Write `if`, `if/else` and `if/elif/else` blocks with correct indentation", "Combine conditions with `and`, `or`, `not`", "Order `elif` conditions correctly", "Trace which branch runs for any input"],
   learn: [
-    { t: "h", text: "Programs that make decisions" },
-    { t: "p", html: "<p>Until now every program ran <b>all</b> its lines, every time. Real life is not like that. A portal shows <i>Pass</i> or <i>Fail</i> depending on your mark. A coffee app adds a discount only if you have a loyalty card. A weather app says \"take water\" only when it is hot. To do this, a program must ask a question and then choose what to do. Today you learn how.</p>" },
-    { t: "analogy", title: "A fork in the road", html: "<p>Imagine driving to campus and reaching a fork: <i>if the main road is busy, take the side road; otherwise, go straight</i>. You check one question, and the answer decides which road you take. An <code>if</code> statement is exactly that fork inside your program.</p>" },
+    { t: "h", text: "Why programs need decisions" },
+    { t: "p", html: "<p>Until now every program ran <b>every line</b>, top to bottom, no matter what. But real programs react: a banking app shows <i>\"Insufficient funds\"</i> only when your balance is too low, and a login screen lets you in only when the password is right. To react, a program has to <b>ask a question</b> and choose what to do based on the answer.</p>" },
+    { t: "analogy", title: "A decision is a fork in the road", html: "<p>Every morning you decide: <i>if it is raining, take an umbrella</i>. You check one fact (is it raining?), and the answer is always <b>yes or no</b>. Python works the same way: it checks a condition, gets <code>True</code> or <code>False</code>, and picks a road.</p>" },
+    { t: "ar", html: "البرنامج يحتاج أن يتخذ قرارًا: يسأل سؤالًا جوابه نعم أو لا (True أو False)، ثم يختار ماذا ينفذ حسب الجواب." },
+
     { t: "h", text: "Questions with True or False answers" },
-    { t: "p", html: "<p>Every decision starts with a question whose answer is <b>yes or no</b>. In Python the answer is a bool: <code>True</code> or <code>False</code> (you met bools on Day 2). You ask these questions with <b>comparison operators</b>.</p>" },
     { t: "code", code: c`age = 19
 print(age > 18)
-print(age == 20)
-print(age != 20)
-print(10 <= 10)`, before: "<p>Each line asks a question. Predict the four answers before you run.</p>" },
-    { t: "lines", rows: [
-      [c`print(age > 18)`, "Is 19 greater than 18? Yes → <code>True</code>."],
-      [c`print(age == 20)`, "<code>==</code> (two equal signs) asks \"is it equal?\". 19 is not 20 → <code>False</code>."],
-      [c`print(age != 20)`, "<code>!=</code> asks \"is it <b>not</b> equal?\". 19 is not 20, so the answer is <code>True</code>."],
-      [c`print(10 <= 10)`, "\"Less than <b>or equal</b>?\" 10 is equal to 10 → <code>True</code>. With <code>&lt;</code> alone it would be False."]] },
-    { t: "table", head: ["Operator", "Question it asks", "Example → result"], rows: [["`==`", "equal?", "`5 == 5` → `True`"], ["`!=`", "not equal?", "`5 != 3` → `True`"], ["`<` `>`", "less / greater?", "`3 > 7` → `False`"], ["`<=` `>=`", "less or equal / greater or equal?", "`60 >= 60` → `True`"]] },
-    { t: "ar", html: "انتبه{{g:|ي}}: علامة = واحدة للتخزين، و == (علامتان) للسؤال \"هل يساوي؟\". هذا من أكثر الأخطاء شيوعًا عند المبتدئين." },
-    { t: "h", text: "Comparing strings" },
-    { t: "p", html: "<p>You can compare text too — for example, to check a password or a city name. But Python compares strings <b>character by character</b>, and a capital letter is a different character from a small one. So clean the text first with the methods from Day 4.</p>" },
-    { t: "code", code: c`city = "Riyadh"
-print(city == "Riyadh")
-print(city == "riyadh")
-print(city.lower() == "riyadh")
-print("ya" in city)`, note: "<p><code>\"Riyadh\" == \"riyadh\"</code> is <code>False</code> because R and r are different. After <code>.lower()</code> both sides match. And <code>in</code> also gives a True/False answer, so it can be used in decisions as well.</p>" },
-    { t: "check", q: "What does this print?", code: c`answer = "YES"
-print(answer == "yes", answer.lower() == "yes")`, o: ["`True True`", "`False True`", "`False False`", "`True False`"], a: 1, e: "`\"YES\"` and `\"yes\"` are different strings, so the first is `False`. After `.lower()` the answer is `\"yes\"`, so the second is `True`.", ar: "المقارنة بين النصوص تفرّق بين الحروف الكبيرة والصغيرة؛ استخدم{{g:|ي}} lower() قبل المقارنة." },
+print(age == 20)`, before: "<p>A <b>comparison</b> asks a question about two values. The answer is a special value called a <b>boolean</b>: <code>True</code> or <code>False</code>. Run it and read each answer.</p>", note: "<p>Line by line:</p><ul><li><code>age = 19</code> stores 19. One <code>=</code> means <b>store</b>.</li><li><code>age &gt; 18</code> asks \"is 19 greater than 18?\" → <code>True</code>.</li><li><code>age == 20</code> asks \"is 19 equal to 20?\" → <code>False</code>. Two <code>==</code> means <b>ask if equal</b>.</li></ul><p>Notice: comparing does not change <code>age</code>. It only asks.</p>" },
+    { t: "table", head: ["Operator", "Question it asks", "Example", "Answer"], rows: [["`==`", "equal?", "`5 == 5`", "`True`"], ["`!=`", "not equal?", "`5 != 3`", "`True`"], ["`<`  `>`", "less / greater?", "`3 > 5`", "`False`"], ["`<=`  `>=`", "less or equal / greater or equal?", "`10 <= 10`", "`True`"]] },
+    { t: "code", code: c`print(10 <= 10)
+print("sara" == "Sara")
+print("apple" != "banana")`, before: "<p>Comparisons work on text too. Predict each line before you run it.</p>", note: "<p><code>10 &lt;= 10</code> is <code>True</code> because \"less than <b>or equal</b>\" includes equal. <code>\"sara\" == \"Sara\"</code> is <code>False</code>: for Python a small <code>s</code> and a capital <code>S</code> are different characters. That is why we often compare <code>name.lower()</code> instead of <code>name</code>. And <code>!=</code> is True whenever the two values differ.</p>" },
+    { t: "ar", html: "علامة = واحدة للتخزين، وعلامتان == للسؤال \"هل يساوي؟\". نتيجة أي مقارنة هي True أو False فقط. وانتبه{{g:|ي}}: الحروف الكبيرة والصغيرة مختلفة في المقارنة." },
+    { t: "predict", code: c`x = 7
+print(x >= 7, x != 7, x < 3)`, explain: "<code>7 &gt;= 7</code> is <code>True</code> (equal counts). <code>7 != 7</code> is <code>False</code> (they are equal). <code>7 &lt; 3</code> is <code>False</code>. Output: <code>True False False</code>." },
+
     { t: "h", text: "if: do something only when…" },
-    { t: "p", html: "<p>Now use a question to control the program. <code>if</code> runs a group of lines <b>only when</b> the condition is <code>True</code>. When it is <code>False</code>, those lines are skipped and the program continues after them.</p>" },
+    { t: "p", html: "<p>An <code>if</code> statement runs some lines <b>only when</b> a condition is <code>True</code>. Its shape is always the same: the word <code>if</code>, a condition, a colon <code>:</code>, and then the lines that belong to it, pushed in by <b>4 spaces</b>.</p>" },
     { t: "code", code: c`temperature = int(input("Temperature in Riyadh today: "))
 if temperature > 40:
     print("Stay inside, drink water!")
     print("Maybe study Python ;)")
-print("Have a nice day")`, stdin: "44", note: "<p>Run it with <code>44</code>, then change the Input box to <code>30</code> and run again. With 30 the two indented lines are skipped.</p>" },
-    { t: "lines", rows: [
-      [c`temperature = int(input(...))`, "Read the temperature and convert it to a whole number (Day 3)."],
-      [c`if temperature > 40:`, "The question. It ends with a <b>colon</b> <code>:</code>, which means \"a block of code starts on the next line\"."],
-      [c`    print("Stay inside, drink water!")`, "Indented by 4 spaces → it <b>belongs</b> to the <code>if</code>. It runs only when the answer is True."],
-      [c`    print("Maybe study Python ;)")`, "Same indentation → also inside the block. A block can have as many lines as you need."],
-      [c`print("Have a nice day")`, "Back at the left edge → the block has ended. This line runs <b>always</b>, True or False."]] },
-    { t: "analogy", title: "Indentation = belonging", html: "<p>Think of a shopping list where some items are indented under a heading: <i>If it is Friday:</i> &nbsp;— buy dates — buy coffee. The indented items belong to the heading. Python reads code the same way: the lines indented under <code>if ...:</code> belong to it, and when the indentation ends, the block ends. Other languages use <code>{ }</code>; Python uses spaces, so code always looks tidy.</p>" },
-    { t: "ar", html: "بعد سطر if لازم نقطتان : ثم الأسطر التابعة له تُزاح ٤ مسافات. السطر الذي يرجع لبداية السطر لا يتبع if ويُنفَّذ دائمًا." },
-    { t: "check", q: "The user types `30`. What is printed?", code: c`t = int(input())
-if t > 40:
-    print("Hot!")
-    print("Drink water")
-print("Bye")`, o: ["`Hot!`, `Drink water`, `Bye`", "`Bye` only", "`Drink water` and `Bye`", "Nothing"], a: 1, e: "30 > 40 is False, so both indented lines are skipped. `Bye` is not indented, so it always runs.", hint: "Which lines are inside the block? Which line is outside?" },
+print("Have a nice day")`, stdin: "44", before: "<p>Run it with <code>44</code> in the Input box, then change it to <code>30</code> and run again. Watch which lines disappear.</p>", note: "<p>Line by line:</p><ul><li>Line 1 reads the temperature and converts it to a number.</li><li>Line 2 asks: is it greater than 40? With 44 the answer is <code>True</code>.</li><li>Lines 3–4 are <b>indented</b>, so they belong to the <code>if</code>. They run only when the answer is True.</li><li>Line 5 is <b>not</b> indented. It is outside the <code>if</code>, so it runs every time.</li></ul><p>With 30, the condition is False: Python skips lines 3–4 and jumps straight to line 5.</p>" },
+    { t: "analogy", title: "Indentation = belonging", html: "<p>The colon <code>:</code> says \"a block starts here\". The lines indented under it <b>belong</b> to the <code>if</code>, like items under a heading in a list. When the indentation ends, the block ends. Other languages use <code>{ }</code> for this; Python uses spaces, so the code always looks tidy.</p>" },
+    { t: "ar", html: "if تنفذ الأسطر المزاحة تحتها فقط إذا كان الشرط True. لا تنس{{g:|ي}} النقطتين : في نهاية سطر if، والإزاحة ٤ مسافات للأسطر التابعة لها. السطر غير المزاح يُنفذ دائمًا." },
+
     { t: "h", text: "if / else: two roads" },
-    { t: "p", html: "<p>Often you want one thing when the answer is yes and <b>something else</b> when it is no: pass or fail, even or odd, open or closed. That is what <code>else</code> is for. Exactly <b>one</b> of the two blocks runs — never both, never neither.</p>" },
+    { t: "p", html: "<p>Often you want to do one thing when the answer is yes and <b>something else</b> when it is no. That is what <code>else</code> is for. Exactly one of the two blocks runs — never both, never neither.</p>" },
     { t: "code", code: c`n = int(input("A number: "))
 if n % 2 == 0:
     print(n, "is even")
 else:
-    print(n, "is odd")`, stdin: "7" },
-    { t: "lines", rows: [
-      [c`if n % 2 == 0:`, "The remainder of dividing by 2 (Day 3). If it is 0, the number is even."],
-      [c`    print(n, "is even")`, "Runs only when the condition is True."],
-      [c`else:`, "Lines up with <code>if</code> (no indentation) and has its own colon. It has no condition — it simply catches every other case."],
-      [c`    print(n, "is odd")`, "Runs only when the condition is False. For 7: 7 % 2 is 1, so this line runs."]] },
-    { t: "check", q: "What does this print?", code: c`n = 0
-if n % 2 == 0:
-    print("even")
+    print(n, "is odd")`, stdin: "7", before: "<p>Remember <code>%</code> from Day 3? It gives the remainder. Even numbers have remainder 0 when divided by 2. Try <code>7</code>, then <code>10</code>.</p>", note: "<p>Line by line with 7:</p><ul><li><code>7 % 2</code> is <code>1</code>, so <code>n % 2 == 0</code> asks \"is 1 equal to 0?\" → <code>False</code>.</li><li>The <code>if</code> block (line 3) is skipped.</li><li><code>else:</code> catches every case the <code>if</code> did not, so line 5 runs: <code>7 is odd</code>.</li></ul><p>Notice that <code>else</code> has <b>no condition</b> and sits at the same indentation as its <code>if</code>.</p>" },
+    { t: "ar", html: "else تعني \"وإلا\": تُنفذ عندما يكون شرط if خاطئًا. واحد فقط من الفرعين يُنفذ. و else لا تأخذ شرطًا، وتكون بنفس مستوى إزاحة if." },
+    { t: "predict", code: c`balance = 50
+price = 80
+if balance >= price:
+    print("Bought!")
 else:
-    print("odd")`, o: ["`even`", "`odd`", "`even` and `odd`", "Nothing"], a: 0, e: "0 % 2 is 0, so the condition is True and only the first block runs. Zero is an even number." },
+    print("Need", price - balance, "more")`, explain: "<code>50 &gt;= 80</code> is False, so the <code>else</code> block runs and calculates <code>80 - 50</code>. Output: <code>Need 30 more</code>." },
+
     { t: "h", text: "if / elif / else: many roads" },
-    { t: "p", html: "<p>Some questions have more than two answers. A mark becomes A, B, C or F; a temperature is cold, nice, warm or hot. <code>elif</code> (short for \"else if\") adds more roads. Python checks the conditions <b>from top to bottom</b> and runs <b>only the first</b> branch that is True — then it skips all the rest, even if they are also True.</p>" },
+    { t: "p", html: "<p>Some questions have more than two answers: a grade can be A, B, C or F. <code>elif</code> (short for <b>else if</b>) adds more roads. Python checks the conditions <b>from top to bottom</b> and runs <b>only the first</b> branch that is True — then skips all the rest.</p>" },
     { t: "viz", code: c`score = 84
 if score >= 90:
     grade = "A"
@@ -81,44 +60,37 @@ elif score >= 70:
     grade = "C"
 else:
     grade = "F"
-print("Grade:", grade)`, before: "<p>Visualize it and watch which lines are skipped. 84 is also ≥ 70, but the C branch is never even checked.</p>" },
-    { t: "lines", rows: [
-      [c`if score >= 90:`, "84 ≥ 90? No → skip this block and go to the next question."],
-      [c`elif score >= 80:`, "84 ≥ 80? Yes → run this block. Because we got here, we already know the score is below 90."],
-      [c`    grade = "B"`, "Store the grade. After this block Python <b>jumps out</b> of the whole chain."],
-      [c`elif score >= 70:`, "Never checked for 84 — the chain already found its branch."],
-      [c`else:`, "Runs only when <b>every</b> condition above was False (a score under 70)."]] },
-    { t: "ar", html: "في سلسلة if / elif / else يُنفَّذ فرع واحد فقط: أول شرط صحيح من الأعلى. لذلك رتّب{{g:|ي}} الشروط من الأعلى للأقل (90 ثم 80 ثم 70)." },
-    { t: "check", q: "What does this print?", code: c`score = 80
-if score > 80:
-    print("B+")
-elif score >= 70:
-    print("C")
+print("Grade:", grade)`, before: "<p>Visualize it and press Next ▶ slowly. Watch which lines Python checks and which ones it jumps over.</p>", note: "<p>With <code>score = 84</code>:</p><ul><li><code>84 &gt;= 90</code>? False → skip <code>grade = \"A\"</code>.</li><li><code>84 &gt;= 80</code>? True → <code>grade = \"B\"</code>, and Python <b>leaves the whole chain</b>.</li><li>The <code>&gt;= 70</code> check is never even asked, although 84 is also bigger than 70.</li></ul><p>This is why the <b>order</b> matters: we check the highest grade first. If <code>&gt;= 70</code> came first, every score from 70 up would get a C.</p>" },
+    { t: "ar", html: "elif تعني \"وإلا إذا\". بايثون يفحص الشروط من الأعلى للأسفل، وينفذ أول شرط صحيح فقط ثم يتجاهل الباقي. لذلك رتّب{{g:|ي}} الشروط من الأدق (الأعلى) إلى الأعم." },
+    { t: "predict", code: c`temp = 25
+if temp > 30:
+    print("hot")
+elif temp > 20:
+    print("warm")
+elif temp > 10:
+    print("cool")
 else:
-    print("F")`, o: ["`B+`", "`C`", "`F`", "`B+` and `C`"], a: 1, e: "80 > 80 is False (80 is not greater than itself), so Python moves on. 80 >= 70 is True → `C`. Boundary values like 80 are where bugs hide — always test them.", hint: "Is 80 greater than 80?" },
+    print("cold")`, explain: "<code>25 &gt; 30</code> is False. <code>25 &gt; 20</code> is True, so it prints <code>warm</code> and stops. <code>25 &gt; 10</code> is also true, but it is never checked." },
+
     { t: "h", text: "Combining conditions: and, or, not" },
-    { t: "p", html: "<p>Real rules often have two parts: <i>a student discount needs you to be under 25 <b>and</b> to be a student</i>; <i>the weekend is Friday <b>or</b> Saturday</i>. Python has three words for this: <code>and</code>, <code>or</code> and <code>not</code>. They read almost like English.</p>" },
-    { t: "analogy", title: "Two keys or any door", html: "<p>A bank safe that needs <b>two keys</b> turned together is <code>and</code>: both must be True. A room with <b>two doors</b> is <code>or</code>: you get in if at least one door is open. <code>not</code> is a light switch: it flips True to False and False to True.</p>" },
+    { t: "p", html: "<p>Sometimes one question is not enough: a student discount needs <i>young</i> <b>and</b> <i>a student</i>. The weekend is Friday <b>or</b> Saturday. Python joins conditions with three words:</p>" },
+    { t: "table", head: ["Operator", "True when…", "Example"], rows: [["`and`", "both sides are True", "`age >= 18 and has_id`"], ["`or`", "at least one side is True", "`day == \"Fri\" or day == \"Sat\"`"], ["`not`", "it flips True ↔ False", "`not is_raining`"]] },
     { t: "code", code: c`age = 20
 is_student = True
 if age < 25 and is_student:
-    print("You get the student discount")`, note: "<p>Both parts are True, so the message appears. Change <code>age</code> to 30 and it disappears — one False part is enough to make <code>and</code> False.</p>" },
+    print("You get the student discount")`, before: "<p><code>and</code> is strict: <b>both</b> parts must be True. Change <code>age</code> to 30 and run again.</p>", note: "<p><code>age &lt; 25</code> is True and <code>is_student</code> is True, so <code>True and True</code> → <code>True</code> and the message prints. With <code>age = 30</code> the first part becomes False, and one False is enough to make the whole <code>and</code> False. Notice <code>is_student</code> is already a boolean, so we write it alone — no need for <code>== True</code>.</p>" },
     { t: "code", code: c`day = "Fri"
 if day == "Fri" or day == "Sat":
-    print("Weekend!")`, note: "<p>Only one part needs to be True. Notice that the full comparison <code>day == ...</code> is written on <b>both</b> sides of <code>or</code>.</p>" },
-    { t: "code", code: c`is_raining = False
-if not is_raining:
-    print("Let's walk to the library")`, note: "<p><code>is_raining</code> is False, and <code>not False</code> is True, so the message appears. Read it like English: \"if it is not raining\".</p>" },
+    print("Weekend!")
+if not day == "Sun":
+    print("Not Sunday")`, before: "<p><code>or</code> is relaxed: <b>one</b> True part is enough. <code>not</code> turns the answer around.</p>", note: "<p><code>day == \"Fri\"</code> is True, so the <code>or</code> is True right away → <code>Weekend!</code>. A common mistake is writing <code>day == \"Fri\" or \"Sat\"</code>: each side of <code>or</code> must be a <b>full</b> comparison. On the last line, <code>day == \"Sun\"</code> is False, and <code>not</code> flips it to True, so <code>Not Sunday</code> prints. (<code>day != \"Sun\"</code> means the same thing.)</p>" },
     { t: "code", code: c`age = 20
-if 18 <= age <= 25:
-    print("Between 18 and 25")`, before: "<p>One more shortcut: to ask \"is age between 18 and 25?\" you can chain two comparisons, just like in math.</p>", note: "<p><code>18 &lt;= age &lt;= 25</code> is a short way to write <code>18 &lt;= age and age &lt;= 25</code>. Both parts are True for 20, so the message appears.</p>" },
-    { t: "table", head: ["Operator", "True when…", "Example"], rows: [["`and`", "both are True", "`age >= 18 and has_id`"], ["`or`", "at least one is True", "`day == \"Fri\" or day == \"Sat\"`"], ["`not`", "reverses True/False", "`not is_raining`"]] },
-    { t: "ar", html: "and: لازم الشرطان صحيحان. or: يكفي شرط واحد صحيح. not: تعكس النتيجة. واكتب{{g:|ي}} المقارنة كاملة على جانبي or." },
-    { t: "check", q: "What does this print?", code: c`age = 17
-has_id = True
-print(age >= 18 and has_id, age >= 18 or has_id)`, o: ["`True True`", "`False False`", "`False True`", "`True False`"], a: 2, e: "`age >= 18` is False. With `and`, one False makes the result False. With `or`, `has_id` is True, so the result is True." },
+print(18 <= age <= 25)
+print(age >= 18 and age <= 25)`, before: "<p>A Python shortcut: you can <b>chain</b> comparisons like in math, to check if a value is inside a range.</p>", note: "<p>Both lines ask the same question: \"is age between 18 and 25?\" and both print <code>True</code>. <code>18 &lt;= age &lt;= 25</code> is just a shorter way to write the <code>and</code> version. Use whichever is clearer for you.</p>" },
+    { t: "ar", html: "and: يجب أن يكون الشرطان صحيحين. or: يكفي شرط واحد صحيح. not: تعكس النتيجة. وكل طرف من or يجب أن يكون مقارنة كاملة: day == \"Fri\" or day == \"Sat\"." },
+
     { t: "h", text: "An if inside an if" },
-    { t: "p", html: "<p>Sometimes a second question only makes sense after the first one is answered. You check the password <b>only</b> if the username exists. You can put an <code>if</code> inside another <code>if</code> block — just indent it one more level.</p>" },
+    { t: "p", html: "<p>A block under an <code>if</code> can contain <b>another</b> <code>if</code>. This is called <b>nesting</b>. Use it when the second question only makes sense after the first answer — like checking the password only after you know the user exists.</p>" },
     { t: "code", code: c`username = input("Username: ")
 password = input("Password: ")
 if username == "{{name}}":
@@ -127,42 +99,22 @@ if username == "{{name}}":
     else:
         print("Wrong password")
 else:
-    print("Unknown user")`, stdin: "{{name}}\npy30", note: "<p>Change the Input box to try a wrong password, then a wrong username. Each <code>else</code> belongs to the <code>if</code> it lines up with.</p>" },
-    { t: "steps", title: "A coffee order", problem: "<p>A campus café sells coffee in three sizes: <code>S</code> = 10 SAR, <code>M</code> = 13 SAR, <code>L</code> = 16 SAR. Customers with a loyalty card get 2 SAR off. Read the size and the answer to \"loyalty card?\" (<code>yes</code>/<code>no</code>) and print <code>Total: 11.00 SAR</code>. An unknown size prints <code>Unknown size</code>.</p>",
-      steps: [
-        { html: "<p><b>Understand and try examples by hand.</b> <code>M</code> + <code>yes</code> → 13 − 2 = 11. <code>L</code> + <code>no</code> → 16. <code>X</code> → Unknown size. Users may type <code>m</code> or <code> yes </code>, so clean the inputs.</p>", code: c`size = input().strip().upper()
-card = input().strip().lower()` },
-        { html: "<p><b>Choose the price</b> with an <code>if / elif / else</code> chain — one road per size. For an unknown size we store 0 as a signal.</p>", code: c`if size == "S":
-    price = 10
-elif size == "M":
-    price = 13
-elif size == "L":
-    price = 16
-else:
-    price = 0` },
-        { html: "<p><b>Handle the unknown size first</b>, and only in the normal case apply the discount — an <code>if</code> inside the <code>else</code>.</p>", code: c`if price == 0:
-    print("Unknown size")
-else:
-    if card == "yes":
-        price = price - 2
-    print(f"Total: {price:.2f} SAR")` },
-        { html: "<p><b>Test</b> every road: S, M, L, an unknown size, with and without a card. Change the Input box below and run a few times.</p>" }],
-      code: c`size = input("Size (S/M/L): ").strip().upper()
-card = input("Loyalty card? (yes/no): ").strip().lower()
-if size == "S":
-    price = 10
-elif size == "M":
-    price = 13
-elif size == "L":
-    price = 16
-else:
+    print("Unknown user")`, stdin: "{{name}}\npy30", before: "<p>Run it, then try a wrong password, then a wrong username. Look at the indentation levels: each one is 4 more spaces.</p>", note: "<p>Python first asks the <b>outer</b> question: is the username right?</p><ul><li>If not, it jumps to the last <code>else</code> → <code>Unknown user</code>. The password is never checked.</li><li>If yes, it enters the block and asks the <b>inner</b> question about the password, which has its own <code>if/else</code>.</li></ul><p>Each <code>else</code> belongs to the <code>if</code> at the <b>same indentation</b>. That is how Python knows which question it answers.</p>" },
+    { t: "ar", html: "يمكن وضع if داخل if. الشرط الداخلي لا يُفحص إلا إذا كان الشرط الخارجي صحيحًا. وكل else تتبع if الموجودة على نفس مستوى الإزاحة." },
+
+    { t: "h", text: "Putting it together: a ticket price program" },
+    { t: "code", code: c`age = int(input("Age: "))
+day = input("Day: ")
+if age < 6:
     price = 0
-if price == 0:
-    print("Unknown size")
+elif age < 18 or age >= 60:
+    price = 25
 else:
-    if card == "yes":
-        price = price - 2
-    print(f"Total: {price:.2f} SAR")`, stdin: "m\nyes", ar: "قسّم{{g:|ي}} المشكلة: نظّف{{g:|ي}} المدخلات، ثم اختر{{g:|ي}} السعر بسلسلة elif، ثم طبّق{{g:|ي}} الخصم، ثم جرّب{{g:|ي}} كل الحالات." },
+    price = 50
+if day == "Tue":
+    price = price // 2
+print("Ticket:", price, "SAR")`, stdin: "20\nTue", together: true, before: "<p>This program uses everything from today. Read it first and guess the price for a 20-year-old on Tuesday, then run it. Try other ages and days too.</p>", note: "<p>How it works:</p><ul><li>Lines 3–8 choose a base price with one <code>if/elif/else</code> chain: children under 6 are free, young people <b>or</b> seniors pay 25, everyone else 50.</li><li>Lines 9–10 are a <b>separate</b> <code>if</code> (not an <code>elif</code>), so it is checked for every visitor: on Tuesday the price is halved with <code>//</code>.</li><li>For age 20 on Tue: not under 6, not under 18, not 60+, so <code>price = 50</code>; then Tuesday makes it <code>25</code>.</li></ul><p>Choosing between <b>one chain</b> (only one branch runs) and <b>separate ifs</b> (each is checked) is a decision you will make in every program.</p>" },
+    { t: "ar", html: "سلسلة if/elif/else تختار فرعًا واحدًا فقط، أما جمل if المنفصلة فتُفحص كلها. هنا اخترنا السعر بسلسلة واحدة، ثم طبّقنا خصم الثلاثاء بجملة if منفصلة." },
   ],
   mistakes: [
     { title: "= instead of ==", html: "Inside a condition you <b>ask</b>, you don't store.", wrong: c`if x = 5:
@@ -219,19 +171,6 @@ if b > biggest:
 if c > biggest:
     biggest = c
 print("Biggest:", biggest)`, before: "<p>A classic pattern: assume the first is the biggest, then challenge it. Visualize and see <code>biggest</code> change only once.</p>" },
-    { t: "predict", code: c`word = "Python"
-if "th" in word and len(word) > 5:
-    print("yes")
-else:
-    print("no")
-if word == "python":
-    print("same")
-print("end")`, explain: "<code>\"th\" in \"Python\"</code> is True and the length is 6 &gt; 5, so <code>and</code> gives True → <code>yes</code>. The second <code>if</code> compares with a small p, which is a different string → nothing. <code>end</code> always prints." },
-    { t: "try", title: "Password checker", html: "<p>Run it with a few passwords in the Input box. Then add rules with <code>elif</code>: a password that contains the word <code>password</code> (use <code>in</code> and <code>.lower()</code>) prints <code>Too easy</code>, and one with 12 or more characters prints <code>Strong</code>. Think about the order of your conditions!</p>", code: c`pw = input("Password: ")
-if len(pw) < 8:
-    print("Too short")
-else:
-    print("OK")`, stdin: "py30rocks" },
   ],
   exercises: [
     { id: "evenodd", lvl: "seed", title: "Even or odd", prompt: "<p>Read a whole number and print <code>even</code> or <code>odd</code>.</p>", tests: [{ stdin: "4", expected: "even" }, { stdin: "7", expected: "odd" }, { stdin: "0", expected: "even" }],
@@ -373,11 +312,6 @@ elif score >= 80:
     print("B")`, o: ["`C`", "`B`", "Both", "None"], a: 0, e: "The first True branch wins. This order is a bug!" },
     { q: "Which condition checks that `n` is between 1 and 10 (inclusive)?", o: ["`1 < n < 10`", "`1 <= n <= 10`", "`n >= 1 or n <= 10`", "`n in 1, 10`"], a: 1, e: "Inclusive means `<=`. And `or` would accept every number!" },
     { q: "What is wrong here? `if day == \"Fri\" or \"Sat\":`", o: ["Nothing", "It is always True", "It is always False", "It is a SyntaxError"], a: 1, e: "`\"Sat\"` alone counts as True. Write `day == \"Fri\" or day == \"Sat\"`." },
-    { q: "The user types `Yes`. What does this print?", code: c`answer = input()
-if answer == "yes":
-    print("OK")
-else:
-    print("Cancelled")`, o: ["`OK`", "`Cancelled`", "`OK` and `Cancelled`", "An error"], a: 1, e: "`\"Yes\"` with a capital Y is not equal to `\"yes\"`. Clean the input first: `answer = input().strip().lower()`." },
   ],
   puzzle: { title: "Truth detective", q: "<p>What does this print? Answer <code>True</code> or <code>False</code>.</p>", code: c`a = 4
 b = 7
@@ -389,14 +323,5 @@ print(a > 2 and not b < 5 or a == b)`, answers: ["true"], hint: "Priority: <code
     { f: "`and` vs `or`", b: "`and`: both must be True. `or`: at least one True." },
     { f: "What does the colon at the end of `if x > 0:` mean?", b: "A block starts; the next lines must be indented (4 spaces)." },
   ],
-  remember: [
-    "Comparisons give `True` or `False`: `==` `!=` `<` `>` `<=` `>=`. One `=` stores, two `==` ask.",
-    "`if condition:` + an indented block (4 spaces). Lines back at the left edge always run.",
-    "`if / else`: exactly one of the two blocks runs.",
-    "`if / elif / else`: Python runs only the **first** True branch — put the most specific condition first.",
-    "`and` = both True, `or` = at least one True, `not` flips. Write the full comparison on both sides of `or`.",
-    "String comparisons care about capitals: clean input with `.strip().lower()` before comparing, and test boundary values like 60.",
-  ],
-  rememberAr: "الشرط يعطي True أو False، والأسطر المزاحة تحت if تتبعه. في سلسلة elif يُنفَّذ أول شرط صحيح فقط، فرتّب{{g:|ي}} الشروط من الأخص للأعم، ونظّف{{g:|ي}} النص قبل المقارنة.",
 };
 })();

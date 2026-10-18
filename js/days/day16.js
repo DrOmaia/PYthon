@@ -3,88 +3,131 @@ window.DAYS = window.DAYS || {};
 const c = String.raw;
 DAYS[16] = {
   title: "More functions and modules",
-  intro: "Yesterday you wrote functions. Today you use them like a pro: <b>modules</b> — Python's huge library of ready-made functions that you import instead of writing from scratch — then functions that take other functions, tiny <code>lambda</code> functions, and functions that call themselves (recursion).",
-  introAr: "اليوم: الوحدات modules مثل math و random و datetime وكيف نستورد ما نحتاجه بدل كتابته من الصفر، ثم الدوال المتقدمة مثل lambda والدالة التي تستدعي نفسها (recursion).",
-  goals: ["Import and use `math`, `random`, `datetime`, `statistics`", "Choose between `import m`, `from m import f` and `import m as x`", "Pass functions as arguments (`sorted(key=...)`)", "Write short `lambda` functions", "Write a simple recursive function with a base case", "Accept any number of arguments with `*args`"],
+  intro: "Yesterday you wrote functions. Today you use them like a pro: functions that take other functions, tiny <code>lambda</code> functions, functions that call themselves (recursion), and <b>modules</b> — Python's huge library of ready-made functions that you import instead of writing from scratch.",
+  introAr: "اليوم: الدوال المتقدمة مثل lambda والدالة التي تستدعي نفسها (recursion)، والوحدات modules مثل math و random و datetime، وكيف نستورد ما نحتاجه بدل كتابته من الصفر.",
+  goals: ["Import and use `math`, `random`, `datetime`, `statistics`", "Pass functions as arguments (`sorted(key=...)`)", "Write short `lambda` functions", "Write a simple recursive function with a base case", "Accept any number of arguments with `*args`"],
   learn: [
-    { t: "h", text: "Modules: Python's toolbox" },
-    { t: "p", html: "<p>Many jobs are so common that somebody already wrote and tested them: square roots, random numbers, dates, averages. Python comes with hundreds of <b>modules</b> — files full of ready-made functions. You <b>import</b> them with one line.</p>" },
-    { t: "analogy", title: "A module is a toolbox in the garage", html: "<p>You don't buy a new drill every time you need to make a hole — you go to the garage and take the toolbox. <code>import math</code> brings the <b>math</b> toolbox into your program. Then <code>math.sqrt</code> means \"the <code>sqrt</code> tool from the <code>math</code> box\".</p>" },
+    { t: "h", text: "Why modules and smarter functions?" },
+    { t: "p", html: "<p>Yesterday you learned to write your own functions. But for many everyday jobs — a square root, a random dice roll, the number of days until the exam — someone has already written a correct, tested function. Python comes with a huge <b>standard library</b>, organized into <b>modules</b>: files full of ready-made functions grouped by topic. Today you learn to use them, and you also learn a few more powerful ways to use functions: passing a function to another function, tiny <code>lambda</code> functions, functions that call themselves, and functions that accept any number of arguments.</p>" },
+    { t: "analogy", title: "Modules are a toolbox", html: "<p>You don't build a hammer every time you need to hang a picture — you open the toolbox and take one out. A module is a drawer in Python's toolbox: <code>math</code> holds calculation tools, <code>random</code> holds dice and coin tools, <code>datetime</code> holds calendar tools. <code>import</code> means \"open that drawer\".</p>" },
+    { t: "ar", html: "لا تعيد{{g:|ي}} اختراع العجلة! مكتبة بايثون القياسية فيها وحدات (modules) مليئة بالدوال الجاهزة، ونفتحها بكلمة import." },
+
+    { t: "h", text: "import: opening a module" },
     { t: "code", code: c`import math
 
 print(math.sqrt(81))
-print(math.ceil(4.1))
-print(math.floor(4.9))
-print(math.pi)`, before: "<p>One import, then every tool is used with the module name and a dot.</p>", note: "<p><code>ceil</code> rounds <b>up</b> (4.1 → 5) and <code>floor</code> rounds <b>down</b> (4.9 → 4). Handy for things like \"how many buses do we need?\"</p>" },
-    { t: "lines", title: "Read it like a programmer", rows: [
-      ["import math", "Load the module called <code>math</code>. Do it once, at the top of the program."],
-      ["math.sqrt(81)", "Module name, a dot, then the function. The dot means \"from inside\". Result: <code>9.0</code>."],
-      ["math.ceil(4.1)", "Another function from the same box: round up → <code>5</code>."],
-      ["math.pi", "No parentheses: <code>pi</code> is not a function but a <b>value</b> stored in the module (3.14159…)."]] },
-    { t: "ar", html: "لا {{g:تُعِد|تعيدي}} اختراع العجلة! مكتبة بايثون القياسية فيها آلاف الدوال الجاهزة. استورد{{g:|ي}}ها بـ import ثم استخدم{{g:|ي}} اسم الوحدة ونقطة واسم الدالة." },
-    { t: "check", q: "A class of 45 students goes on a trip. Each bus holds 20. Which line gives the number of buses needed?", o: ["`math.floor(45 / 20)`", "`math.ceil(45 / 20)`", "`45 // 20`"], a: 1, e: "45 / 20 is 2.25, and you can't leave 5 students behind — round **up** to 3 with `math.ceil`.", hint: "2 buses carry only 40 students." },
-    { t: "h", text: "Three ways to import" },
-    { t: "p", html: "<p>Sometimes you use one function many times and <code>math.</code> in front gets long. <code>from math import sqrt</code> imports just that name, so you write <code>sqrt(9)</code>. And for modules with long names, <code>as</code> gives a short nickname.</p>" },
-    { t: "code", code: c`from statistics import mean, median
-import datetime as dt
+print(math.ceil(4.1), math.floor(4.9))
+print(math.pi)`, before: "<p>Run it. Then try <code>math.sqrt(2)</code> and <code>math.floor(-2.5)</code>.</p>", note: "<p>Line by line:</p><ul><li><code>import math</code> loads the <code>math</code> module. Put imports at the <b>top</b> of your program.</li><li><code>math.sqrt(81)</code> means \"the <code>sqrt</code> function <b>from</b> the <code>math</code> module\". The dot works like a path: module, then the tool inside it. Output: <code>9.0</code> (sqrt always returns a float).</li><li><code>math.ceil(4.1)</code> rounds <b>up</b> to <code>5</code>; <code>math.floor(4.9)</code> rounds <b>down</b> to <code>4</code>. Compare with <code>round()</code>, which goes to the nearest.</li><li><code>math.pi</code> is not a function but a stored value (no parentheses): <code>3.141592653589793</code>.</li></ul><p>Without the <code>import</code> line, <code>math.sqrt</code> would crash with <code>NameError: name 'math' is not defined</code>.</p>" },
+    { t: "ar", html: "import math تفتح وحدة math، ثم نستخدم أدواتها بالنقطة: math.sqrt(81). ضع{{g:|ي}} جمل import في أعلى البرنامج، ولا تنس{{g:|ي}} كتابة اسم الوحدة قبل النقطة." },
 
-print(mean([80, 90, 70]))
-print(median([3, 9, 1]))
-print(dt.date(2026, 12, 31))`, note: "<p><code>mean</code> and <code>median</code> were imported by name, so they are used without <code>statistics.</code> in front. <code>dt</code> is the nickname for <code>datetime</code>, so <code>dt.date</code> means <code>datetime.date</code>. Output: <code>80</code>, <code>3</code>, <code>2026-12-31</code>.</p>" },
-    { t: "table", head: ["Style", "Use as", "When"], rows: [["`import math`", "`math.sqrt(9)`", "clear where it comes from (recommended)"], ["`from math import sqrt`", "`sqrt(9)`", "a few functions you use a lot"], ["`import numpy as np`", "`np.array(...)`", "long names (you'll see this in Week 4)"]] },
-    { t: "check", q: "After `from math import sqrt`, which line works?", o: ["`math.sqrt(16)`", "`sqrt(16)`", "both"], a: 1, e: "Only the name `sqrt` was imported. The name `math` itself was not, so `math.sqrt` gives `NameError`." },
-    { t: "h", text: "random and datetime" },
-    { t: "p", html: "<p>Games, quizzes and simulations need randomness. <code>random.randint(a, b)</code> gives a whole number from a to b (both included), and <code>random.choice(list)</code> picks one item. <code>random.seed(1)</code> makes the \"random\" sequence the same on every run — very useful while testing.</p>" },
+    { t: "h", text: "The random module" },
+    { t: "code", code: c`import random
+
+for _ in range(3):
+    print(random.randint(1, 6))
+print(random.choice(["rock", "paper", "scissors"]))`, before: "<p>Run it several times. Do you get the same numbers each time?</p>", note: "<p>Line by line:</p><ul><li><code>random.randint(1, 6)</code> returns a random whole number from 1 to 6 — <b>both ends included</b>, unlike <code>range</code>.</li><li><code>for _ in range(3):</code> repeats three times. The name <code>_</code> is a normal variable name that programmers use to say \"I don't need this loop variable\".</li><li><code>random.choice(list)</code> returns one random item from a list.</li></ul><p>The output changes every run — that is the point of randomness, and it is perfect for games.</p>" },
     { t: "code", code: c`import random
 
 random.seed(1)
 print(random.randint(1, 6))
-print(random.choice(["rock", "paper", "scissors"]))`, note: "<p>Change the seed (or delete that line) and run again to see different results.</p>" },
+print(random.choice(["rock", "paper", "scissors"]))`, before: "<p>Now with a <b>seed</b>. Run it three times and compare.</p>", note: "<p><code>random.seed(1)</code> sets the starting point of the random generator. After the same seed you always get the same sequence: here <code>2</code> and then <code>scissors</code>, every single run. Change the seed to <code>5</code> and you get a different — but again repeatable — sequence. Seeds are essential for testing games and for reproducible AI experiments in Week 4.</p>" },
+    { t: "ar", html: "random.randint(1, 6) يرجع رقمًا عشوائيًا من 1 إلى 6 والطرفان مشمولان، و random.choice تختار عنصرًا عشوائيًا من قائمة. و random.seed تجعل النتائج نفسها في كل تشغيل، وهذا مفيد للاختبار." },
+
+    { t: "h", text: "from … import and import … as" },
+    { t: "p", html: "<p>Writing the module name every time can get long. There are two other styles of import.</p>" },
+    { t: "code", code: c`from statistics import mean, median
+
+print(mean([80, 90, 70]))
+print(median([3, 9, 1]))`, before: "<p>Notice there is no <code>statistics.</code> before the function names. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>from statistics import mean, median</code> takes just those two functions out of the module and puts them directly in your program.</li><li><code>mean([80, 90, 70])</code> → the average: <code>80</code>.</li><li><code>median([3, 9, 1])</code> → the middle value after sorting <code>[1, 3, 9]</code>: <code>3</code>.</li></ul><p>The catch: with this style, only the names you listed are available. <code>statistics.mode</code> would be a <code>NameError</code>, because the name <code>statistics</code> itself was never imported.</p>" },
+    { t: "code", code: c`import statistics as st
+from math import sqrt, pi
+
+print(st.mean([2, 4, 9]))
+print(sqrt(16), round(pi, 2))`, before: "<p><code>as</code> gives a module a short nickname. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>import statistics as st</code> imports the whole module, but you call it <code>st</code>. So <code>st.mean([2, 4, 9])</code> → <code>5</code>.</li><li><code>from math import sqrt, pi</code> brings in one function and one value.</li><li><code>sqrt(16)</code> → <code>4.0</code> and <code>round(pi, 2)</code> → <code>3.14</code>.</li></ul><p>You will see nicknames everywhere in data science, like <code>import numpy as np</code> in Week 4.</p>" },
+    { t: "table", head: ["Style", "Use as", "When"], rows: [["`import math`", "`math.sqrt(9)`", "clear where it comes from (recommended)"], ["`from math import sqrt`", "`sqrt(9)`", "a few functions you use a lot"], ["`import numpy as np`", "`np.array(...)`", "long names (you'll see this in Week 4)"]] },
+    { t: "ar", html: "from math import sqrt تسمح بكتابة sqrt(9) مباشرة، لكن الأسماء التي لم تستوردها غير متاحة. و import statistics as st تعطي الوحدة اسمًا مختصرًا st." },
+
+    { t: "h", text: "Dates with datetime" },
     { t: "code", code: c`from datetime import date
 
-exam = date(2026, 12, 31)
-today = date(2026, 9, 29)
-left = exam - today
-print(left.days, "days until the exam")`, before: "<p>Subtracting two dates gives the time between them. <code>.days</code> takes out the number of days.</p>" },
-    { t: "h", text: "Your own module" },
-    { t: "p", html: "<p>Any <code>.py</code> file is a module. When a program grows, you move helper functions into their own file and import them. Below, the first lines just <b>create</b> <code>mytools.py</code> (writing files is tomorrow's topic); on your computer you would simply make that file next to your program.</p>" },
-    { t: "code", code: c`with open("mytools.py", "w") as f:
-    f.write("def shout(t):\n    return t.upper() + '!'\n\nPI = 3.14159\n")
+start = date(2026, 9, 29)
+end = date(2026, 12, 31)
+gap = end - start
+print(gap)
+print(gap.days, "days left")`, before: "<p>How many days from 29 September to the end of the year? Run it, then try your own birthday.</p>", note: "<p>Line by line:</p><ul><li><code>from datetime import date</code> imports the <code>date</code> tool.</li><li><code>date(2026, 9, 29)</code> creates a date: year, month, day — in that order.</li><li><code>end - start</code> subtracts two dates. Python knows how long each month is, so you don't have to count.</li><li><code>print(gap)</code> shows <code>93 days, 0:00:00</code> — a time difference with hours, minutes and seconds.</li><li><code>gap.days</code> takes just the number of days: <code>93</code>. (<code>.days</code> has no parentheses: it is a stored value, like <code>math.pi</code>.)</li></ul>" },
+    { t: "ar", html: "date(سنة, شهر, يوم) تنشئ تاريخًا، وطرح تاريخين يعطي الفرق، و .days تعطي عدد الأيام فقط. انتبه{{g:|ي}} لترتيب القيم: السنة أولًا ثم الشهر ثم اليوم." },
+    { t: "predict", code: c`import math
+print(math.floor(7.9) + math.ceil(0.2))`, explain: "<code>math.floor(7.9)</code> rounds down to <code>7</code>. <code>math.ceil(0.2)</code> rounds up to <code>1</code>. Output: <code>8</code>." },
 
+    { t: "h", text: "Your own module" },
+    { t: "p", html: "<p>Any <code>.py</code> file is a module. When your program grows, you can move your functions into a separate file and import them, exactly like <code>math</code>. On your computer, you would create two files in the <b>same folder</b>:</p>" },
+    { t: "static", code: c`# mytools.py
+def shout(t):
+    return t.upper() + "!"
+
+PI = 3.14159` },
+    { t: "static", code: c`# main.py  (in the same folder)
 import mytools
+
 print(mytools.shout("modules are easy"))
 print(mytools.PI)` },
+    { t: "p", html: "<p>The browser here has no <code>mytools.py</code> file, so <code>import mytools</code> would fail with <code>ModuleNotFoundError</code>. To try the idea, the runnable version below puts the module's code at the top of the same program — this is exactly what <code>import</code> gives you.</p>" },
+    { t: "code", code: c`# --- what mytools.py contains ---
+def shout(t):
+    return t.upper() + "!"
+
+PI = 3.14159
+
+# --- what main.py does with it ---
+print(shout("modules are easy"))
+print(PI)`, before: "<p>Run it. Then imagine the top part living in its own file.</p>", note: "<p>Line by line:</p><ul><li><code>shout(t)</code> returns the text in capitals with an exclamation mark: <code>MODULES ARE EASY!</code>.</li><li><code>PI</code> is a variable defined in the module: <code>3.14159</code>.</li></ul><p>In the two-file version, <code>import mytools</code> runs <code>mytools.py</code> once and gives you its functions and variables through the dot: <code>mytools.shout(...)</code>, <code>mytools.PI</code>. You could also write <code>from mytools import shout</code>. One warning: never name your own file like a real module (<code>random.py</code>, <code>math.py</code>) — it would hide Python's real one.</p>" },
+    { t: "ar", html: "أي ملف .py هو وحدة يمكن استيرادها إذا كان في نفس المجلد: import mytools ثم mytools.shout(...). ولا تسمّ{{g:|ي}} ملفاتك بأسماء وحدات بايثون مثل random.py." },
+
     { t: "h", text: "Functions are values" },
-    { t: "p", html: "<p>A surprising idea: a function is a value, like a number or a list. You can <b>give it to another function</b>. Why is that useful? Think of <code>sorted()</code>. It knows <i>how</i> to sort, but sometimes you want a different rule — sort words by length, students by mark. You pass the rule as a function with <code>key=</code>.</p>" },
-    { t: "analogy", title: "Instructions for a helper", html: "<p>You ask a friend to line up the class. \"By height,\" you say — or \"by first name\". Your friend does the lining up; you only give the <b>rule</b>. <code>key=</code> is that rule: a function that, for each item, says what to compare.</p>" },
+    { t: "p", html: "<p>Here is a surprising idea: a function is a value, like a number or a list. Its name without parentheses refers to the function <b>itself</b>; with parentheses, you <b>call</b> it. So you can store a function in another variable, or give it to another function as an argument.</p>" },
+    { t: "code", code: c`def by_length(word):
+    return len(word)
+
+measure = by_length
+print(measure("banana"))
+print(by_length)`, before: "<p>Look at the difference between <code>by_length</code> and <code>by_length(...)</code>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>measure = by_length</code> — no parentheses, so nothing is called. <code>measure</code> now refers to the <b>same function</b>.</li><li><code>measure(\"banana\")</code> calls it through the new name → <code>6</code>.</li><li><code>print(by_length)</code> prints the function object itself, something like <code>&lt;function by_length at 0x...&gt;</code> (the number is a memory address and changes).</li></ul><p>This is why forgetting <code>()</code> doesn't crash — you just get the function instead of its result.</p>" },
     { t: "code", code: c`def by_length(word):
     return len(word)
 
 words = ["banana", "fig", "apple", "kiwi"]
 print(sorted(words))
 print(sorted(words, key=by_length))
-print(sorted(words, key=len, reverse=True))` },
-    { t: "lines", title: "Read it like a programmer", rows: [
-      ["def by_length(word):", "A normal function: given a word, return its length."],
-      ["sorted(words)", "No key: alphabetical order."],
-      ["sorted(words, key=by_length)", "Pass the function <b>itself</b> — no parentheses! <code>sorted</code> calls <code>by_length</code> on each word and sorts by the results: 3, 4, 5, 6."],
-      ["sorted(words, key=len, reverse=True)", "The built-in <code>len</code> does the same job, so you don't even need your own function. <code>reverse=True</code> puts the longest first."]] },
-    { t: "ar", html: "مع key نعطي sorted اسم الدالة بدون أقواس، و sorted هي التي تستدعيها على كل عنصر لتعرف على أي أساس ترتب." },
-    { t: "check", q: "What does this print?", code: c`print(sorted(["ccc", "a", "bb"], key=len))`, o: ["`['a', 'bb', 'ccc']`", "`['ccc', 'bb', 'a']`", "`[1, 2, 3]`"], a: 0, e: "Sorted by length 1, 2, 3. The items stay strings — `key` only decides the order." },
-    { t: "h", text: "lambda: a tiny function in one line" },
-    { t: "p", html: "<p>Writing a whole <code>def</code> for a one-line rule feels heavy. <code>lambda</code> makes a small unnamed function right where you need it: <code>lambda s: s[1]</code> means \"given <code>s</code>, return <code>s[1]</code>\". Use it only for short one-liners.</p>" },
+print(sorted(words, key=len, reverse=True))`, before: "<p><code>sorted()</code> can take a function in its <code>key=</code> argument to decide <b>what to compare</b>. Run it and compare the three orders.</p>", note: "<p>Line by line:</p><ul><li><code>sorted(words)</code> sorts alphabetically: <code>['apple', 'banana', 'fig', 'kiwi']</code>.</li><li><code>key=by_length</code> gives <code>sorted</code> our function (no parentheses!). <code>sorted</code> calls it on each word — fig → 3, kiwi → 4, apple → 5, banana → 6 — and sorts by those numbers: <code>['fig', 'kiwi', 'apple', 'banana']</code>.</li><li><code>key=len</code> does the same with the built-in <code>len</code>, and <code>reverse=True</code> flips the order: <code>['banana', 'apple', 'kiwi', 'fig']</code>.</li></ul><p>The key function only decides the order; the list still contains the original words. <code>key=</code> also works with <code>min()</code> and <code>max()</code>.</p>" },
+    { t: "ar", html: "اسم الدالة بدون أقواس يعني الدالة نفسها، ومع الأقواس يعني استدعاءها. لذلك نكتب sorted(words, key=len) بدون أقواس بعد len، فـ sorted هي التي تستدعيها على كل عنصر." },
+
+    { t: "h", text: "lambda: tiny functions without a name" },
+    { t: "p", html: "<p>Writing a whole <code>def</code> for a one-line key function is a bit much. A <code>lambda</code> is a short function written in one expression: <code>lambda s: s[1]</code> means \"a function that takes <code>s</code> and returns <code>s[1]</code>\". It is exactly the same as <code>def f(s): return s[1]</code>, but without a name.</p>" },
     { t: "code", code: c`students = [("Sara", 95), ("Omar", 82), ("Lina", 90)]
-print(sorted(students, key=lambda s: s[1]))
-print(sorted(students, key=lambda s: s[1], reverse=True))`, note: "<p>Each student is a tuple <code>(name, mark)</code>. The lambda picks the mark (<code>s[1]</code>), so the list is sorted by mark.</p>" },
+by_mark = sorted(students, key=lambda s: s[1])
+print(by_mark)
+best_first = sorted(students, key=lambda s: s[1], reverse=True)
+print(best_first[0][0])`, before: "<p>Each student is a tuple <code>(name, mark)</code>. We want to sort by the mark, which is at index 1. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>lambda s: s[1]</code> receives one tuple and returns its mark, e.g. <code>(\"Sara\", 95)</code> → <code>95</code>.</li><li><code>sorted(..., key=lambda s: s[1])</code> sorts by mark, lowest first: <code>[('Omar', 82), ('Lina', 90), ('Sara', 95)]</code>.</li><li>With <code>reverse=True</code>, the best comes first, and <code>best_first[0][0]</code> is the first tuple's name: <code>Sara</code>.</li></ul><p>Rules for <code>lambda</code>: no <code>return</code> keyword (the expression after <code>:</code> is returned automatically), and only one expression. If you need more than that, write a normal <code>def</code>.</p>" },
+    { t: "ar", html: "lambda دالة صغيرة بلا اسم في سطر واحد: lambda s: s[1] تعني \"خذ s وأرجع s[1]\". لا نكتب فيها return، وتُستخدم فقط للأشياء القصيرة جدًا مثل key في sorted." },
+    { t: "predict", code: c`double = lambda n: n * 2
+print(double(4) + 1)
+print((lambda x: x + 1)(4))`, explain: "A lambda can be stored in a variable and called like any function: <code>double(4)</code> is <code>8</code>, plus 1 → <code>9</code>. On the last line the lambda is defined and called immediately with 4 → <code>5</code>. Output: <code>9</code> then <code>5</code>." },
+
+    { t: "h", text: "map, filter and list comprehensions" },
+    { t: "p", html: "<p>Two built-in functions take a function and apply it to a whole list: <code>map</code> transforms every item, <code>filter</code> keeps only some items. Both give back a lazy object, so we wrap them in <code>list(...)</code> to see the result.</p>" },
     { t: "code", code: c`nums = [1, 2, 3, 4, 5, 6]
-print(list(map(lambda n: n * 10, nums)))
-print(list(filter(lambda n: n % 2 == 0, nums)))
-print([n * 10 for n in nums if n % 2 == 0])`, before: "<p>You will also meet <code>map</code> (apply a function to every item) and <code>filter</code> (keep items where the function says True). A list comprehension (Day 10) often does the same more clearly.</p>" },
-    { t: "ar", html: "lambda دالة صغيرة بدون اسم في سطر واحد: lambda s: s[1] تعني \"أعطني s وأرجع لك s[1]\". استخدم{{g:|ي}}ها فقط للقواعد القصيرة." },
-    { t: "check", q: "What is `(lambda x: x * 2)(5)`?", o: ["`5`", "`10`", "a function"], a: 1, e: "The lambda is created and called immediately with x = 5." },
+tens = map(lambda n: n * 10, nums)
+print(list(tens))`, before: "<p><code>map(function, list)</code> calls the function on <b>every</b> item. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>lambda n: n * 10</code> multiplies one number by 10.</li><li><code>map(...)</code> applies it to each item of <code>nums</code>: 1 → 10, 2 → 20, and so on.</li><li><code>list(tens)</code> collects the results into a list: <code>[10, 20, 30, 40, 50, 60]</code>.</li></ul><p>Without <code>list(...)</code>, <code>print(tens)</code> would only show <code>&lt;map object at 0x...&gt;</code>.</p>" },
+    { t: "code", code: c`nums = [1, 2, 3, 4, 5, 6]
+evens = filter(lambda n: n % 2 == 0, nums)
+print(list(evens))`, before: "<p><code>filter(function, list)</code> keeps the items where the function returns <code>True</code>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>lambda n: n % 2 == 0</code> returns <code>True</code> for even numbers and <code>False</code> for odd ones.</li><li><code>filter(...)</code> keeps only the items that got <code>True</code>.</li><li>Output: <code>[2, 4, 6]</code>.</li></ul><p>The function you give to <code>filter</code> must answer a yes/no question.</p>" },
+    { t: "code", code: c`nums = [1, 2, 3, 4, 5, 6]
+print([n * 10 for n in nums])
+print([n for n in nums if n % 2 == 0])
+print([n * 10 for n in nums if n % 2 == 0])`, before: "<p>Remember list comprehensions from Day 10? They do the same jobs, and most Python programmers find them easier to read. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>[n * 10 for n in nums]</code> — \"<code>n * 10</code> for each <code>n</code>\" — same as the <code>map</code>: <code>[10, 20, 30, 40, 50, 60]</code>.</li><li><code>[n for n in nums if n % 2 == 0]</code> — keep <code>n</code> only <b>if</b> it is even — same as the <code>filter</code>: <code>[2, 4, 6]</code>.</li><li>The last line does both at once: <code>[20, 40, 60]</code>.</li></ul><p>You should be able to read <code>map</code> and <code>filter</code> in other people's code, but for your own code a comprehension is usually the clearest choice.</p>" },
+    { t: "ar", html: "map تطبق دالة على كل عنصر، و filter تُبقي العناصر التي ترجع لها الدالة True، ونحوّل الناتج إلى قائمة بـ list(...). والـ list comprehension يقوم بالعملين بشكل أوضح غالبًا." },
+
     { t: "h", text: "Recursion: a function that calls itself" },
-    { t: "p", html: "<p>Some problems contain a smaller copy of themselves. \"Count down from 3\" is: say 3, then <i>count down from 2</i>. A <b>recursive</b> function solves the small part and calls itself for the rest. It needs two things: a <b>base case</b> that stops, and each call must move <b>closer</b> to it.</p>" },
-    { t: "analogy", title: "Russian dolls", html: "<p>You open a doll and find a smaller doll inside, and open that one too… until you reach the tiniest doll that doesn't open. That tiny doll is the base case. Without it you would open dolls forever — in Python that is a <code>RecursionError</code>.</p>" },
+    { t: "p", html: "<p>A function can call <b>itself</b>. This is called <b>recursion</b>. It is useful when a big problem contains a smaller copy of the same problem: counting down from 3 is \"say 3, then count down from 2\". Every recursive function needs two parts: a <b>base case</b> that stops without calling itself again, and a <b>recursive step</b> that calls itself with a smaller problem, moving toward the base case.</p>" },
     { t: "viz", code: c`def countdown(n):
     if n == 0:
         print("Go!")
@@ -92,69 +135,58 @@ print([n * 10 for n in nums if n % 2 == 0])`, before: "<p>You will also meet <co
     print(n)
     countdown(n - 1)
 
-countdown(3)`, before: "<p>Visualize and watch the stack of <code>countdown()</code> boxes grow and shrink.</p>" },
+countdown(3)`, before: "<p>Visualize and press Next ▶ slowly. Watch the stack of <code>countdown()</code> boxes grow, each with its own <code>n</code>, and then shrink.</p>", note: "<p>Step by step:</p><ul><li><code>countdown(3)</code>: n is not 0, so it prints <code>3</code> and calls <code>countdown(2)</code>.</li><li><code>countdown(2)</code> prints <code>2</code> and calls <code>countdown(1)</code>, which prints <code>1</code> and calls <code>countdown(0)</code>.</li><li><code>countdown(0)</code> is the <b>base case</b>: it prints <code>Go!</code> and returns without calling again.</li><li>Then each waiting box finishes, from the newest to the oldest.</li></ul><p>Output: <code>3</code>, <code>2</code>, <code>1</code>, <code>Go!</code>. Each call has its <b>own</b> local <code>n</code> — that is scope from Day 15 at work. A bare <code>return</code> just ends the function and returns <code>None</code>.</p>" },
     { t: "code", code: c`def factorial(n):
     if n <= 1:
         return 1
     return n * factorial(n - 1)
 
-print(factorial(5))` },
-    { t: "lines", title: "Read it like a programmer", rows: [
-      ["if n <= 1:", "The <b>base case</b>: the factorial of 1 is simply 1. No more calls."],
-      ["return n * factorial(n - 1)", "The recursive step: 5! = 5 × 4!. The call with <code>n - 1</code> moves toward the base case."],
-      ["factorial(5)", "5 × factorial(4) → 5 × 4 × factorial(3) → … → 5 × 4 × 3 × 2 × 1 = <code>120</code>."]] },
-    { t: "ar", html: "الدالة العودية تستدعي نفسها بمشكلة أصغر، ولازم يكون فيها شرط توقف (base case) وإلا يحدث RecursionError." },
-    { t: "check", q: "What does this print?", code: c`def total(n):
+print(factorial(5))`, before: "<p>The factorial of 5 is 5 × 4 × 3 × 2 × 1. Notice that 5! = 5 × 4!. Run it, then try <code>factorial(10)</code>.</p>", note: "<p>Line by line:</p><ul><li>Base case: for <code>n &lt;= 1</code> the answer is simply <code>1</code>.</li><li>Recursive step: <code>n * factorial(n - 1)</code> — \"n times the factorial of the smaller number\".</li></ul><p>The calls go down: <code>factorial(5)</code> = 5 × <code>factorial(4)</code> = 5 × 4 × <code>factorial(3)</code> … until <code>factorial(1)</code> returns 1. Then the answers come back up: 1, 2, 6, 24, <b>120</b>. Output: <code>120</code>.</p>" },
+    { t: "code", code: c`def forever(n):
+    return forever(n - 1)
+
+forever(3)`, expectError: true, before: "<p>What happens without a base case? This one crashes on purpose. Run it and read the last line.</p>", note: "<p>The function always calls itself and never stops: 3, 2, 1, 0, -1, -2 … Each call opens a new box, and Python stops after about 1000 boxes with <code>RecursionError: maximum recursion depth exceeded</code>. It means \"too many calls inside calls\". The fix is always the same: add a base case, and make sure every call moves toward it.</p>" },
+    { t: "ar", html: "الدالة العودية تستدعي نفسها، ويجب أن يكون لها حالة توقف (base case) وأن يقترب كل استدعاء منها. بدون حالة التوقف يظهر الخطأ RecursionError." },
+    { t: "predict", code: c`def total(n):
     if n == 0:
         return 0
     return n + total(n - 1)
 
-print(total(4))`, o: ["`4`", "`10`", "`24`"], a: 1, e: "4 + 3 + 2 + 1 + 0 = 10." },
-    { t: "steps", title: "Thinking recursively: sum of a list", problem: "<p>How do you <b>think</b> of a recursive solution? Let's build <code>sum_list(nums)</code>, which adds up a list of numbers — without a loop and without <code>sum()</code>.</p>", steps: [
-      { html: "<p><b>Find the smaller copy.</b> The sum of <code>[5, 3, 2]</code> is 5 + the sum of <code>[3, 2]</code>. In Python: the first item <code>nums[0]</code> plus the sum of the rest <code>nums[1:]</code> (slicing, Day 10).</p>", code: c`nums[0] + sum_list(nums[1:])` },
-      { html: "<p><b>Find the base case.</b> The sum of an empty list is 0. So when the list is empty, return 0.</p>", code: c`if not nums:
-    return 0` },
-      { html: "<p><b>Check that each call moves closer.</b> The list gets one item shorter each time: 3 items, 2, 1, 0 — it reaches the base case. ✓</p>" },
-      { html: "<p><b>Write it and test with small lists</b> you can check by hand: <code>[]</code> → 0, <code>[7]</code> → 7, <code>[5, 3, 2]</code> → 10.</p>" }],
-      code: c`def sum_list(nums):
-    if not nums:
-        return 0
-    return nums[0] + sum_list(nums[1:])
+print(total(4))`, explain: "<code>total(4)</code> = 4 + <code>total(3)</code> = 4 + 3 + <code>total(2)</code> = 4 + 3 + 2 + 1 + <code>total(0)</code>, and the base case gives 0. Output: <code>10</code>." },
 
-print(sum_list([]))
-print(sum_list([7]))
-print(sum_list([5, 3, 2]))`, ar: "فكّر{{g:|ي}} هكذا: ما النسخة الأصغر من المشكلة؟ ما شرط التوقف؟ هل كل استدعاء يقترب منه؟" },
-    { t: "h", text: "Any number of arguments" },
-    { t: "p", html: "<p><code>print</code> accepts one value or ten. Your functions can do that too: a star before a parameter (<code>*prices</code>) collects all the arguments into a tuple. Two stars (<code>**info</code>) collect keyword arguments into a dictionary.</p>" },
+    { t: "h", text: "Any number of arguments: *args and **kwargs" },
+    { t: "p", html: "<p><code>print()</code> accepts one value, two, or ten. Your functions can do the same. A star <code>*</code> before a parameter name collects <b>all extra positional arguments</b> into a tuple. Two stars <code>**</code> collect <b>all extra keyword arguments</b> into a dictionary.</p>" },
     { t: "code", code: c`def total(*prices):
+    print(prices)
     return sum(prices)
 
-print(total(5), total(5, 10, 20))
-
-def profile(name, **info):
+print(total(5))
+print(total(5, 10, 20))`, before: "<p>Run it and look at what <code>prices</code> is inside the function.</p>", note: "<p>Line by line:</p><ul><li><code>*prices</code> means \"put all the arguments into one tuple called <code>prices</code>\".</li><li><code>total(5)</code>: <code>prices</code> is <code>(5,)</code> — a tuple with one item (the comma marks it as a tuple). <code>sum</code> returns <code>5</code>.</li><li><code>total(5, 10, 20)</code>: <code>prices</code> is <code>(5, 10, 20)</code>, and the function returns <code>35</code>.</li></ul><p>Inside the function it is an ordinary tuple, so you can loop over it, use <code>len</code>, and so on. The name <code>args</code> is just a habit; the star is what matters.</p>" },
+    { t: "code", code: c`def profile(name, **info):
     print(name, info)
 
-profile("{{name}}", major="CS", year=1)`, note: "<p><code>total(5, 10, 20)</code> puts all three numbers into the tuple <code>prices</code> = <code>(5, 10, 20)</code>, so it returns 35. In <code>profile</code>, the keyword arguments (Day 15) <code>major=\"CS\", year=1</code> are collected into the dictionary <code>info</code> = <code>{'major': 'CS', 'year': 1}</code>. You will use <code>*args</code> much more often than <code>**kwargs</code>.</p>" },
-    { t: "check", q: "What does `total(2, 4, 6)` return with the `total(*prices)` function above?", o: ["`2`", "`12`", "`(2, 4, 6)`"], a: 1, e: "`*prices` collects the three numbers into the tuple `(2, 4, 6)`, and `sum` adds them: 12.", ar: "النجمة * تجمع كل القيم في tuple واحدة." },
-    { t: "steps", title: "Class leaderboard", problem: "<p>You have each student's marks in three quizzes. Print the students from best to worst average, with the average to 1 decimal, and the class median.</p>", steps: [
-      { html: "<p><b>Plan.</b> Store data as a dict: name → list of marks. We need an average per student (<code>statistics.mean</code>), then sort by that average.</p>" },
-      { html: "<p><b>Build the averages</b> into a list of tuples <code>(name, average)</code>.</p>", code: c`averages = []
-for name, marks in data.items():
-    averages.append((name, mean(marks)))` },
-      { html: "<p><b>Sort with a key</b>: the lambda picks the average (<code>s[1]</code>); <code>reverse=True</code> puts the best first.</p>", code: c`ranked = sorted(averages, key=lambda s: s[1], reverse=True)` },
-      { html: "<p><b>Print</b> each line with an f-string, then the median of all the averages.</p>" }],
-      code: c`from statistics import mean, median
+profile("{{name}}", major="CS", year=1)
+profile("Omar")`, before: "<p>Now with two stars. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>name</code> is a normal parameter and gets the first argument.</li><li><code>**info</code> collects every <code>keyword=value</code> argument into a dictionary (Day 12): <code>{'major': 'CS', 'year': 1}</code>.</li><li><code>profile(\"Omar\")</code> passes no keyword arguments, so <code>info</code> is an empty dictionary <code>{}</code>.</li></ul><p>This is handy for optional extra information whose names you don't know in advance.</p>" },
+    { t: "ar", html: "*args تجمع أي عدد من القيم في tuple، و **kwargs تجمع القيم المسماة (key=value) في قاموس. المهم هو النجمة وليس الاسم." },
 
-data = {"Sara": [90, 95, 88], "Omar": [70, 85, 80], "Lina": [92, 89, 94]}
+    { t: "h", text: "Putting it together: a dice tournament" },
+    { t: "code", code: c`import random
+from statistics import mean
 
-averages = []
-for name, marks in data.items():
-    averages.append((name, mean(marks)))
+def roll(times):
+    total = 0
+    for i in range(times):
+        total += random.randint(1, 6)
+    return total
 
-ranked = sorted(averages, key=lambda s: s[1], reverse=True)
-for name, avg in ranked:
-    print(f"{name:<5} {avg:.1f}")
-print("Median:", round(median([a for n, a in averages]), 1))`, ar: "استوردنا mean و median بدل كتابتهما، واستخدمنا lambda مع sorted للترتيب حسب المعدل." },
+random.seed(4)
+results = []
+for name in ["Sara", "Omar", "Lina"]:
+    results.append((name, roll(3)))
+ranked = sorted(results, key=lambda r: r[1], reverse=True)
+print("Winner:", ranked[0][0], "with", ranked[0][1])
+print("Average score:", round(mean([r[1] for r in results]), 1))`, together: true, before: "<p>Three friends each roll three dice; the highest total wins. Read the program, then run it. Change the seed to <code>5</code> and see who wins now. Then remove the seed line completely.</p>", note: "<p>How it works:</p><ul><li>Two imports: the whole <code>random</code> module, and just <code>mean</code> from <code>statistics</code>.</li><li><code>roll(times)</code> is our own function: it adds up <code>times</code> random dice and <b>returns</b> the total.</li><li><code>random.seed(4)</code> makes the game repeatable: Sara gets 6, Omar 14, Lina 4.</li><li>The loop builds a list of <code>(name, total)</code> tuples by calling <code>roll(3)</code> for each player.</li><li><code>sorted(..., key=lambda r: r[1], reverse=True)</code> ranks the tuples by score, highest first, so <code>ranked[0]</code> is the winner: <code>Winner: Omar with 14</code>.</li><li>The list comprehension pulls out the scores, and <code>mean</code> gives <code>Average score: 8</code> (the mean of whole numbers that divides evenly stays a whole number).</li></ul><p>Modules gave us the randomness and the average, our own function hid the rolling details, and a lambda told <code>sorted</code> what to compare.</p>" },
+    { t: "ar", html: "جمعنا أفكار اليوم: استوردنا random و mean، وكتبنا دالة roll ترجع مجموع الرميات، ثم رتبنا النتائج بـ sorted مع lambda. و seed تجعل النتيجة نفسها في كل تشغيل." },
   ],
   mistakes: [
     { title: "Calling the key function", html: "Pass the function itself, not its result.", wrong: c`sorted(words, key=len())`, right: c`sorted(words, key=len)` },
@@ -168,17 +200,10 @@ import random
 random.randint(1, 6)   # AttributeError`, right: c`# dice_game.py
 import random
 random.randint(1, 6)`, ar: "لا تسمّ{{g:|ي}} ملفاتك بأسماء مكتبات بايثون مثل random.py." },
-    { title: "Forgetting the module name", html: "After <code>import math</code> the function lives inside <code>math</code>. Writing just <code>sqrt</code> gives <code>NameError</code>.", wrong: c`import math
-print(sqrt(25))`, right: c`import math
-print(math.sqrt(25))` },
   ],
   tricks: [
-    { title: "Explore a module", html: "<code>dir(math)</code> lists everything inside; <code>help(math.sqrt)</code> explains a function.", code: c`import math
-print([name for name in dir(math) if not name.startswith("_")][:8])` },
+    { title: "Explore a module", html: "<code>dir(math)</code> lists everything inside; <code>help(math.sqrt)</code> explains a function." },
     { title: "random.seed for repeatable results", html: "<code>random.seed(42)</code> makes the \"random\" numbers the same every run — essential for testing games and for reproducible AI experiments in Week 4." },
-    { title: "max and min take a key too", html: "The same <code>key=</code> idea works with <code>max</code> and <code>min</code>.", code: c`students = [("Sara", 95), ("Omar", 82), ("Lina", 90)]
-print(max(students, key=lambda s: s[1]))
-print(min(["banana", "fig", "kiwi"], key=len))` },
   ],
   practice: [
     { t: "predict", code: c`nums = [4, -9, 2, -1]
@@ -188,19 +213,7 @@ print(sorted(nums, key=abs))`, explain: "Sorted by absolute value: <code>[-1, 2,
         return 0
     return n % 10 + s(n // 10)
 print(s(472))`, explain: "2 + s(47) = 2 + 7 + s(4) = 2 + 7 + 4 + s(0) = <code>13</code>. Digit sum by recursion!" },
-    { t: "predict", code: c`import math
-print(math.ceil(7 / 2), math.floor(7 / 2), round(7 / 2))`, explain: "7 / 2 = 3.5. <code>ceil</code> → <code>4</code>, <code>floor</code> → <code>3</code>, and <code>round(3.5)</code> → <code>4</code>." },
-    { t: "predict", code: c`words = ["banana", "Cherry", "apple"]
-print(sorted(words))
-print(sorted(words, key=str.lower))`, explain: "In plain sorting every capital letter comes before every small letter, so <code>['Cherry', 'apple', 'banana']</code>. With <code>key=str.lower</code> each word is compared in small letters (the words themselves don't change): <code>['apple', 'banana', 'Cherry']</code>." },
     { t: "parsons", title: "Dice roller", prompt: "Roll two dice 3 times with a fixed seed and print each total.", lines: ["import random", "random.seed(3)", "for _ in range(3):", "    total = random.randint(1, 6) + random.randint(1, 6)", "    print(total)"], explain: "Import first, seed before rolling." },
-    { t: "parsons", title: "Recursive countdown", prompt: "Build a recursive function that prints 3, 2, 1 and then <code>Done</code>.", lines: ["def down(n):", "    if n == 0:", "        print(\"Done\")", "        return", "    print(n)", "    down(n - 1)", "down(3)"], distractors: ["    down(n + 1)"], explain: "<code>n - 1</code> moves toward the base case 0; <code>n + 1</code> would never stop." },
-    { t: "viz", code: c`def factorial(n):
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
-
-print(factorial(4))`, before: "<p>Watch four <code>factorial</code> boxes pile up, then return 1, 2, 6, 24 on the way back.</p>" },
     { t: "try", title: "Rock, paper, scissors", html: "<p>Finish the game: decide who wins and print the result.</p>", code: c`import random
 player = input("rock, paper or scissors? ").lower()
 computer = random.choice(["rock", "paper", "scissors"])
@@ -210,7 +223,6 @@ print("Computer chose", computer)
   ],
   exercises: [
     { id: "hyp", lvl: "seed", title: "Hypotenuse", prompt: "<p>Write <code>hypotenuse(a, b)</code> returning √(a² + b²) rounded to 2 decimals, using <code>math</code>.</p>", starter: "import math\n\ndef hypotenuse(a, b):\n    pass\n", tests: [{ after: "print(hypotenuse(3, 4))", expected: "5.0" }, { after: "print(hypotenuse(1, 1))", expected: "1.41" }],
-      hint: "<code>math.sqrt(a ** 2 + b ** 2)</code>, then <code>round(..., 2)</code>.",
       solutions: [{ name: "sqrt", code: c`import math
 
 def hypotenuse(a, b):
@@ -219,12 +231,10 @@ def hypotenuse(a, b):
 def hypotenuse(a, b):
     return round(math.hypot(a, b), 2)`, note: "The library already had it. Browsing a module's functions pays off." }] },
     { id: "sortstudents", lvl: "seed", title: "Rank the class", prompt: "<p>Write <code>rank(students)</code> that takes a list of <code>(name, mark)</code> tuples and returns the names from highest to lowest mark.</p>", starter: "def rank(students):\n    pass\n", tests: [{ after: "print(rank([('Sara', 95), ('Omar', 82), ('Lina', 90)]))", expected: "['Sara', 'Lina', 'Omar']" }],
-      hint: "<code>sorted(students, key=lambda s: s[1], reverse=True)</code>, then take only the names.",
       solutions: [{ name: "sorted + lambda", code: c`def rank(students):
     ordered = sorted(students, key=lambda s: s[1], reverse=True)
     return [name for name, mark in ordered]` }] },
     { id: "power", lvl: "star", title: "Recursive power", prompt: "<p>Write <code>power(base, exp)</code> recursively (no <code>**</code>, no loops). exp ≥ 0.</p>", starter: "def power(base, exp):\n    pass\n", tests: [{ after: "print(power(2, 10), power(5, 0), power(3, 3))", expected: "1024 1 27" }],
-      hint: "Base case: exp == 0 → 1. Otherwise base × power(base, exp − 1).",
       solutions: [{ name: "Simple recursion", code: c`def power(base, exp):
     if exp == 0:
         return 1
@@ -236,7 +246,6 @@ def hypotenuse(a, b):
         return half * half
     return half * half * base`, note: "Halving the exponent: 2^1000 needs ~10 calls instead of 1000. This idea (divide and conquer) returns in Week 4." }] },
     { id: "days", lvl: "star", title: "Days until", prompt: "<p>Write <code>days_until(y, m, d)</code> that returns the number of days from 29 Sep 2026 to the given date (use <code>datetime.date</code>, don't use today's real date).</p>", starter: "from datetime import date\n\ndef days_until(y, m, d):\n    pass\n", tests: [{ after: "print(days_until(2026, 12, 31))", expected: "93" }, { after: "print(days_until(2027, 9, 29))", expected: "365" }],
-      hint: "Subtract two <code>date</code> objects and take <code>.days</code>.",
       solutions: [{ name: "Date subtraction", code: c`from datetime import date
 
 def days_until(y, m, d):
@@ -256,29 +265,14 @@ def fib(n):
         return n
     return fib(n - 1) + fib(n - 2)`, note: "<code>@lru_cache</code> remembers every answer, so each fib(k) is computed once. Called <b>memoization</b> — a key idea in dynamic programming." }] },
     { id: "apply", lvl: "fire", title: "apply_all", prompt: "<p>Write <code>apply_all(funcs, value)</code> that returns a list with the result of each function applied to <code>value</code>.</p>", starter: "def apply_all(funcs, value):\n    pass\n", tests: [{ after: "print(apply_all([abs, str, lambda x: x * 2], -4))", expected: "[4, '-4', -8]" }],
-      hint: "Functions are values: loop over <code>funcs</code> and call each one with <code>f(value)</code>.",
       solutions: [{ name: "Comprehension", code: c`def apply_all(funcs, value):
-    return [f(value) for f in funcs]` }, { name: "Loop", code: c`def apply_all(funcs, value):
-    results = []
-    for f in funcs:
-        results.append(f(value))
-    return results` }] },
+    return [f(value) for f in funcs]` }] },
     { id: "fix16", lvl: "fire", debug: true, title: "Broken sum_digits", prompt: "<p>Fix the recursive <code>sum_digits(n)</code> so the test prints <code>13 0 9</code>.</p>", starter: c`def sum_digits(n):
     return n % 10 + sum_digits(n / 10)`, tests: [{ after: "print(sum_digits(472), sum_digits(0), sum_digits(9))", expected: "13 0 9" }],
-      ar: "خطآن: لا يوجد شرط توقف، والقسمة / تعطي أعدادًا عشرية لا تصل إلى صفر بالضبط.",
       solutions: [{ name: "Fixed", code: c`def sum_digits(n):
     if n == 0:
         return 0
     return n % 10 + sum_digits(n // 10)`, note: "Two bugs: no base case, and <code>/</code> makes floats that never reach exactly 0." }] },
-    { id: "longest16", lvl: "star", title: "Longest word", prompt: "<p>Write <code>longest(sentence)</code> that returns the longest word of a sentence. If two words have the same length, return the first one. Use <code>max</code> with a <code>key</code>.</p>", starter: "def longest(sentence):\n    pass\n", tests: [{ after: "print(longest('I love learning Python'))", expected: "learning" }, { after: "print(longest('tea or milk'))", expected: "milk" }],
-      hint: "<code>max(sentence.split(), key=len)</code> — <code>max</code> keeps the first of equal items.",
-      solutions: [{ name: "max + key", code: c`def longest(sentence):
-    return max(sentence.split(), key=len)` }, { name: "Loop", code: c`def longest(sentence):
-    best = ""
-    for w in sentence.split():
-        if len(w) > len(best):
-            best = w
-    return best`, note: "<code>&gt;</code> (not <code>&gt;=</code>) keeps the first word when lengths are equal." }] },
   ],
   quiz: [
     { q: "`from math import sqrt` lets you write…", o: ["`math.sqrt(4)`", "`sqrt(4)`", "both", "neither"], a: 1, e: "Only the imported name." },
@@ -286,9 +280,6 @@ def fib(n):
     { q: "Every recursive function needs…", o: ["a loop", "a base case", "a lambda", "a module"], a: 1, e: "Otherwise RecursionError." },
     { q: "`sorted([\"bb\", \"a\", \"ccc\"], key=len)` is…", o: ["`['a', 'bb', 'ccc']`", "`['ccc', 'bb', 'a']`", "`[1, 2, 3]`", "Error"], a: 0, e: "By length." },
     { q: "`random.seed(1)` is useful for…", o: ["more randomness", "repeatable results", "speed", "security"], a: 1, e: "Same sequence every run." },
-    { q: "What does this print?", code: c`def f(*nums):
-    return len(nums)
-print(f(4, 5, 6))`, o: ["`1`", "`3`", "`15`", "Error"], a: 1, e: "`*nums` collects all three arguments into the tuple `(4, 5, 6)`." },
   ],
   puzzle: { title: "Tower of Hanoi", q: "<p>Moving n disks in the Tower of Hanoi takes <code>moves(n) = 2 * moves(n - 1) + 1</code> moves, with <code>moves(1) = 1</code>. How many moves for 10 disks?</p>", code: c`def moves(n):
     if n == 1:
@@ -302,14 +293,5 @@ print(moves(10))`, answers: ["1023"], hint: "Try small n: 1, 3, 7, 15… see the
     { f: "Recursion must have…", b: "A base case, and each call must move toward it." },
     { f: "What is memoization?", b: "Remembering results of previous calls (e.g. `@lru_cache`)." },
   ],
-  remember: [
-    "`import math` then `math.sqrt(x)`; `from math import sqrt` then `sqrt(x)`; `import datetime as dt` gives a short name.",
-    "Useful modules: `math` (sqrt, ceil, floor, pi), `random` (randint, choice, seed), `datetime` (date), `statistics` (mean, median).",
-    "Never name your own file like a module (`random.py`, `math.py`).",
-    "Functions are values: `sorted(items, key=len)` — pass the function **without** parentheses.",
-    "`lambda x: expression` is a one-line function, perfect for `key=`.",
-    "Recursion = a function calling itself with a smaller problem; it needs a **base case**.",
-  ],
-  rememberAr: "استورد{{g:|ي}} الوحدات الجاهزة بدل كتابة كل شيء بنفسك. مرّر{{g:|ي}} الدالة بدون أقواس في key، واستخدم{{g:|ي}} lambda للدوال القصيرة، ولا تنس{{g:|ي}} شرط التوقف في العودية.",
 };
 })();

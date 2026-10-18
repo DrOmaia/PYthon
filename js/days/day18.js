@@ -3,122 +3,194 @@ window.DAYS = window.DAYS || {};
 const c = String.raw;
 DAYS[18] = {
   title: "OOP: classes and objects",
-  intro: "So far data (variables) and actions (functions) lived separately. <b>Object-oriented programming</b> bundles them: a <code>Student</code> object has its own data (name, marks) and its own actions (add a mark, compute the average). This is how large systems — games, banking apps, Instagram — are organized. Today we go slowly, {{name}}: one new idea at a time.",
-  introAr: "البرمجة الكائنية تجمع البيانات والدوال في كيان واحد. الـ class هو القالب أو المخطط، والـ object هو نسخة حقيقية منه. نتعلم __init__ و self والخصائص attributes والدوال methods خطوة بخطوة.",
-  goals: ["Explain class vs object", "Write a class with `__init__` and attributes", "Explain what `self` means", "Add methods that use `self`", "Create several independent objects", "Make objects print nicely with `__str__`"],
+  intro: "So far data (variables) and actions (functions) lived separately. <b>Object-oriented programming</b> bundles them: a <code>Student</code> object has its own data (name, marks) and its own actions (add a mark, compute the average). This is how large systems — games, banking apps, Instagram — are organized.",
+  introAr: "البرمجة الكائنية تجمع البيانات والدوال في كيان واحد. الـ class هو القالب أو المخطط، والـ object هو نسخة حقيقية منه. نتعلم __init__ و self والخصائص attributes والدوال methods.",
+  goals: ["Explain class vs object", "Write a class with `__init__` and attributes", "Add methods that use `self`", "Create several independent objects", "Make objects print nicely with `__str__`"],
   learn: [
-    { t: "h", text: "Why do we need objects?" },
-    { t: "p", html: "<p>Imagine you keep data about three students. With what you know, you might write <code>name1</code>, <code>marks1</code>, <code>name2</code>, <code>marks2</code>… or one dictionary per student plus separate functions that work on those dictionaries. It works, but the data and the functions that use it live in different places, and nothing stops you from passing the wrong dictionary to the wrong function.</p><p>A <b>class</b> lets you design your own type — just like Python has <code>str</code> and <code>list</code>, you can have <code>Student</code>. Each student then carries its own data <b>and</b> its own actions.</p>" },
-    { t: "code", code: c`# The old way: data in a dict, actions in a separate function
-sara = {"name": "Sara", "marks": [90, 80]}
+    { t: "h", text: "Why objects? Data and actions together" },
+    { t: "p", html: "<p>Imagine you are writing a program for PSU students. Each student has a name, a major and a list of marks, and you want to add marks and compute averages. With what you know so far, you would keep <code>names</code>, <code>majors</code> and <code>marks</code> in separate lists or dictionaries, and write separate functions that receive them. It works for one student, but with hundreds it becomes easy to mix things up.</p><p><b>Object-oriented programming</b> (OOP) lets you bundle a thing's <b>data</b> (name, marks) and its <b>actions</b> (add a mark, compute the average) into one unit called an <b>object</b>. Games, banking apps and Instagram are all built this way.</p>" },
+    { t: "analogy", title: "Class = blueprint, object = house", html: "<p>An architect draws one <b>blueprint</b> (the <b>class</b>). From it you can build many <b>houses</b> (the <b>objects</b>). Every house has the same structure — rooms, doors, windows — but each has its own paint color and its own owner. Painting one house does not change the others, and the blueprint itself is not a house: you cannot live in a drawing.</p>" },
+    { t: "ar", html: "البرمجة الكائنية تجمع البيانات والأفعال في كيان واحد. الكلاس (class) هو المخطط، والكائن (object) هو بيت حقيقي مبني من المخطط. من مخطط واحد نبني بيوتًا كثيرة، لكل بيت بياناته الخاصة." },
 
-def average(student):
-    return sum(student["marks"]) / len(student["marks"])
-
-print(sara["name"], average(sara))`, before: "<p>This is the style you already know (dictionaries from Week 2, functions from Day 15). Keep it in mind — by the end of today you will write the same thing as a class.</p>" },
-    { t: "analogy", title: "Class = blueprint, object = house", html: "<p>An architect draws one <b>blueprint</b> (the class). From it you can build many <b>houses</b> (objects). Every house has the same structure — rooms, doors, windows — but each has its own paint color and its own owner. Painting one house blue does not change the others.</p>" },
-
-    { t: "h", text: "Class vs object" },
-    { t: "p", html: "<p>A <b>class</b> is the design. An <b>object</b> (also called an <b>instance</b>) is one real thing made from that design. You write the class once; you can create as many objects as you like. Let's start with the smallest class possible.</p>" },
+    { t: "h", text: "Your first class and your first objects" },
+    { t: "p", html: "<p>You write a class with the word <code>class</code>, a name and a colon. Class names use <b>CapitalWords</b> (<code>Student</code>, <code>BankAccount</code>) so you can tell them apart from variables and functions. To <b>build an object</b> from the class, you \"call\" the class like a function: <code>Student()</code>.</p>" },
     { t: "code", code: c`class Student:
     pass
 
 s1 = Student()
 s2 = Student()
 print(type(s1))
-print(type(s2))`, before: "<p>Look at the two kinds of lines: the <code>class</code> block <b>describes</b>, and <code>Student()</code> <b>creates</b>.</p>", note: "<p>Both objects are of type <code>Student</code> — a type you invented. (<code>__main__</code> just means \"defined in this file\".) They are still two separate objects, like two houses from one blueprint.</p>" },
-    { t: "lines", rows: [
-      ["class Student:", "Starts a new class called <code>Student</code>. Class names use <b>CapitalWords</b> (not snake_case), so you can see at a glance that it is a class."],
-      ["    pass", "The body of the class. <code>pass</code> means \"nothing here yet\" — Python needs at least one line inside a block."],
-      ["s1 = Student()", "<b>Calling</b> the class like a function creates a new object. The variable <code>s1</code> now refers to it."],
-      ["s2 = Student()", "A second, completely separate object from the same class."],
-    ] },
-    { t: "ar", html: "الكلاس هو المخطط أو القالب، ويُكتب مرة واحدة. والكائن object هو نسخة حقيقية نصنعها من الكلاس بكتابة اسمه مع قوسين مثل Student()." },
-    { t: "check", q: "In `car = Car()`, which one is the object?", o: ["`Car`", "`car`", "`()`", "There is no object"], a: 1, e: "`Car` is the class (the blueprint). Calling it with `()` builds a new object, and the variable `car` refers to that object.", hint: "Which side was created by calling the class?" },
-
-    { t: "h", text: "__init__: setting up every new object" },
-    { t: "p", html: "<p>An empty object is not very useful. We want every new student to start with a name and an empty list of marks — automatically, so we can never forget. Python has a special method for that: <code>__init__</code> (\"init\" = initialize). It runs <b>by itself</b> every time you create an object.</p>" },
-    { t: "analogy", title: "__init__ is the registration form", html: "<p>When you join a university, you fill a registration form on the first day: name, major, ID. You don't do it again every morning. <code>__init__</code> is that form: it runs once, at the moment the object is born, and fills in its starting data.</p>" },
+print(s1 == s2)`, before: "<p>This is the smallest possible class: an empty blueprint. Run it and read both lines of output.</p>", note: "<p>Line by line:</p><ul><li><code>class Student:</code> starts the blueprint. <code>pass</code> means \"nothing here yet\" — a block cannot be empty.</li><li><code>s1 = Student()</code> builds one object from the blueprint and stores it in <code>s1</code>. Line 5 builds a <b>second</b>, separate object.</li><li><code>type(s1)</code> prints <code>&lt;class '__main__.Student'&gt;</code>: <code>s1</code> is a <code>Student</code>. (<code>__main__</code> just means \"defined in this program\".)</li><li><code>s1 == s2</code> is <code>False</code>: two houses from the same blueprint are still two different houses.</li></ul><p>Words to remember: the class is the <b>blueprint</b>; each object is an <b>instance</b> of that class.</p>" },
     { t: "code", code: c`class Student:
-    def __init__(self, name):
-        print("Creating a student...")
-        self.name = name
+    pass
 
-s1 = Student("{{name}}")
-s2 = Student("Omar")
-print(s1.name)
-print(s2.name)`, before: "<p>We never call <code>__init__</code> ourselves. Watch the output: the message appears twice, once for each <code>Student(...)</code>.</p>", note: "<p>The value in the parentheses, <code>\"{{name}}\"</code>, was passed to <code>__init__</code> as <code>name</code>, and stored inside the object as <code>self.name</code>. Then <code>s1.name</code> reads it back. The <code>print</code> inside <code>__init__</code> is only here so you can see when it runs — real classes usually don't print there.</p>" },
-    { t: "lines", rows: [
-      ["def __init__(self, name):", "A function inside a class is called a <b>method</b>. This one has a special name: two underscores, <code>init</code>, two underscores. Its first parameter is always <code>self</code>."],
-      ["    self.name = name", "Store the value <code>name</code> <b>inside this object</b>, under the label <code>name</code>. A value stored on an object is called an <b>attribute</b>."],
-      ["s1 = Student(\"{{name}}\")", "Python creates an empty object, then calls <code>__init__(that_object, \"{{name}}\")</code> automatically."],
-      ["print(s1.name)", "The dot means \"inside\": the <code>name</code> attribute inside the object <code>s1</code>."],
-    ] },
-    { t: "ar", html: "__init__ تعمل تلقائيًا عند إنشاء كل كائن جديد، ووظيفتها تجهيز بياناته الأولى. انتبه{{g:|ي}}: شرطتان سفليتان قبل init وشرطتان بعدها." },
-    { t: "check", q: "How many times does `Hello` appear?", code: c`class Lamp:
+s1 = Student()
+s1.name = "{{name}}"
+s1.major = "CS"
+print(s1.name, "studies", s1.major)`, before: "<p>An object can hold its own variables, called <b>attributes</b>. You reach them with a dot: <code>object.attribute</code>.</p>", note: "<p>Line by line:</p><ul><li><code>s1.name = \"{{name}}\"</code> creates an attribute called <code>name</code> <b>inside</b> the object <code>s1</code>. Read the dot as \"'s\": <i>s1's name</i>.</li><li><code>s1.major = \"CS\"</code> adds a second attribute.</li><li><code>print(s1.name, ...)</code> reads them back.</li></ul><p>This works, but it is clumsy: for every new student you must remember to type every attribute by hand, and if you forget one, that student is incomplete. The next section fixes this.</p>" },
+    { t: "ar", html: "نكتب الكلاس بالكلمة class واسم يبدأ بحرف كبير، وننشئ كائنًا باستدعائه مثل الدالة: Student(). والخصائص (attributes) متغيرات داخل الكائن نصل إليها بالنقطة: s1.name." },
+
+    { t: "h", text: "__init__: set up every new object" },
+    { t: "p", html: "<p>A class can contain a special function named <code>__init__</code> (two underscores before and after: \"dunder init\"). Python runs it <b>automatically</b> every time you build an object. It is the place to give every new object its starting attributes, so no student is ever incomplete. It is also called the <b>constructor</b>.</p>" },
+    { t: "analogy", title: "The builder's checklist", html: "<p>When a new house is finished, the builder follows a checklist before handing over the keys: install the door, paint the walls, write the owner's name on the contract. <code>__init__</code> is that checklist. It runs once for every new object, the moment it is built.</p>" },
+    { t: "code", code: c`class Student:
     def __init__(self):
-        print("Hello")
+        print("A new student was created!")
 
-a = Lamp()
-b = Lamp()
-c = Lamp()`, o: ["0", "1", "3", "An error"], a: 2, e: "`__init__` runs once for every object created. Three `Lamp()` calls = three `Hello`.", hint: "Count how many objects are created." },
+s1 = Student()
+s2 = Student()`, before: "<p>We never call <code>__init__</code> ourselves. Run it and count how many times the message appears.</p>", note: "<p>Line by line:</p><ul><li>Lines 2–3 define <code>__init__</code> inside the class (it is indented under <code>class</code>). Ignore <code>self</code> for a moment — the next section explains it.</li><li><code>Student()</code> on line 5 builds an object, and Python <b>automatically</b> runs <code>__init__</code> → the message prints.</li><li>Line 6 builds another object → the message prints again.</li></ul><p>Two objects, two messages. Spelling matters: <code>_init_</code> (one underscore) or <code>__int__</code> would be silently ignored.</p>" },
+    { t: "ar", html: "__init__ دالة خاصة تُنفذ تلقائيًا عند إنشاء كل كائن جديد، وفيها نضع الخصائص الابتدائية. انتبه{{g:|ي}} لكتابتها بشرطتين سفليتين قبل الكلمة وبعدها." },
 
     { t: "h", text: "self: \"this object\"" },
-    { t: "p", html: "<p><code>self</code> is the part that confuses most beginners, so let's take it slowly. One class can make many objects, but the code inside the class is written only <b>once</b>. When that code runs, it needs a way to say \"the object I am working on right now\". That word is <code>self</code>.</p>" },
-    { t: "analogy", title: "self is the word \"my\"", html: "<p>Everyone in your class can say \"<i>my</i> name\". The sentence is the same for everybody, but \"my\" points to a different person depending on who says it. In <code>self.name = name</code>, <code>self</code> works like \"my\": when Sara's object runs it, <code>self</code> is Sara's object; when Omar's runs it, <code>self</code> is Omar's.</p>" },
-    { t: "viz", code: c`class Student:
+    { t: "p", html: "<p>Inside the class, the blueprint does not know <i>which</i> house it is working on — there may be hundreds. So Python passes the object being built as the first parameter, and by tradition we call it <code>self</code>. <code>self.name = name</code> means: <b>store this name inside this object</b>.</p>" },
+    { t: "code", code: c`class Student:
     def __init__(self, name, major):
         self.name = name
         self.major = major
 
-a = Student("{{name}}", "CS")
-b = Student("Omar", "IS")
-print(a.name, a.major)
-print(b.name, b.major)`, before: "<p>Visualize it and watch <code>__init__</code> run twice. The first time <code>self</code> is the object that becomes <code>a</code>; the second time it is the object that becomes <code>b</code>.</p>" },
-    { t: "p", html: "<p>Two important facts:</p><ul><li><code>self</code> is always the <b>first</b> parameter of a method.</li><li>You <b>never pass it yourself</b>. In <code>Student(\"Omar\", \"IS\")</code> you give two values, and Python fills in <code>self</code> for you.</li></ul>" },
-    { t: "ar", html: "self تعني \"هذا الكائن نفسه\". نكتبها أول معامل في كل دالة داخل الكلاس، لكن لا نمررها عند الاستدعاء؛ بايثون يمررها تلقائيًا." },
-    { t: "check", q: "`__init__(self, title, pages)` is defined in class `Book`. How do you create a book?", o: ["`Book(self, \"Dune\", 412)`", "`Book(\"Dune\", 412)`", "`Book.__init__(\"Dune\", 412)`", "`Book(\"Dune\")`"], a: 1, e: "You pass every parameter **except** `self` — Python supplies `self` automatically. So: title and pages.", hint: "Who gives the value of `self`, you or Python?" },
-
-    { t: "h", text: "Attributes: data inside an object" },
-    { t: "p", html: "<p>Attributes are just variables that live inside an object. You read them with a dot, change them with a dot, and — the key point — each object has <b>its own copy</b>. Changing one object never touches another.</p>" },
-    { t: "code", code: c`class Phone:
-    def __init__(self, brand, battery=100):
+s1 = Student("{{name}}", "CS")
+s2 = Student("Omar", "IS")
+print(s1.name, s1.major)
+print(s2.name, s2.major)`, before: "<p>Now <code>__init__</code> receives the student's details. Follow how <code>\"Omar\"</code> travels from line 7 into the object.</p>", note: "<p>Line by line for <code>s2 = Student(\"Omar\", \"IS\")</code>:</p><ul><li>Python builds an empty object and calls <code>__init__</code>, passing the new object as <code>self</code>, then <code>\"Omar\"</code> as <code>name</code> and <code>\"IS\"</code> as <code>major</code>.</li><li><code>self.name = name</code> takes the parameter <code>name</code> (a normal local variable that disappears when the function ends) and saves it <b>inside the object</b> as the attribute <code>self.name</code>, which lives on.</li><li>When <code>__init__</code> ends, the finished object is stored in <code>s2</code>. So inside the class, <code>self</code> was <code>s2</code>.</li></ul><p>You pass <b>two</b> values, but <code>__init__</code> has <b>three</b> parameters: Python fills in <code>self</code> for you. Writing <code>name = name</code> without <code>self.</code> would store nothing in the object.</p>" },
+    { t: "ar", html: "self تعني \"هذا الكائن نفسه\". عند كتابة s1 = Student(\"{{name}}\", \"CS\") يستدعي بايثون __init__ ويكون self هو s1. و self.name = name تحفظ القيمة داخل الكائن، أما name = name وحدها فتضيع بعد انتهاء الدالة." },
+    { t: "predict", code: c`class Car:
+    def __init__(self, brand, year):
         self.brand = brand
-        self.battery = battery
+        self.year = year
 
-mine = Phone("Samsung")
-yours = Phone("iPhone", 40)
-mine.battery = mine.battery - 15
-print(mine.brand, mine.battery)
-print(yours.brand, yours.battery)`, before: "<p>Notice <code>battery=100</code>: a default value works exactly like in normal functions (Day 15).</p>", note: "<p>Only <code>mine</code> lost battery. <code>yours</code> still has 40, because it is a different object with its own <code>battery</code> attribute.</p>" },
-    { t: "check", q: "What does the last line print?", code: c`class Cup:
-    def __init__(self, drink):
-        self.drink = drink
+a = Car("Toyota", 2020)
+b = Car("Hyundai", 2024)
+print(b.brand, a.year)`, explain: "Each object stores its own values. <code>b</code> was built with <code>\"Hyundai\"</code>, and <code>a</code> with <code>2020</code>. Output: <code>Hyundai 2020</code>." },
 
-x = Cup("tea")
-y = Cup("coffee")
-x.drink = "juice"
-print(y.drink)`, o: ["`tea`", "`coffee`", "`juice`", "An error"], a: 1, e: "Only `x` was changed. `y` is a separate object and still holds `coffee`.", hint: "Which object was changed — `x` or `y`?" },
+    { t: "h", text: "Attributes: each object has its own data" },
+    { t: "p", html: "<p>Every object gets its <b>own copy</b> of the attributes created in <code>__init__</code>. Changing one object's attribute does not touch any other object — exactly like painting one house. Attributes can be any value: numbers, strings, even lists.</p>" },
+    { t: "code", code: c`class Student:
+    def __init__(self, name):
+        self.name = name
+        self.marks = []
+
+s1 = Student("{{name}}")
+s2 = Student("Omar")
+s1.marks.append(95)
+print(s1.name, s1.marks)
+print(s2.name, s2.marks)`, before: "<p>Both students start with an empty list of marks. We add a mark only to <code>s1</code>. Predict <code>s2.marks</code> before running.</p>", note: "<p>Line by line:</p><ul><li><code>self.marks = []</code> runs <b>once per object</b>, so each student gets a brand-new empty list. Notice the starting value does not have to come from a parameter.</li><li><code>s1.marks.append(95)</code>: <code>s1.marks</code> is a normal list, so all list methods from Day 10 work on it.</li><li><code>s1</code> now has <code>[95]</code>, while <code>s2</code> still has <code>[]</code>.</li></ul><p>Two separate objects, two separate lists. This independence is the whole point of objects.</p>" },
+    { t: "code", code: c`class Student:
+    def __init__(self, name, major):
+        self.name = name
+        self.major = major
+
+s = Student("{{name}}", "CS")
+s.major = "AI"
+print(s.name, "now studies", s.major)`, before: "<p>Attributes are not frozen: you can change them later, like any variable.</p>", note: "<p>The object starts with <code>major = \"CS\"</code>. Line 7 assigns a new value to <code>s.major</code>, replacing the old one — just like <code>x = 5</code> replaces an old <code>x</code>. Output: <code>{{name}} now studies AI</code>. Only this object changed; any other student keeps their own major.</p>" },
+    { t: "ar", html: "كل كائن له نسخته الخاصة من الخصائص المعرّفة في __init__، وتغيير خاصية في كائن لا يغيّر الكائنات الأخرى. ويمكن تعديل الخاصية لاحقًا مثل أي متغير: s.major = \"AI\"." },
 
     { t: "h", text: "Methods: what an object can do" },
-    { t: "p", html: "<p>Attributes are what an object <b>knows</b>. Methods are what it can <b>do</b>. A method is simply a function written inside the class. Because it receives <code>self</code>, it can read and change the object's own attributes.</p>" },
+    { t: "p", html: "<p>Attributes are what an object <b>has</b>; <b>methods</b> are what it can <b>do</b>. A method is simply a function written <b>inside</b> a class. Its first parameter is always <code>self</code>, so the method can reach the object's own attributes.</p>" },
+    { t: "analogy", title: "The remote control", html: "<p>A TV (the object) has data inside it — the current channel, the volume. The buttons on the remote are its methods: <i>volume up</i>, <i>next channel</i>. You don't open the TV and move wires; you press a button and the TV changes its own data.</p>" },
     { t: "code", code: c`class Student:
     def __init__(self, name):
         self.name = name
 
     def greet(self):
-        return f"Hi, I am {self.name}"
+        print("Hi, I am", self.name)
 
 s = Student("{{name}}")
-print(s.greet())`, before: "<p>Start with one tiny method. It only reads an attribute.</p>" },
-    { t: "lines", rows: [
-      ["def greet(self):", "Defined with <code>self</code> as the first parameter, like every method."],
-      ["    return f\"Hi, I am {self.name}\"", "Inside a method, you reach the object's data through <code>self.</code> — here, its <code>name</code>."],
-      ["s.greet()", "Call it with a dot on the object, and <b>with parentheses</b>. Python turns it into <code>Student.greet(s)</code>: the object before the dot becomes <code>self</code>."],
-    ] },
+s.greet()`, before: "<p>A method with no extra parameters. Notice how it is called: object, dot, method name, brackets.</p>", note: "<p>Line by line:</p><ul><li>Lines 5–6 define <code>greet</code> inside the class, at the same indentation as <code>__init__</code>.</li><li><code>s.greet()</code> calls it <b>on</b> the object <code>s</code>. Python passes <code>s</code> as <code>self</code> automatically, so inside the method <code>self.name</code> is <code>s</code>'s name.</li><li>Output: <code>Hi, I am {{name}}</code>.</li></ul><p>In fact, <code>s.greet()</code> is a shortcut for <code>Student.greet(s)</code>. That is why the definition has <code>self</code> but the call has empty brackets.</p>" },
     { t: "viz", code: c`class Student:
     def __init__(self, name):
         self.name = name
+        self.marks = []
+    def add_mark(self, mark):
+        self.marks.append(mark)
+
+s = Student("{{name}}")
+s.add_mark(90)
+print(s.marks)`, before: "<p>Methods can take extra parameters after <code>self</code> and change the object's data. Press Visualize and step through slowly: watch the object appear, then its <code>marks</code> list grow.</p>", note: "<p>Line by line:</p><ul><li>Lines 1–6 only <b>define the blueprint</b>: stepping through, you see Python store <code>Student</code>, but no student exists yet.</li><li><code>def add_mark(self, mark):</code> has two parameters: <code>self</code> (the object) and <code>mark</code> (the value you pass).</li><li><code>s.add_mark(90)</code> passes only <b>one</b> value. Python fills in <code>self = s</code> and <code>mark = 90</code>. It means <code>Student.add_mark(s, 90)</code>.</li><li><code>self.marks.append(mark)</code> adds 90 to <b>this</b> student's list, so the last line prints <code>[90]</code>.</li></ul><p>The method changes the object from inside — like pressing a button on the remote. (Blank lines between methods are optional; we left them out to keep examples short.)</p>" },
+    { t: "code", code: c`class Student:
+    def __init__(self, name):
+        self.name = name
+        self.marks = []
+    def add_mark(self, mark):
+        self.marks.append(mark)
+    def average(self):
+        return sum(self.marks) / len(self.marks)
+s = Student("{{name}}")
+s.add_mark(90); s.add_mark(80); print(s.name, s.average())`, before: "<p>A method can also <b>return</b> a value, like any function. (<code>;</code> lets you put several short statements on one line.)</p>", note: "<p>Step by step:</p><ul><li><code>average</code> has only <code>self</code>: it needs no extra input, because the marks are already inside the object.</li><li><code>s.add_mark(90)</code> and <code>s.add_mark(80)</code> make the list <code>[90, 80]</code>.</li><li><code>s.average()</code> returns <code>170 / 2</code> = <code>85.0</code>, and <code>print</code> shows <code>{{name}} 85.0</code>.</li></ul><p>That is the power of keeping data and actions together: the object <b>remembers</b>. One weakness: calling <code>average()</code> before any mark divides by zero. A safer version starts with <code>if not self.marks: return 0</code> — you will see that in the final example.</p>" },
+    { t: "ar", html: "الدالة داخل الكلاس اسمها method، وأول معامل فيها دائمًا self. عند الاستدعاء لا نمرر self: الكتابة s.add_mark(90) تعني Student.add_mark(s, 90). وداخل الـ method نصل للخصائص عبر self." },
+    { t: "predict", code: c`class Counter:
+    def __init__(self, start):
+        self.n = start
+    def up(self):
+        self.n += 10
+
+c1 = Counter(5)
+c1.up()
+c1.up()
+print(c1.n)`, explain: "<code>__init__</code> sets <code>self.n = 5</code>. Each <code>up()</code> adds 10 to <b>this object's</b> <code>n</code>: 5 → 15 → 25. Output: <code>25</code>." },
+
+    { t: "h", text: "__str__: make print(obj) readable" },
+    { t: "p", html: "<p>What happens if you <code>print</code> an object? By default Python does not know what is important about your object, so it prints its class and a memory address. A special method called <code>__str__</code> lets <b>you</b> decide the text.</p>" },
+    { t: "code", code: c`class Student:
+    def __init__(self, name):
+        self.name = name
+
+s = Student("{{name}}")
+print(s)`, before: "<p>Run it and look at the strange output. The numbers will differ on every run.</p>", note: "<p>You see something like <code>&lt;__main__.Student object at 0x7f3a...&gt;</code>: \"a Student object stored at this memory address\". It is true, but useless for a human. Notice the name you passed is nowhere in it.</p>" },
+    { t: "code", code: c`class Student:
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return f"Student: {self.name}"
+
+s = Student("{{name}}")
+print(s)`, before: "<p>Same class plus one method. Compare the output with the previous example.</p>", note: "<p>Line by line:</p><ul><li><code>__str__</code> takes only <code>self</code> and must <b>return</b> a string (not print it).</li><li><code>print(s)</code> now automatically calls <code>s.__str__()</code> and shows the returned text: <code>Student: {{name}}</code>.</li></ul><p>Methods whose names start and end with double underscores, like <code>__init__</code> and <code>__str__</code>, are called <b>dunder</b> (or magic) methods: you don't call them yourself; Python calls them at the right moment.</p>" },
+    { t: "ar", html: "بدون __str__ تطبع print عنوان الكائن في الذاكرة فقط. نعرّف __str__ لتُرجع (return) نصًا مقروءًا، وبايثون يستدعيها تلقائيًا عند print(obj)." },
+
+    { t: "h", text: "A bank account: methods that protect the data" },
+    { t: "p", html: "<p>Methods are also guards. Instead of letting anyone change <code>balance</code> directly, a <code>BankAccount</code> offers <code>deposit</code> and <code>withdraw</code> methods that <b>check</b> each request first — just like a real bank refuses a withdrawal bigger than your balance. Notice <code>balance=0</code>: a default parameter value (Day 15) works in <code>__init__</code> too.</p>" },
+    { t: "code", code: c`class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("deposit must be positive")
+        self.balance += amount
+acc = BankAccount("{{name}}", 500)
+acc.deposit(250); print(acc.balance)`, before: "<p>The deposit method refuses nonsense amounts using <code>raise</code> from Day 17. Run it, then change <code>250</code> to <code>-50</code> and read the error.</p>", note: "<p>Line by line:</p><ul><li><code>BankAccount(\"{{name}}\", 500)</code> sets <code>owner</code> and <code>balance = 500</code>. <code>BankAccount(\"Omar\")</code> would start at <code>0</code>.</li><li><code>deposit(250)</code>: 250 is positive, so <code>self.balance += 250</code> → <code>750</code>.</li><li>With <code>-50</code>, the check is True and <code>raise</code> stops the method <b>before</b> the balance changes: <code>ValueError: deposit must be positive</code>.</li></ul><p>The object keeps its own data valid. Code outside could catch that error with <code>try/except</code>.</p>" },
+    { t: "code", code: c`class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner, self.balance = owner, balance
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return False
+        self.balance -= amount
+        return True
+acc = BankAccount("{{name}}", 750)
+print(acc.withdraw(1000), acc.withdraw(100), acc.balance)`, before: "<p>The withdraw method uses a softer style: instead of raising an error, it <b>returns</b> <code>True</code> or <code>False</code>. Line 3 uses tuple unpacking (Day 11) to set two attributes at once.</p>", note: "<p>Step by step:</p><ul><li><code>self.owner, self.balance = owner, balance</code> is the same as two separate assignments.</li><li><code>acc.withdraw(1000)</code>: 1000 is more than <b>this account's</b> 750, so it returns <code>False</code> — <code>return</code> ends the method there and the balance is untouched.</li><li><code>acc.withdraw(100)</code>: allowed → the balance becomes 650 and it returns <code>True</code>.</li><li>Output: <code>False True 650</code>.</li></ul><p>Returning <code>True</code>/<code>False</code> lets the caller check the result, e.g. <code>if acc.withdraw(100): print(\"Done\")</code>. Both styles — <code>raise</code> and returning a flag — are common; choose one per method and be consistent.</p>" },
+    { t: "ar", html: "الـ methods تحمي بيانات الكائن: deposit ترفض المبالغ غير المنطقية بـ raise، و withdraw ترجع False إذا لم يكفِ الرصيد. ويمكن استخدام قيمة افتراضية في __init__ مثل balance=0." },
+
+    { t: "h", text: "Class attributes: shared by all objects" },
+    { t: "p", html: "<p>Attributes set with <code>self.</code> inside <code>__init__</code> belong to <b>one</b> object. But some data is the same for everyone — all our students are at PSU. Variables written directly inside the class (not inside a method) are <b>class attributes</b>: there is only <b>one copy</b>, shared by every object.</p>" },
+    { t: "code", code: c`class Student:
+    university = "PSU"
+    count = 0
+    def __init__(self, name):
+        self.name = name
+        Student.count += 1
+a = Student("Sara")
+b = Student("Omar")
+print(a.university, b.university, Student.count)`, before: "<p>Two kinds of attributes in one class. Watch <code>count</code> go up each time a student is created.</p>", note: "<p>Line by line:</p><ul><li><code>university</code> and <code>count</code> are class attributes: created once, when the class is defined.</li><li><code>self.name</code> is an instance attribute: different for each student.</li><li><code>Student.count += 1</code> inside <code>__init__</code> changes the <b>shared</b> counter, reached through the class name, so it counts every student built.</li><li><code>a.university</code> and <code>b.university</code> both find the same shared <code>\"PSU\"</code>. Output: <code>PSU PSU 2</code>.</li></ul><p>Rule of thumb: data that is the same for everyone → class attribute. Data that differs per object (names, marks, balances — and especially lists) → <code>self.</code> in <code>__init__</code>, so each object gets its own.</p>" },
+    { t: "ar", html: "الخاصية المعرّفة داخل الكلاس مباشرة (خارج الدوال) مشتركة بين كل الكائنات، أما self.x داخل __init__ فخاصة بكل كائن. ضع{{g:|ي}} القوائم والبيانات المختلفة لكل كائن في __init__." },
+
+    { t: "h", text: "Putting it together: a student record" },
+    { t: "code", code: c`class Student:
+    university = "PSU"
+
+    def __init__(self, name, major):
+        self.name = name
+        self.major = major
         self.marks = []
 
     def add_mark(self, mark):
@@ -129,134 +201,32 @@ print(s.greet())`, before: "<p>Start with one tiny method. It only reads an attr
             return 0
         return sum(self.marks) / len(self.marks)
 
-s = Student("{{name}}")
-s.add_mark(90)
-s.add_mark(80)
-print(s.name, s.average())`, before: "<p>Now methods that <b>change</b> the object. Visualize it: each <code>s.add_mark(...)</code> jumps into the method with <code>self</code> = <code>s</code>, and the list inside the object grows. Compare this with the dictionary version at the top of the lesson — same result, but now the data and its actions travel together.</p>" },
-    { t: "ar", html: "الدالة داخل الكلاس اسمها method. نكتب s.add_mark(90) فيصبح self هو s، وتصل الدالة لبيانات الكائن عن طريق self." },
-    { t: "check", q: "What does this print?", code: c`class Counter:
-    def __init__(self):
-        self.n = 0
-
-    def tick(self):
-        self.n += 1
-
-c = Counter()
-c.tick()
-c.tick()
-c.tick()
-print(c.n)`, o: ["0", "1", "3", "An error"], a: 2, e: "Each `tick()` adds 1 to the same object's `n`: 0 → 1 → 2 → 3.", hint: "`self.n` belongs to the object, so it is remembered between calls." },
-
-    { t: "h", text: "__str__: printing an object nicely" },
-    { t: "p", html: "<p>Try printing an object and Python shows something ugly like <code>&lt;__main__.Student object at 0x7f3a...&gt;</code> — the type and a memory address. That helps nobody. If you add a method called <code>__str__</code> that <b>returns</b> a string, <code>print()</code> will use it.</p>" },
-    { t: "code", code: c`class Course:
-    def __init__(self, code, credits):
-        self.code = code
-        self.credits = credits
-
     def __str__(self):
-        return f"{self.code} ({self.credits} credits)"
+        return f"{self.name} ({self.major}, {self.university}) avg {self.average():.1f}"
 
-cs = Course("CS101", 3)
-print(cs)
-print("I am taking", cs)`, before: "<p>Run it, then delete the <code>__str__</code> method and run again to see the ugly default.</p>", note: "<p><code>__str__</code> must <b>return</b> text, not print it. Names with double underscores on both sides (<code>__init__</code>, <code>__str__</code>) are called <b>dunder</b> (\"double underscore\") or magic methods: Python calls them for you at special moments.</p>" },
-    { t: "lines", rows: [
-      ["def __str__(self):", "A dunder method. You never call it directly — <code>print()</code> and <code>str()</code> call it."],
-      ["    return f\"{self.code} ({self.credits} credits)\"", "Build the text from the object's attributes and <b>return</b> it."],
-      ["print(cs)", "Python sees an object, calls <code>cs.__str__()</code>, and prints the returned string."],
-    ] },
-    { t: "ar", html: "__str__ تحدد النص الذي يظهر عند print للكائن. لازم ترجع نصًا بـ return وليس print." },
-    { t: "check", q: "Which `__str__` is correct?", o: ["`def __str__(self): print(self.name)`", "`def __str__(self): return self.name`", "`def __str__(): return self.name`", "`def str(self): return self.name`"], a: 1, e: "It needs `self`, the exact dunder name, and it must **return** a string.", hint: "Three things: the right name, `self`, and `return`." },
-
-    { t: "h", text: "Shared data: class attributes" },
-    { t: "p", html: "<p>Attributes set with <code>self.</code> belong to one object. Sometimes a value is the same for <b>every</b> object — all students are at the same university. You can write it directly in the class body: it is a <b>class attribute</b>, shared by all objects.</p>" },
-    { t: "code", code: c`class Student:
-    university = "PSU"      # shared by all students
-    count = 0
-
-    def __init__(self, name):
-        self.name = name      # different for each student
-        Student.count += 1
-
-a = Student("Sara")
-b = Student("Omar")
-print(a.university, b.university, Student.count)`, note: "<p><code>Student.count += 1</code> changes the shared counter, so after two students it is 2. Be careful: never put a list in the class body if each object needs its own list — create it in <code>__init__</code> with <code>self.</code> instead (today's puzzle shows why).</p>" },
-
-    { t: "steps", title: "A bank account class", problem: "<p>Build a <code>BankAccount</code> for {{name}}. It knows its owner and balance, can <b>deposit</b> and <b>withdraw</b> (but never go below zero), and prints like <code>{{name}}: 650.00 SAR</code>.</p>", steps: [
-      { html: "<p><b>Understand.</b> What does an account <i>know</i>? An owner and a balance → these become <b>attributes</b>. What can it <i>do</i>? Deposit, withdraw, show itself → these become <b>methods</b>.</p>" },
-      { html: "<p><b>Set up the object.</b> <code>__init__</code> stores the owner and a starting balance (default 0).</p>", code: c`class BankAccount:
-    def __init__(self, owner, balance=0):
-        self.owner = owner
-        self.balance = balance` },
-      { html: "<p><b>Deposit.</b> Add to <code>self.balance</code>. Refuse negative amounts with <code>raise</code> (Day 17).</p>", code: c`    def deposit(self, amount):
-        if amount <= 0:
-            raise ValueError("deposit must be positive")
-        self.balance += amount` },
-      { html: "<p><b>Withdraw.</b> Check first, change second. Return <code>True</code>/<code>False</code> so the caller knows if it worked.</p>", code: c`    def withdraw(self, amount):
-        if amount > self.balance:
-            print("Insufficient funds")
-            return False
-        self.balance -= amount
-        return True` },
-      { html: "<p><b>Print nicely and test.</b> Add <code>__str__</code>, then create an account and try every method, including one that should fail.</p>", code: c`    def __str__(self):
-        return f"{self.owner}: {self.balance:,.2f} SAR"` },
-    ], code: c`class BankAccount:
-    def __init__(self, owner, balance=0):
-        self.owner = owner
-        self.balance = balance
-
-    def deposit(self, amount):
-        if amount <= 0:
-            raise ValueError("deposit must be positive")
-        self.balance += amount
-
-    def withdraw(self, amount):
-        if amount > self.balance:
-            print("Insufficient funds")
-            return False
-        self.balance -= amount
-        return True
-
-    def __str__(self):
-        return f"{self.owner}: {self.balance:,.2f} SAR"
-
-acc = BankAccount("{{name}}", 500)
-acc.deposit(250)
-acc.withdraw(1000)
-acc.withdraw(100)
-print(acc)`, ar: "خطوات تصميم أي كلاس: ماذا يعرف الكائن؟ (خصائص في __init__) وماذا يفعل؟ (دوال methods) ثم __str__ للطباعة، ثم نجرب." },
-
-    { t: "table", head: ["Word", "Meaning", "Example"], rows: [
-      ["class", "the blueprint of a new type", "`class Student:`"],
-      ["object / instance", "one thing made from the class", "`s = Student(\"Sara\")`"],
-      ["`__init__`", "runs automatically when an object is created", "`def __init__(self, name):`"],
-      ["`self`", "the object the method is working on", "`self.name = name`"],
-      ["attribute", "data stored in an object", "`s.name`"],
-      ["method", "a function inside a class", "`s.add_mark(90)`"],
-      ["`__str__`", "the text `print(obj)` shows", "`return f\"...\"`"],
-    ] },
+s1 = Student("{{name}}", "CS")
+s1.add_mark(95)
+s1.add_mark(88)
+print(s1)
+print(Student("Omar", "IS"))`, together: true, before: "<p>Here is a complete class using every idea from today, plus a few lines that use it. The blank lines between methods are optional, but they make a class much easier to read. Read the class first and predict both printed lines, then run it. Then add a mark for Omar too.</p>", note: "<p>How it works:</p><ul><li><code>university</code> is a <b>class attribute</b>: one shared value for every student.</li><li><code>__init__</code> gives each new object its own <code>name</code>, <code>major</code> and an empty <code>marks</code> list.</li><li><code>add_mark</code> is a method that changes the object's data; <code>average</code> is a method that returns a value, and it returns <code>0</code> when there are no marks yet, so it never divides by zero.</li><li><code>__str__</code> builds the text for <code>print</code>. It can call another method with <code>self.average()</code>, and <code>:.1f</code> shows one decimal (Day 4). Inside a method, <code>self.university</code> finds the shared class attribute.</li></ul><p>Output: <code>{{name}} (CS, PSU) avg 91.5</code> and <code>Omar (IS, PSU) avg 0.0</code>: same blueprint, independent data.</p>" },
+    { t: "ar", html: "جمعنا كل أفكار اليوم: كلاس فيه خاصية مشتركة، و __init__ تضبط بيانات كل كائن، و methods تغيّر البيانات أو ترجع قيمة، و __str__ للطباعة المقروءة. من نفس المخطط نصنع طلابًا مستقلين." },
   ],
   mistakes: [
-    { title: "Forgetting self in the method definition", html: "Python always passes the object as the first argument. If the method has no parameter to receive it, you get <code>TypeError: ... takes 0 positional arguments but 1 was given</code>.", wrong: c`class Dog:
+    { title: "Forgetting self in the method definition", html: "", wrong: c`class Dog:
     def bark():
         print("Woof")
 Dog().bark()   # TypeError`, right: c`class Dog:
     def bark(self):
         print("Woof")
 Dog().bark()` },
-    { title: "Forgetting self. when storing", html: "Without <code>self.</code> the value is just a local variable that disappears when <code>__init__</code> ends.", wrong: c`class Car:
+    { title: "Forgetting self. when storing", html: "Without <code>self.</code> the value is just a local variable that disappears.", wrong: c`class Car:
     def __init__(self, brand):
         brand = brand
 print(Car("Toyota").brand)   # AttributeError`, right: c`class Car:
     def __init__(self, brand):
         self.brand = brand
-print(Car("Toyota").brand)`, ar: "بدون self. القيمة لا تُحفظ داخل الكائن وتختفي بعد انتهاء الدالة." },
-    { title: "Misspelled __init__", html: "<code>__int__</code> or <code>_init_</code> (one underscore) is silently ignored, then creating the object fails with a confusing <code>TypeError</code>.", wrong: c`def _init_(self, name):`, right: c`def __init__(self, name):`, ar: "__init__ فيها شرطتان سفليتان قبلها وبعدها." },
-    { title: "Calling a method on the class instead of an object", html: "<code>Student.add_mark(90)</code> has no object, so 90 becomes <code>self</code> and <code>mark</code> is missing. Create an object first and call the method on it.", wrong: c`Student.add_mark(90)`, right: c`s = Student("Sara")
-s.add_mark(90)` },
-    { title: "__str__ that prints instead of returns", html: "<code>print(obj)</code> needs a string back. If <code>__str__</code> prints and returns nothing, you get <code>TypeError: __str__ returned non-string</code>.", wrong: c`def __str__(self):
-    print(self.name)`, right: c`def __str__(self):
-    return self.name` },
+print(Car("Toyota").brand)` },
+    { title: "Misspelled __init__", html: "<code>__int__</code> or <code>_init_</code> (one underscore) is silently ignored, then creating the object fails.", wrong: c`def _init_(self, name):`, right: c`def __init__(self, name):`, ar: "__init__ فيها شرطتان سفليتان قبلها وبعدها." },
   ],
   tricks: [
     { title: "__repr__ for debugging", html: "<code>__repr__</code> is what you see inside lists and in the shell. Define it and your lists of objects become readable.", code: c`class P:
@@ -265,13 +235,7 @@ s.add_mark(90)` },
     def __repr__(self):
         return f"P({self.x}, {self.y})"
 print([P(1, 2), P(3, 4)])` },
-    { title: "See all attributes with vars()", html: "<code>vars(obj)</code> returns a dictionary of the object's attributes — handy when you are not sure what an object holds.", code: c`class Book:
-    def __init__(self, title, pages):
-        self.title = title
-        self.pages = pages
-
-print(vars(Book("Dune", 412)))` },
-    { title: "dataclass writes __init__ for you", html: "For classes that mostly hold data, the <code>@dataclass</code> decorator writes <code>__init__</code> and a readable print for you. Learn the normal way first; use this later as a shortcut.", code: c`from dataclasses import dataclass
+    { title: "dataclass writes __init__ for you", html: "", code: c`from dataclasses import dataclass
 
 @dataclass
 class Course:
@@ -306,45 +270,9 @@ print(Box(["pen", "book"]))`, explain: "<code>__str__</code> is used by print: <
 
 c = Course("IS201", "Introduction to Information Systems")
 ` },
-    { t: "predict", code: c`class Order:
-    def __init__(self, drink):
-        print("New order:", drink)
-        self.drink = drink
-
-first = Order("latte")
-second = Order("tea")
-print(first.drink)`, explain: "<code>__init__</code> runs at each <code>Order(...)</code>, so the two \"New order\" lines come first, in creation order. Then <code>first.drink</code> is <code>latte</code>." },
-    { t: "predict", code: c`class Wallet:
-    def __init__(self, riyals):
-        self.riyals = riyals
-    def spend(self, amount):
-        self.riyals -= amount
-
-w1 = Wallet(100)
-w2 = Wallet(100)
-w1.spend(30)
-w2.spend(5)
-w1.spend(20)
-print(w1.riyals, w2.riyals)`, explain: "w1: 100 − 30 − 20 = <code>50</code>. w2: 100 − 5 = <code>95</code>. Each wallet keeps its own money." },
-    { t: "parsons", title: "A lamp that switches", prompt: "Arrange the lines so the program prints <code>False</code> then <code>True</code>.", lines: ["class Lamp:", "    def __init__(self):", "        self.on = False", "    def switch(self):", "        self.on = not self.on", "lamp = Lamp()", "print(lamp.on)", "lamp.switch()", "print(lamp.on)"], distractors: ["        on = not on"], explain: "The lamp starts off in <code>__init__</code>. <code>switch</code> flips the object's own attribute, so it must use <code>self.on</code>." },
-    { t: "try", title: "Your pet", html: "<p>Finish the <code>Pet</code> class: add a method <code>play()</code> that lowers <code>energy</code> by 3 and a <code>__str__</code> that returns something like <code>Pixel (energy 4)</code>. Create two pets and show they are independent.</p>", code: c`class Pet:
-    def __init__(self, name):
-        self.name = name
-        self.energy = 5
-
-    def feed(self):
-        self.energy += 2
-
-    # add play() and __str__ here
-
-p = Pet("Pixel")
-p.feed()
-print(p.energy)
-` },
   ],
   exercises: [
     { id: "circle", lvl: "seed", title: "Circle", prompt: "<p>Create class <code>Circle</code> with attribute <code>radius</code> and methods <code>area()</code> and <code>perimeter()</code>, both rounded to 2 decimals (use <code>math.pi</code>).</p>", starter: "import math\n\nclass Circle:\n    pass\n", tests: [{ after: "c = Circle(2)\nprint(c.radius, c.area(), c.perimeter())", expected: "2 12.57 12.57" }, { after: "print(Circle(1).area())", expected: "3.14" }],
-      hint: "<code>__init__(self, radius)</code> stores <code>self.radius</code>. Area = π·r², perimeter = 2·π·r. Use <code>round(..., 2)</code>.", ar: "خزّن{{g:|ي}} نصف القطر في self.radius، ثم استخدم{{g:|ي}}ه داخل الدالتين عن طريق self.",
       solutions: [{ name: "Class", code: c`import math
 
 class Circle:
@@ -356,23 +284,7 @@ class Circle:
 
     def perimeter(self):
         return round(2 * math.pi * self.radius, 2)` }] },
-    { id: "rect18", lvl: "seed", title: "Room object", prompt: "<p>Create class <code>Room(width, length)</code> with methods <code>area()</code>, <code>perimeter()</code> and <code>is_square()</code> (returns <code>True</code> or <code>False</code>).</p>", starter: "class Room:\n    pass\n", tests: [{ after: "r = Room(3, 4)\nprint(r.area(), r.perimeter(), r.is_square())", expected: "12 14 False" }, { after: "print(Room(5, 5).is_square())", expected: "True" }],
-      hint: "Store both sizes with <code>self.</code> in <code>__init__</code>. <code>is_square</code> can return the comparison <code>self.width == self.length</code> directly.",
-      solutions: [{ name: "Class", code: c`class Room:
-    def __init__(self, width, length):
-        self.width = width
-        self.length = length
-
-    def area(self):
-        return self.width * self.length
-
-    def perimeter(self):
-        return 2 * (self.width + self.length)
-
-    def is_square(self):
-        return self.width == self.length` }] },
     { id: "student", lvl: "seed", title: "Student with marks", prompt: "<p>Class <code>Student(name)</code> with a <code>marks</code> list, <code>add(mark)</code>, <code>average()</code> (0 if no marks) and <code>__str__</code> returning <code>NAME (avg X.X)</code>.</p>", starter: "class Student:\n    pass\n", tests: [{ after: "s = Student('Sara')\nprint(s)\ns.add(90); s.add(85)\nprint(s.average())\nprint(s)", expected: "Sara (avg 0.0)\n87.5\nSara (avg 87.5)" }],
-      hint: "Create <code>self.marks = []</code> in <code>__init__</code>. In <code>__str__</code>, call <code>self.average()</code> and format with <code>:.1f</code>.",
       solutions: [{ name: "Class", code: c`class Student:
     def __init__(self, name):
         self.name = name
@@ -387,7 +299,6 @@ class Circle:
     def __str__(self):
         return f"{self.name} (avg {self.average():.1f})"` }] },
     { id: "bank", lvl: "star", title: "Bank account with history", prompt: "<p>Class <code>Account(owner)</code> starting at 0. <code>deposit(x)</code> and <code>withdraw(x)</code> return True/False (withdraw fails if not enough money; amounts ≤ 0 fail). Every successful operation is recorded in <code>history</code> as <code>\"+100\"</code> or <code>\"-30\"</code>.</p>", starter: "class Account:\n    pass\n", tests: [{ after: "a = Account('Sara')\nprint(a.deposit(100), a.withdraw(30), a.withdraw(500), a.deposit(-5))\nprint(a.balance, a.history)", expected: "True True False False\n70 ['+100', '-30']" }],
-      hint: "Three attributes in <code>__init__</code>: owner, balance, history. In each method: check first and <code>return False</code>; otherwise change the balance, append to history, <code>return True</code>.",
       solutions: [{ name: "Class", code: c`class Account:
     def __init__(self, owner):
         self.owner = owner
@@ -408,7 +319,6 @@ class Circle:
         self.history.append(f"-{amount}")
         return True` }] },
     { id: "cart", lvl: "star", title: "Shopping cart object", prompt: "<p>Class <code>Cart</code> with <code>add(item, price, qty=1)</code> (adding an existing item increases its quantity), <code>remove(item)</code>, <code>total()</code> and <code>count()</code> (total quantity).</p>", starter: "class Cart:\n    pass\n", tests: [{ after: "c = Cart()\nc.add('latte', 18, 2)\nc.add('cookie', 6)\nc.add('latte', 18)\nprint(c.count(), c.total())\nc.remove('cookie')\nprint(c.count(), c.total())", expected: "4 60\n3 54" }],
-      hint: "Keep a dictionary inside the object: <code>self.items = {}</code> mapping item → [price, qty].",
       solutions: [{ name: "Dict inside", code: c`class Cart:
     def __init__(self):
         self.items = {}          # item -> [price, qty]
@@ -428,7 +338,6 @@ class Circle:
     def count(self):
         return sum(q for p, q in self.items.values())`, note: "The object hides <i>how</i> it stores data. Users only see add/remove/total — this is called <b>encapsulation</b>." }] },
     { id: "library", lvl: "fire", title: "Mini library", prompt: "<p>Class <code>Library</code> with <code>add_book(title)</code>, <code>borrow(title, person)</code> and <code>give_back(title)</code>. <code>borrow</code> returns <code>\"ok\"</code>, <code>\"no such book\"</code> or <code>\"already borrowed by X\"</code>. <code>available()</code> returns the sorted list of free titles.</p>", starter: "class Library:\n    pass\n", tests: [{ after: "lib = Library()\nfor t in ['Dune', 'Clean Code', 'SICP']: lib.add_book(t)\nprint(lib.borrow('Dune', 'Sara'))\nprint(lib.borrow('Dune', 'Omar'))\nprint(lib.borrow('Hamlet', 'Omar'))\nprint(lib.available())\nlib.give_back('Dune')\nprint(lib.available())", expected: "ok\nalready borrowed by Sara\nno such book\n['Clean Code', 'SICP']\n['Clean Code', 'Dune', 'SICP']" }],
-      hint: "A dictionary title → borrower, with <code>None</code> meaning \"on the shelf\".",
       solutions: [{ name: "Dict title -> borrower", code: c`class Library:
     def __init__(self):
         self.books = {}      # title -> borrower or None
@@ -459,7 +368,6 @@ class Circle:
 
     def __str__(self):
         return f"{self.seconds // 60:02d}:{self.seconds % 60:02d}"`, tests: [{ after: "t = Timer(90)\nprint(t)\nt.add(35)\nprint(t)", expected: "01:30\n02:05" }],
-      hint: "There are three bugs, all from today's \"Common mistakes\": a name, a missing <code>self.</code>, and a missing parameter.", ar: "ابحث{{g:|ي}} عن: اسم __init__، و self. عند الحفظ، و self كأول معامل.",
       solutions: [{ name: "Fixed", code: c`class Timer:
     def __init__(self, seconds):
         self.seconds = seconds
@@ -476,7 +384,6 @@ class Circle:
     { q: "Which method controls `print(obj)`?", o: ["`__init__`", "`__print__`", "`__str__`", "`show`"], a: 2, e: "`__str__`." },
     { q: "Two objects of the same class…", o: ["share all attributes", "have their own instance attributes", "can't exist", "are the same object"], a: 1, e: "Each object has its own data (class attributes are shared)." },
     { q: "Calling `acc.deposit(50)` passes `self` =", o: ["50", "acc", "deposit", "nothing"], a: 1, e: "Python passes the object automatically." },
-    { q: "Inside a method, how do you read the object's `price` attribute?", o: ["`price`", "`self.price`", "`self[price]`", "`Product.price()`"], a: 1, e: "Attributes are reached through `self.` inside the class." },
   ],
   puzzle: { title: "Shared list trap", q: "<p>What does this print?</p>", code: c`class Team:
     members = []
@@ -495,14 +402,5 @@ print(len(a.members))`, answers: ["2"], hint: "Where is <code>members</code> cre
     { f: "Method definition vs call", b: "`def add(self, x):` but call `obj.add(5)`." },
     { f: "`__str__`", b: "Returns the text shown by `print(obj)`." },
   ],
-  remember: [
-    "A **class** is a blueprint; an **object** is one thing built from it: `s = Student(\"Sara\")`.",
-    "`__init__` runs automatically for every new object and sets its starting attributes.",
-    "`self` means \"this object\". It is the first parameter of every method, but you never pass it.",
-    "Store data with `self.name = name`; read it with `obj.name` (outside) or `self.name` (inside).",
-    "A **method** is a function in a class; call it with a dot and parentheses: `s.add_mark(90)`.",
-    "`__str__` must **return** a string — it is what `print(obj)` shows.",
-  ],
-  rememberAr: "الكلاس قالب والكائن نسخة منه. __init__ تجهّز الكائن، و self تعني الكائن نفسه، والخصائص تُحفظ بـ self.، و __str__ ترجع نص الطباعة.",
 };
 })();

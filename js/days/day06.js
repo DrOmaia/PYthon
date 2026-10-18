@@ -7,74 +7,21 @@ DAYS[6] = {
   introAr: "يوم المراجعة والمشروع! اليوم نتعلم طريقة المبرمجين في حل المشكلات خطوة بخطوة، ثم نبني آلة حاسبة ذكية على مراحل، ولعبة تخمين، وحاسبة أجرة تاكسي.",
   goals: ["Use a 5-step method to solve any programming problem", "Build a program in small milestones, testing each one", "Combine input, math, strings and decisions in one project", "Find bugs from all five topics"],
   learn: [
-    { t: "h", text: "Week recap" },
-    { t: "p", html: "<p>Before the project, a quick walk through the week, {{name}}. For each day: the big idea in two sentences, a tiny example and one question. If a question feels hard, open that day's lesson for ten minutes — that is time well spent, not a step back.</p>" },
-    { t: "h", text: "Day 1 — print and comments" },
-    { t: "p", html: "<p>A program is a list of instructions that Python runs <b>from top to bottom</b>. <code>print()</code> shows values: text goes in quotes, numbers do not. <code>sep</code> goes between values, <code>end</code> goes at the end, and <code>#</code> starts a comment that Python ignores.</p>" },
-    { t: "code", code: c`print("Week", 1, "done")   # a space between values
-print("2026", "10", "16", sep="/")
-print("Loading", end="... ")
-print("ready!")` },
-    { t: "check", q: "What does this print?", code: c`print("A", "B", sep="-", end="!")
-print("C")`, o: ["`A B!` then `C`", "`A-B!C`", "`A-B` then `!C`", "`A-B!` then `C` on a new line"], a: 1, e: "`sep=\"-\"` puts a dash between A and B, and `end=\"!\"` replaces the new line with `!`. So the next print continues on the same line: `A-B!C`." },
-    { t: "h", text: "Day 2 — variables and types" },
-    { t: "p", html: "<p>A variable is a <b>name for a value</b>: <code>=</code> takes the value on the right and puts the label on the left. Every value has a type: <code>int</code> (whole number), <code>float</code> (decimal), <code>str</code> (text) or <code>bool</code> (True/False). A variable can get a new value at any time.</p>" },
-    { t: "code", code: c`coffee = 14
-coffee = coffee + 2
-print(coffee, type(coffee))
-print(type(2.5), type("hi"), type(True))` },
-    { t: "check", q: "What does this print?", code: c`a = 5
-b = a
-a = 9
-print(a, b)`, o: ["`9 9`", "`9 5`", "`5 5`", "`5 9`"], a: 1, e: "`b = a` copies the value 5 into `b` at that moment. Changing `a` later does not change `b`." },
-    { t: "h", text: "Day 3 — input, conversion and math" },
-    { t: "p", html: "<p><code>input()</code> always gives back a <b>string</b>, so convert it with <code>int()</code> or <code>float()</code> before you calculate. Besides <code>+ - * /</code>, remember <code>//</code> (whole part), <code>%</code> (remainder) and <code>**</code> (power), and use parentheses to control the order.</p>" },
-    { t: "code", code: c`n = int(input("A number: "))
-print(n * 2, n // 4, n % 4, n ** 2)`, stdin: "10" },
-    { t: "check", q: "What does `print(17 // 5, 17 % 5, 2 ** 3)` show?", o: ["`3.4 2 6`", "`3 2 8`", "`3 2 6`", "`2 3 8`"], a: 1, e: "17 = 5 × 3 + 2, so `17 // 5` is 3 and `17 % 5` is 2. `2 ** 3` is 2 × 2 × 2 = 8." },
-    { t: "h", text: "Day 4 — strings and f-strings" },
-    { t: "p", html: "<p>A string is a row of characters with indexes starting at <b>0</b>; <code>s[-1]</code> is the last one and <code>s[a:b]</code> takes a piece that stops before <code>b</code>. Methods like <code>.strip()</code>, <code>.lower()</code> and <code>.replace()</code> return a <b>new</b> string. f-strings put values into text: <code>f\"{price:.2f}\"</code>.</p>" },
-    { t: "code", code: c`name = "  omar KHALID "
-clean = name.strip().title()
-print(clean, clean[0], clean[-6:], len(clean))
-print(f"Total: {18.5 * 2:.2f} SAR")` },
-    { t: "check", q: "What does this print?", code: c`s = "Prince"
-print(s[1:4].upper(), len(s))`, o: ["`PRI 6`", "`RIN 6`", "`RINC 6`", "`rin 5`"], a: 1, e: "`s[1:4]` is indexes 1, 2, 3 → `rin`, and `.upper()` makes it `RIN`. \"Prince\" has 6 characters." },
-    { t: "h", text: "Day 5 — decisions" },
-    { t: "p", html: "<p>A comparison like <code>mark &gt;= 60</code> gives True or False. <code>if / elif / else</code> runs the <b>first</b> branch whose condition is True; the indented lines belong to it. <code>and</code>, <code>or</code> and <code>not</code> combine conditions.</p>" },
-    { t: "code", code: c`hour = 23
-if hour >= 22 or hour < 6:
-    print("Night fare")
-else:
-    print("Day fare")` },
-    { t: "check", q: "What does this print?", code: c`mark = 75
-if mark >= 90:
-    print("A")
-elif mark >= 70:
-    print("C")
-elif mark >= 60:
-    print("D")`, o: ["`A`", "`C`", "`C` and `D`", "`D`"], a: 1, e: "75 >= 90 is False; 75 >= 70 is True → `C`, and the rest of the chain is skipped even though 75 >= 60 is also True." },
-    { t: "ar", html: "هذا ملخص الأسبوع: print، المتغيرات والأنواع، input والتحويل والحساب، النصوص و f-string، والشروط. أي سؤال صعب عليك؟ ارجع{{g:|ي}} لدرس ذلك اليوم عشر دقائق." },
     { t: "h", text: "How programmers solve problems" },
     { t: "p", html: "<p>Beginners often start typing code immediately — and get stuck. Professionals first <b>think</b>. Use these five steps for every problem from now on:</p><ol><li><b>Understand.</b> What are the inputs? What exactly must the output look like?</li><li><b>Examples.</b> Solve 2–3 cases by hand, including edge cases (zero, negative, the boundary).</li><li><b>Plan.</b> Write the steps in plain words (pseudocode) before any Python.</li><li><b>Code in small pieces.</b> Write a few lines, run, check. Repeat.</li><li><b>Test and improve.</b> Try your hand examples and the weird cases. Then clean up the code.</li></ol>" },
-    { t: "ar", html: "لا تبدأ{{g:|ي}} بكتابة الكود مباشرة! افهم{{g:|ي}} المطلوب، حل{{g:|ي}} مثالين بيدك، اكتب{{g:|ي}} الخطوات بالكلام، ثم اكتب{{g:|ي}} الكود على أجزاء صغيرة وجرّب{{g:|ي}} بعد كل جزء." },
-    { t: "steps", title: "Delivery fee", problem: "<p>A delivery app charges 7 SAR for the first 3 km and 1.5 SAR for each extra km. Orders of 100 SAR or more get free delivery. Read the order total and the distance; print the fee with 2 decimals.</p>",
-      steps: [
-        { html: "<p><b>1. Understand.</b> Inputs: the order total and the distance (both can have decimals → <code>float</code>). Output: one line, <code>Delivery fee: 10.00 SAR</code>.</p>" },
-        { html: "<p><b>2. Examples by hand.</b> Total 50, 2 km → 7. Total 50, 5 km → 7 + 2 × 1.5 = 10. Total 120, 9 km → 0. Boundary: total exactly 100 → free; distance exactly 3 → 7.</p>" },
-        { html: "<p><b>3. Plan</b> in plain words:</p>", code: c`read total and distance
+    { t: "analogy", title: "Cooking a new dish", html: "<p>Nobody cooks a new kabsa recipe by throwing everything in the pot at once. You read the recipe (understand), picture the result (examples), gather and order the steps (plan), cook one step at a time and taste as you go (small pieces), and adjust the salt at the end (test and improve). If it tastes wrong, you know which step to check — because you tasted after each one.</p>" },
+    { t: "p", html: "<p>The hand examples from step 2 are not wasted time: they become your <b>tests</b> in step 5. If the program gives a different answer than your hand calculation, either the code or your understanding has a bug — and you find out right away.</p>" },
+    { t: "ar", html: "لا تبدأ{{g:|ي}} بكتابة الكود مباشرة! افهم{{g:|ي}} المطلوب، حل{{g:|ي}} مثالين بيدك، اكتب{{g:|ي}} الخطوات بالكلام، ثم اكتب{{g:|ي}} الكود على أجزاء صغيرة وجرّب{{g:|ي}} بعد كل جزء. والأمثلة التي حللتها بيدك هي نفسها اختباراتك في النهاية." },
+
+    { t: "h", text: "Worked example: delivery fee" },
+    { t: "p", html: "<p><b>Problem:</b> A delivery app charges 7 SAR for the first 3 km and 1.5 SAR for each extra km. Orders of 100 SAR or more get free delivery. Read the order total and the distance; print the fee.</p><p><b>1. Understand</b> — inputs: order total, distance. Output: the fee. Both inputs can have decimals, so we will use <code>float()</code>.<br><b>2. Examples</b> — total 50, 2 km → 7. Total 50, 5 km → 7 + 2 × 1.5 = 10. Total 120, 9 km → 0. And the boundary: total exactly 100 → free.<br><b>3. Plan:</b></p>" },
+    { t: "static", code: c`read total and distance
 if total >= 100: fee is 0
 else if distance <= 3: fee is 7
 else: fee is 7 + (distance - 3) * 1.5
 print fee` },
-        { html: "<p><b>4. Code in small pieces.</b> First the inputs — run and check they are read correctly. Then the decision, turning each plan line into Python:</p>", code: c`if total >= 100:
-    fee = 0
-elif distance <= 3:
-    fee = 7
-else:
-    fee = 7 + (distance - 3) * 1.5` },
-        { html: "<p><b>5. Test</b> with every hand example from step 2, especially the boundaries 100 and 3. Change the Input box below and compare with your hand answers.</p>" }],
-      code: c`total = float(input("Order total: "))
+    { t: "p", html: "<p>Notice the plan's order: the free-delivery rule comes <b>first</b>, because it wins no matter the distance. Each plan line becomes one or two lines of Python.</p>" },
+    { t: "code", title: "4. Code — then test with the hand examples", code: c`total = float(input("Order total: "))
 distance = float(input("Distance (km): "))
 if total >= 100:
     fee = 0
@@ -82,9 +29,80 @@ elif distance <= 3:
     fee = 7
 else:
     fee = 7 + (distance - 3) * 1.5
-print(f"Delivery fee: {fee:.2f} SAR")`, stdin: "50\n5", ar: "لاحظ{{g:|ي}} كيف تحوّل كل سطر في الخطة إلى سطر أو سطرين في بايثون. الخطة الجيدة تجعل الكود سهلًا." },
+print(f"Delivery fee: {fee:.2f} SAR")`, stdin: "50\n5", before: "<p>Run it with <code>50</code> and <code>5</code> (already in the Input box). Then do step 5: change the Input to each of the other hand examples — <code>50</code>/<code>2</code>, <code>120</code>/<code>9</code>, <code>100</code>/<code>4</code> — and compare with your answers.</p>", note: "<p>How the plan became code:</p><ul><li>Lines 1–2 read both inputs and convert them with <code>float()</code> (Day 3), because <code>input()</code> always gives text.</li><li>Lines 3–8 are one <code>if/elif/else</code> chain (Day 5): exactly one branch sets <code>fee</code>. With 50 and 5: not ≥ 100, not ≤ 3, so <code>fee = 7 + 2 * 1.5 = 10.0</code>.</li><li>Line 9 prints once, at the end, with an f-string and <code>.2f</code> (Day 4) → <code>Delivery fee: 10.00 SAR</code>.</li></ul><p>Testing <code>100</code> checks the <b>boundary</b>: if we had written <code>&gt;</code> instead of <code>&gt;=</code>, an order of exactly 100 SAR would wrongly pay. Boundary tests catch exactly this kind of bug.</p>" },
+    { t: "ar", html: "حوّلنا الخطة إلى كود سطرًا بسطر، ثم اختبرناه بالأمثلة التي حللناها باليد. اختبر{{g:|ي}} دائمًا القيمة الحدّية (مثل 100 بالضبط) لأنها تكشف خطأ استخدام &gt; بدل &gt;=." },
+
     { t: "h", text: "Week 1 in one table" },
+    { t: "p", html: "<p>Before the project, a quick tour of the five days. The table is your summary; the short sections below remind you <b>what</b> each idea is and <b>when</b> you need it, each with one small example.</p>" },
     { t: "table", head: ["Day", "Idea", "Remember"], rows: [["1", "`print`, comments", "text in quotes, `sep`, `end`, `\\n`"], ["2", "variables, types", "`=` stores; `int` `float` `str` `bool`"], ["3", "input, math", "`input()` gives `str` → `int()`/`float()`; `//` `%`"], ["4", "strings", "index from 0, slices, methods, f-strings"], ["5", "decisions", "`==`, `if/elif/else`, `and/or/not`, indentation"]] },
+    { t: "ar", html: "هذا ملخص الأسبوع الأول: الطباعة، المتغيرات والأنواع، الإدخال والحساب، النصوص، والشروط. المشروع اليوم يستخدمها كلها معًا." },
+
+    { t: "h", text: "Day 1 reminder: print and comments" },
+    { t: "p", html: "<p><code>print()</code> is how your program talks to the user. Text goes inside quotes; several values are separated by commas and printed with a space between them. <code>sep</code> changes that space, <code>end</code> changes what comes after the line (normally a new line), and <code>\\n</code> inside text starts a new line. A <code>#</code> starts a comment: a note for humans that Python ignores. Use it whenever you print results.</p>" },
+    { t: "code", code: c`# a comment: Python skips this line
+print("Py30", "Week", 1, sep="-")
+print("Loading", end="...")
+print("done")
+print("Line one\nLine two")`, before: "<p>Predict the four lines of output, then run it.</p>", note: "<p>Line by line:</p><ul><li>Line 1 is a comment, so nothing is printed for it.</li><li><code>sep=\"-\"</code> puts a dash between the values instead of a space → <code>Py30-Week-1</code>.</li><li><code>end=\"...\"</code> replaces the usual new line, so the next print continues on the same line → <code>Loading...done</code>.</li><li><code>\\n</code> splits the text into two lines: <code>Line one</code> and <code>Line two</code>.</li></ul>" },
+    { t: "ar", html: "print تطبع النص والقيم، و sep تغيّر الفاصل بينها، و end تغيّر ما يأتي بعد السطر، و \\n تبدأ سطرًا جديدًا. والتعليق يبدأ بـ # وبايثون يتجاهله." },
+
+    { t: "h", text: "Day 2 reminder: variables and types" },
+    { t: "p", html: "<p>A <b>variable</b> is a name for a value, so you can use it later. One <code>=</code> stores the value on the right in the name on the left. Every value has a <b>type</b>: <code>int</code> (whole numbers), <code>float</code> (decimals), <code>str</code> (text) and <code>bool</code> (<code>True</code>/<code>False</code>). The type decides what operations mean — you need it in mind every time a program mixes numbers and text.</p>" },
+    { t: "code", code: c`a = "3"
+b = 4
+print(type(a), type(b))
+print(a * b, int(a) * b)
+print(str(b) + a)`, before: "<p>The same symbol does different things for different types. Run it and compare the two results on line 4.</p>", note: "<p>Line by line:</p><ul><li><code>a</code> holds the <b>text</b> <code>\"3\"</code>, <code>b</code> holds the <b>number</b> 4, as <code>type()</code> confirms: <code>str</code> and <code>int</code>.</li><li><code>a * b</code> repeats the text 4 times → <code>3333</code>, while <code>int(a) * b</code> is real multiplication → <code>12</code>.</li><li><code>str(b) + a</code> glues two texts → <code>43</code>, not 7.</li></ul><p>When a result looks strange, check the types first.</p>" },
+    { t: "ar", html: "المتغير اسم لقيمة، و = واحدة للتخزين. الأنواع الأساسية: int و float و str و bool، والنوع يحدد معنى العملية: \"3\" * 4 تعطي 3333 وليس 12." },
+
+    { t: "h", text: "Day 3 reminder: input and math" },
+    { t: "p", html: "<p><code>input()</code> waits for the user and <b>always</b> returns text, even if they type a number. To calculate, convert it first with <code>int()</code> or <code>float()</code>. Besides <code>+ - * /</code>, remember <code>//</code> (whole-number division) and <code>%</code> (the remainder) — perfect for splitting things into groups, like minutes into hours.</p>" },
+    { t: "code", code: c`minutes = int(input("Minutes: "))
+hours = minutes // 60
+rest = minutes % 60
+print(hours, "h", rest, "min")
+print(minutes / 60)`, stdin: "135", before: "<p>Run it with <code>135</code>, then try <code>60</code> and <code>59</code>.</p>", note: "<p>Line by line with 135:</p><ul><li><code>int(input(...))</code> turns the text <code>\"135\"</code> into the number 135. Without <code>int()</code>, the math would crash.</li><li><code>135 // 60</code> → <code>2</code> full hours.</li><li><code>135 % 60</code> → <code>15</code>, the minutes left over.</li><li><code>/</code> always gives a float → <code>2.25</code>.</li></ul><p>Your calculator project will offer all these operators.</p>" },
+    { t: "ar", html: "input ترجع نصًا دائمًا، فحوّل{{g:|ي}}ه بـ int أو float قبل الحساب. و // تعطي ناتج القسمة الصحيح، و % تعطي الباقي، و / تعطي عددًا عشريًا دائمًا." },
+
+    { t: "h", text: "Day 4 reminder: strings and f-strings" },
+    { t: "p", html: "<p>A string is a sequence of characters, numbered from <b>0</b>. You can take one character (<code>s[0]</code>), a slice (<code>s[1:3]</code>), or use methods like <code>.strip()</code>, <code>.upper()</code> and <code>.title()</code>, which always return a <b>new</b> string. f-strings put values into text neatly — you will use one to print every calculator result.</p>" },
+    { t: "code", code: c`op = "  *  "
+city = "Riyadh"
+print("[" + op.strip() + "]")
+print(city[1:3], city[-1], city.upper()[::-1])
+print(f"Total: {7 / 2:.2f} SAR")`, before: "<p>Three tools you will need in the project: cleaning input, slicing, and formatting numbers.</p>", note: "<p>Line by line:</p><ul><li><code>op.strip()</code> removes the spaces around the operator → <code>[*]</code>. In the calculator, users may type spaces by accident.</li><li><code>city[1:3]</code> → <code>iy</code> (indexes 1 and 2), <code>city[-1]</code> → <code>h</code>, and <code>city.upper()[::-1]</code> → <code>HDAYIR</code>.</li><li><code>{7 / 2:.2f}</code> calculates 3.5 and shows it with two decimals → <code>Total: 3.50 SAR</code>.</li></ul>" },
+    { t: "ar", html: "العد في النص يبدأ من صفر، والقص لا يشمل رقم النهاية، ودوال النص ترجع نصًا جديدًا. و strip مفيدة لتنظيف المدخلات، و f-string مع .2f لطباعة الأرقام بشكل مرتب." },
+
+    { t: "h", text: "Day 5 reminder: decisions" },
+    { t: "p", html: "<p><code>if</code>, <code>elif</code> and <code>else</code> let a program choose. Python checks the conditions from top to bottom and runs only the <b>first</b> True branch, so the order matters. <code>==</code> asks \"equal?\", <code>and</code>/<code>or</code>/<code>not</code> combine questions, and indentation shows which lines belong to which branch. Your calculator uses a chain like this to pick the operation.</p>" },
+    { t: "code", code: c`op = "/"
+b = 0
+if op == "/" and b == 0:
+    print("Cannot divide by zero")
+elif op == "/":
+    print("Dividing...")
+else:
+    print("Another operator")`, before: "<p>Run it, then change <code>b</code> to <code>5</code>, and then <code>op</code> to <code>\"+\"</code>.</p>", note: "<p>Line by line:</p><ul><li>With <code>op = \"/\"</code> and <code>b = 0</code>, both parts of the <code>and</code> are True → <code>Cannot divide by zero</code>, and the chain stops.</li><li>With <code>b = 5</code>, the first condition is False, the <code>elif</code> is True → <code>Dividing...</code>.</li><li>With <code>\"+\"</code>, both are False → the <code>else</code> runs.</li></ul><p>The special case (zero) is checked <b>before</b> the normal case. Exactly this idea protects your calculator v2 from crashing.</p>" },
+    { t: "ar", html: "بايثون يفحص الشروط من الأعلى للأسفل وينفذ أول شرط صحيح فقط. لذلك ضع{{g:|ي}} الحالة الخاصة (مثل القسمة على صفر) قبل الحالة العادية." },
+
+    { t: "h", text: "Project plan: the Smart Calculator" },
+    { t: "p", html: "<p>The calculator is built in <b>three versions</b> (the exercises v1, v2, v3). Each version must work and pass its tests <b>before</b> you start the next. Here is the plan, step by step.</p><ol><li><b>v1 — the basics.</b> Read a number, an operator and another number. Choose the calculation with an <code>if/elif</code> chain on the operator, store it in <code>result</code>, and print once at the end.</li><li><b>v2 — no crashes.</b> Add <b>guards</b> before the calculation: clean the operator with <code>.strip()</code>, catch division by zero, and reject unknown operators.</li><li><b>v3 — power tools.</b> Add <code>//</code>, <code>%</code> and <code>**</code>, and extend the zero check to <code>//</code> and <code>%</code>.</li></ol>" },
+    { t: "code", code: c`a = float(input())
+op = input()
+b = float(input())
+print(f"a={a:g} op=[{op}] b={b:g}")`, stdin: "12\n+\n5", before: "<p><b>Step 1 of v1:</b> before any calculation, only read the three inputs and print them back. Run it, then try <code>2.5</code> as the first number.</p>", note: "<p>Why start like this? If the inputs are read wrongly, every later step is wrong too, so we check them first.</p><ul><li><code>float()</code> accepts both <code>12</code> and <code>2.5</code>.</li><li>The format <code>:g</code> removes useless zeros: <code>12.0</code> shows as <code>12</code>, but <code>2.5</code> stays <code>2.5</code>. The exercises expect exactly this.</li><li>The brackets around <code>{op}</code> make hidden spaces visible — useful later for v2.</li></ul><p>Once this prints what you expect, add the <code>if/elif</code> chain that computes <code>result</code>, and replace this print with the final one.</p>" },
+    { t: "p", html: "<p><b>How the pieces connect:</b> the inputs (Day 3) feed a decision chain (Day 5) that stores one <code>result</code>; one f-string print (Day 4) shows it. Keeping a single print at the end means you change the output format in only one place. In v2, the guards go <b>in front of</b> this chain: check the problems first, and do the normal calculation in the last branch.</p>" },
+    { t: "table", head: ["Version", "Test input", "Expected output", "What it checks"], rows: [["v1", "`12`, `+`, `5`", "`12 + 5 = 17`", "basic chain and `:g`"], ["v1", "`9`, `/`, `2`", "`9 / 2 = 4.5`", "decimals stay"], ["v2", "`8`, `/`, `0`", "`Cannot divide by zero`", "the zero guard"], ["v2", "`8`, `^`, `2`", "`Unknown operator: ^`", "unknown operators"], ["v2", "`6`, ` * `, `7`", "`6 * 7 = 42`", "`.strip()` on the operator"], ["v3", "`5`, `%`, `0`", "`Cannot divide by zero`", "zero guard for `%`"]] },
+    { t: "ar", html: "ابنِ{{g:|ي}} الحاسبة على ثلاث مراحل، ولا تنتقل{{g:|ي}} للمرحلة التالية قبل أن تنجح الحالية في كل الاختبارات. ابدأ{{g:|ي}} بقراءة المدخلات وطباعتها للتأكد منها، ثم سلسلة if/elif، ثم أضف{{g:|ي}} الحمايات (القسمة على صفر والعامل غير المعروف) قبل الحساب." },
+
+    { t: "h", text: "The other programs: guessing game and taxi fare" },
+    { t: "p", html: "<p>The same method works for the remaining exercises.</p><ul><li><b>Guess my number:</b> list the four possible answers first, then put the <b>widest problem</b> (out of range) at the top of the chain, followed by correct, too low and too high. Test 0, 1, 7, 10 and 11 — the boundaries.</li><li><b>Taxi fare:</b> the plan has three steps in a fixed order: the basic fare, then the night increase, then the minimum fare. These are <b>separate</b> <code>if</code> statements, not one chain, because each rule may apply on top of the previous one.</li></ul>" },
+    { t: "code", code: c`fare = 10 + 2.1 * 1
+print(f"basic: {fare:.2f}")
+if fare < 15:
+    fare = 15
+print(f"after minimum: {fare:.2f}")`, before: "<p>A piece of the taxi plan for a 1 km day trip. Run it and watch how the minimum rule changes the fare.</p>", note: "<p>Line by line:</p><ul><li>Line 1 computes the basic fare: <code>10 + 2.1</code> → <code>12.10</code>.</li><li>Line 3 asks whether that is below the minimum. It is, so line 4 replaces it with 15.</li><li>The last line shows <code>15.00</code>.</li></ul><p>Printing the value after each step, like here, is a simple way to test a plan piece by piece. Remove the extra prints once everything works.</p>" },
+    { t: "ar", html: "في لعبة التخمين ضع{{g:|ي}} شرط خارج النطاق أولًا. وفي حاسبة التاكسي اتبع{{g:|ي}} الترتيب: الأجرة الأساسية، ثم زيادة الليل، ثم الحد الأدنى، بجمل if منفصلة. واطبع{{g:|ي}} القيم بعد كل خطوة لتختبر{{g:|ي}} خطتك." },
   ],
   tricks: [
     { title: "Format numbers nicely with :g", html: "<code>:g</code> removes useless zeros: <code>f\"{12.0:g}\"</code> → <code>12</code>, <code>f\"{2.5:g}\"</code> → <code>2.5</code>. Handy for calculators.", code: c`print(f"{12.0:g} {2.50:g} {1/3:g}")` },
@@ -101,13 +119,6 @@ else:
 b = 4
 print(a * b, int(a) * b, str(b) + a)`, explain: "<code>\"3\" * 4</code> → <code>3333</code>. <code>3 * 4</code> → <code>12</code>. <code>\"4\" + \"3\"</code> → <code>43</code>. Types decide everything!" },
     { t: "parsons", title: "From plan to code", prompt: "The plan: <i>read a price; if it is over 100 take 10% off; print the final price with 2 decimals.</i> Arrange the code.", lines: ["price = float(input())", "if price > 100:", "    price = price * 0.9", c`print(f"{price:.2f}")`], distractors: ["    price = price - 10", c`print("{price:.2f}")`], explain: "10% off means multiply by 0.9 (not minus 10 riyals), and an f-string needs its <code>f</code>." },
-    { t: "predict", code: c`price = input()
-qty = 3
-if float(price) * qty >= 50:
-    print(f"{price} x {qty} = {float(price) * qty:.2f} (free bag)")
-else:
-    print(price * 2)`, stdin: "12.5", explain: "<code>price</code> is the string <code>\"12.5\"</code>. <code>float(price) * 3</code> is 37.5, which is less than 50, so the <code>else</code> runs — and there <code>price * 2</code> repeats the <b>string</b>: <code>12.512.5</code>. Types and decisions together!" },
-    { t: "parsons", title: "Clean answer, then decide", prompt: "Arrange the lines: read an answer, clean it, and print <code>Saved</code> for yes and <code>Not saved</code> for anything else. Watch the indentation.", lines: [c`answer = input().strip().lower()`, c`if answer == "yes":`, c`    print("Saved")`, c`else:`, c`    print("Not saved")`], distractors: [c`if answer = "yes":`, c`if answer == "yes" or "y":`], explain: "Clean first (Day 4), then compare with <code>==</code> (Day 5). The distractors are the two most common Week 1 bugs: <code>=</code> instead of <code>==</code>, and the lazy <code>or</code>." },
     { t: "try", title: "Plan it yourself", html: "<p>Problem: a gym charges 150 SAR a month, or 1500 SAR for a full year. Read the number of months someone plans to go and print which option is cheaper and by how much. First write your plan as comments, then the code.</p>", code: c`# 1. read the months
 # 2. ...
 ` },
@@ -271,17 +282,6 @@ elif t > 10:
     { f: "How to avoid a crash when dividing?", b: "Check first: `if b == 0: ...` before `a / b`." },
     { f: "What does `:g` do in an f-string?", b: "Removes useless zeros: `12.0` → `12`." },
     { f: "Apply a minimum value `15` to `fare`", b: "`fare = max(fare, 15)`" },
-    { f: "Why does `input()` + 2 crash?", b: "`input()` gives a string. Convert first: `int(input()) + 2`." },
   ],
-  remember: [
-    "Python runs code top to bottom; `print()` shows values, `sep` and `end` control spacing, `#` is a comment.",
-    "A variable is a name for a value; types are `int`, `float`, `str`, `bool`.",
-    "`input()` always returns a string — convert with `int()` / `float()` before doing math.",
-    "`//` is the whole part, `%` the remainder; use parentheses for the order you mean.",
-    "Strings: index from 0, slices stop before the end index, methods return a new string, f-strings format output.",
-    "`if / elif / else` runs the first True branch only; most specific condition first.",
-    "Solve problems in 5 steps: understand, examples by hand, plan, code in small pieces, test.",
-  ],
-  rememberAr: "الأسبوع الأول: print والمتغيرات و input مع التحويل والحساب والنصوص والشروط. وأهم عادة: افهم{{g:|ي}} وخطّط{{g:|ي}} قبل الكتابة، ثم ابنِ{{g:|ي}} البرنامج على مراحل وجرّب{{g:|ي}} كل مرحلة.",
 };
 })();

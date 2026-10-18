@@ -3,254 +3,182 @@ window.DAYS = window.DAYS || {};
 const c = String.raw;
 DAYS[19] = {
   title: "OOP: inheritance and polymorphism",
-  intro: "A university has students, instructors and staff. They are all <b>people</b> with a name and an ID, but each has something special. Instead of copying the shared code three times, <b>inheritance</b> lets each class reuse a parent class and add only what's different. Yesterday's ideas — <code>__init__</code>, <code>self</code>, methods — are all you need, {{name}}.",
+  intro: "A university has students, instructors and staff. They are all <b>people</b> with a name and an ID, but each has something special. Instead of copying the shared code three times, <b>inheritance</b> lets each class reuse a parent class and add only what's different.",
   introAr: "الوراثة تسمح لكلاس جديد أن يرث كل خصائص ودوال كلاس آخر ويضيف أو يعدّل عليها. وتعدد الأشكال (polymorphism) يعني أن نستدعي نفس الدالة على كائنات مختلفة وكل كائن يتصرف بطريقته.",
-  goals: ["Create a child class that inherits from a parent", "Add new methods in a child class", "Extend `__init__` with `super()`", "Override methods (and still reuse the parent's version)", "Use polymorphism: one loop, many object types", "Know when to use inheritance vs composition"],
+  goals: ["Create a child class that inherits from a parent", "Extend `__init__` with `super()`", "Override methods", "Use polymorphism: one loop, many object types", "Know when to use inheritance vs composition"],
   learn: [
-    { t: "h", text: "The problem: copy-paste classes" },
-    { t: "p", html: "<p>Say you write a <code>Student</code> class and an <code>Instructor</code> class. Both need a name, an ID and a way to introduce themselves. With yesterday's tools you would write the same <code>__init__</code> twice. Now imagine finding a bug in it — you must fix it in two (or ten) places, and you will forget one.</p>" },
-    { t: "code", code: c`class Student:
-    def __init__(self, name, pid):
-        self.name = name
-        self.pid = pid
+    { t: "h", text: "Why inheritance matters" },
+    { t: "p", html: "<p>Yesterday you wrote classes like <code>Student</code>. Now imagine a university system that also needs <code>Instructor</code> and <code>Staff</code>. All three have a name and an ID, and all three can introduce themselves. If you write three separate classes, you copy the same <code>__init__</code> three times — and when you find a bug, you must fix it three times.</p><p><b>Inheritance</b> solves this: you write the shared part <b>once</b> in a parent class, and each child class reuses it and adds only what is different.</p>" },
+    { t: "analogy", title: "A family recipe", html: "<p>Your mother has a recipe for <i>kabsa</i>. You inherit it: you can cook it exactly as she does without writing it again. But you may <b>add</b> something (extra nuts) or <b>change</b> one step (less salt). The original recipe is the <b>parent class</b>; your version is the <b>child class</b>. You only write down the differences.</p>" },
+    { t: "ar", html: "الوراثة تعني أن نكتب الجزء المشترك مرة واحدة في كلاس أب، ثم ترث منه كلاسات أبناء تضيف أو تغيّر ما يختلف فقط. هذا يمنع تكرار الكود." },
 
-class Instructor:
-    def __init__(self, name, pid):     # the same code again!
-        self.name = name
-        self.pid = pid
-
-print(Student("{{name}}", "S1").name, Instructor("Hamed", "F7").name)`, before: "<p>This works, but look how much is repeated. Programmers have a rule: <b>DRY — Don't Repeat Yourself</b>.</p>" },
-    { t: "analogy", title: "Inheritance is like family traits", html: "<p>A child inherits things from a parent — eye color, family name — without anyone writing them down again. The child can also have new things the parent doesn't have (playing the guitar) and can do some things differently. A child class works the same way: it gets everything from the parent class for free, then adds or changes only what is special.</p>" },
-
-    { t: "h", text: "Your first child class" },
-    { t: "p", html: "<p>Write the shared code once in a <b>parent</b> class (also called <b>base</b> class). Then create a <b>child</b> class by putting the parent's name in parentheses after the child's name. The child automatically has every attribute and method of the parent.</p>" },
+    { t: "h", text: "Parent and child classes" },
+    { t: "p", html: "<p>To make a child class, write the parent's name in parentheses after the class name: <code>class Student(Person):</code>. Read it as <b>\"a Student is a Person\"</b>. The child automatically gets every method of the parent, including <code>__init__</code>.</p>" },
     { t: "code", code: c`class Person:
     def __init__(self, name, pid):
         self.name = name
         self.pid = pid
-
     def introduce(self):
         return f"I am {self.name} ({self.pid})"
-
 class Student(Person):
     pass
-
 s = Student("{{name}}", "S123")
-print(s.introduce())`, before: "<p>The <code>Student</code> class body is empty (<code>pass</code>), yet the object can do everything a <code>Person</code> can.</p>", note: "<p><code>Student(\"{{name}}\", \"S123\")</code> used <code>Person</code>'s <code>__init__</code>, and <code>s.introduce()</code> used <code>Person</code>'s method. Nothing was copied.</p>" },
-    { t: "lines", rows: [
-      ["class Person:", "The <b>parent</b>: the general idea, with everything people share."],
-      ["class Student(Person):", "The <b>child</b>. Read the parentheses as \"Student <b>is a</b> Person\". It inherits all of Person's methods."],
-      ["    pass", "Nothing new yet — the child is an exact copy of the parent's behavior."],
-      ["s.introduce()", "Python looks for <code>introduce</code> in <code>Student</code> first. Not there? It looks in the parent, <code>Person</code>, and finds it."],
-    ] },
-    { t: "ar", html: "نكتب اسم الكلاس الأب بين قوسين: class Student(Person). هكذا يأخذ الابن كل دوال وخصائص الأب بدون نسخ الكود." },
-    { t: "check", q: "In `class Laptop(Computer):`, which class is the parent?", o: ["`Laptop`", "`Computer`", "Both", "Neither"], a: 1, e: "The parent goes inside the parentheses. A Laptop **is a** Computer.", hint: "Read it as \"Laptop is a …\"" },
-
-    { t: "h", text: "Adding something new in the child" },
-    { t: "p", html: "<p>A child that is an exact copy is not very useful. The real power: the child keeps everything from the parent <b>and</b> adds its own methods. Those new methods belong only to the child — the parent does not get them.</p>" },
+print(s.introduce())`, before: "<p>Look at <code>Student</code>: its body is only <code>pass</code> (an empty block). Predict whether <code>s.introduce()</code> works, then run it.</p>", note: "<p>Line by line:</p><ul><li>Lines 1–6 are an ordinary class from Day 18: <code>Person</code> stores a name and an ID and can introduce itself.</li><li><code>class Student(Person):</code> creates a child class. <code>pass</code> means \"nothing new to add\".</li><li><code>Student(\"{{name}}\", \"S123\")</code>: Student has no <code>__init__</code> of its own, so Python looks in the parent and uses <b>Person's</b> <code>__init__</code>.</li><li><code>s.introduce()</code> works the same way: Python does not find it in Student, so it looks in Person.</li></ul><p>The key rule: when you ask an object for a method, Python first looks in its own class, then in the parent.</p>" },
     { t: "code", code: c`class Person:
     def __init__(self, name):
         self.name = name
-
-    def greet(self):
-        return f"Hello, I am {self.name}"
-
 class Student(Person):
     def study(self, subject):
         return f"{self.name} is studying {subject}"
-
 s = Student("{{name}}")
-print(s.greet())
-print(s.study("Python"))`, note: "<p><code>s.greet()</code> comes from the parent; <code>s.study()</code> comes from the child. A plain <code>Person(\"Guest\").study(\"Math\")</code> would fail with <code>AttributeError</code>, because <code>study</code> exists only in <code>Student</code>.</p>" },
-    { t: "check", q: "Which line causes an error?", code: c`class Animal:
-    def eat(self):
-        return "eating"
+print(s.study("Python"))
+p = Person("Guest")
+print(p.name)`, before: "<p>A child can also <b>add</b> new methods. Run it, then add the line <code>p.study(\"Math\")</code> at the end and see what happens.</p>", note: "<p>Line by line:</p><ul><li><code>Student</code> inherits <code>__init__</code> from <code>Person</code>, so <code>self.name</code> is set.</li><li>It also adds a brand-new method <code>study</code>, which uses the inherited <code>self.name</code>.</li><li><code>s.study(\"Python\")</code> prints <code>{{name}} is studying Python</code>.</li><li><code>p</code> is a plain <code>Person</code>. It has a name, but <b>no</b> <code>study</code> method: <code>p.study(\"Math\")</code> gives an <code>AttributeError</code>.</li></ul><p>Inheritance goes one way only: the child gets everything from the parent, but the parent gets nothing from the child.</p>" },
+    { t: "ar", html: "نكتب class Student(Person): لنجعل Student ابنًا لـ Person، فيرث كل دواله بما فيها __init__. الابن يستطيع إضافة دوال جديدة، لكن الأب لا يملك دوال الابن." },
 
-class Bird(Animal):
-    def fly(self):
-        return "flying"
-
-b = Bird()
-a = Animal()
-print(b.eat())    # line A
-print(b.fly())    # line B
-print(a.fly())    # line C`, o: ["line A", "line B", "line C", "none"], a: 2, e: "A Bird gets `eat` from Animal and has its own `fly`. But an Animal does not have `fly` — inheritance goes from parent to child, never the other way.", hint: "Does the parent get the child's methods?" },
-
-    { t: "h", text: "super().__init__: extending the constructor" },
-    { t: "p", html: "<p>A student has everything a person has <b>plus</b> a major. So <code>Student</code> needs its own <code>__init__</code> with one extra parameter. But if the child writes its own <code>__init__</code>, it <b>replaces</b> the parent's one — and then <code>name</code> and <code>pid</code> are never set. The fix is <code>super()</code>: it means \"the parent class\". <code>super().__init__(name, pid)</code> runs the parent's setup first, and then the child adds its own attribute.</p>" },
-    { t: "analogy", title: "super() is asking your parent to do their part", html: "<p>Think of registering at a sports club through your family's membership. Your parent's form already has the family name and address — you don't write them again. You just ask your parent to fill their part (<code>super().__init__</code>), then you add your own line: your sport.</p>" },
+    { t: "h", text: "Extending __init__ with super()" },
+    { t: "p", html: "<p>A student also needs a <b>major</b>. So Student needs its own <code>__init__</code>. But careful: as soon as the child writes <code>__init__</code>, it <b>replaces</b> the parent's version. The parent's lines (<code>self.name = name</code>…) will not run any more — unless you call them yourself with <code>super()</code>.</p>" },
     { t: "code", code: c`class Person:
-    def __init__(self, name, pid):
-        self.name = name
-        self.pid = pid
-
-class Student(Person):
-    def __init__(self, name, pid, major):
-        super().__init__(name, pid)
-        self.major = major
-
-s = Student("{{name}}", "S123", "CS")
-print(s.name, s.pid, s.major)`, before: "<p>Look at the child's <code>__init__</code>: one line passes the shared data up to the parent, one line stores the new data.</p>" },
-    { t: "lines", rows: [
-      ["def __init__(self, name, pid, major):", "The child's constructor takes everything it needs: the parent's data <b>and</b> the new <code>major</code>."],
-      ["    super().__init__(name, pid)", "Call the <b>parent's</b> <code>__init__</code> on this same object. It sets <code>self.name</code> and <code>self.pid</code>. Notice: no <code>self</code> in the parentheses — Python passes it."],
-      ["    self.major = major", "Now add what is special about a student."],
-    ] },
-    { t: "ar", html: "super() تعني الكلاس الأب. نستدعي super().__init__(...) داخل __init__ الخاصة بالابن حتى يجهّز الأب خصائصه المشتركة، ثم نضيف خصائص الابن." },
-    { t: "check", q: "What happens here?", code: c`class Person:
     def __init__(self, name):
         self.name = name
-
+class Student(Person):
+    def __init__(self, name, major):
+        super().__init__(name)
+        self.major = major
+s = Student("{{name}}", "CS")
+print(s.name, "-", s.major)`, before: "<p><code>super()</code> means \"my parent class\". Run it and see that both attributes exist.</p>", note: "<p>Line by line:</p><ul><li><code>Student(\"{{name}}\", \"CS\")</code> runs <b>Student's</b> <code>__init__</code> with <code>name=\"{{name}}\"</code> and <code>major=\"CS\"</code>.</li><li><code>super().__init__(name)</code> runs <b>Person's</b> <code>__init__</code> on this same object, so <code>self.name</code> is set there.</li><li><code>self.major = major</code> then adds the attribute that only students have.</li><li>Output: <code>{{name}} - CS</code>.</li></ul><p>Pattern to remember: first let the parent set up the shared attributes with <code>super().__init__(...)</code>, then add the child's own.</p>" },
+    { t: "code", code: c`class Person:
+    def __init__(self, name):
+        self.name = name
 class Student(Person):
     def __init__(self, name, major):
         self.major = major
+s = Student("{{name}}", "CS")
+print(s.major)
+print(s.name)`, expectError: true, before: "<p>This version <b>forgets</b> <code>super().__init__</code>. Run it and read the error.</p>", note: "<p>What happens:</p><ul><li>Student's <code>__init__</code> replaced Person's completely, and it never calls it.</li><li>So only <code>self.major</code> was created. <code>print(s.major)</code> works and prints <code>CS</code>.</li><li><code>print(s.name)</code> crashes with <code>AttributeError: 'Student' object has no attribute 'name'</code>: the line <code>self.name = name</code> never ran for this object.</li></ul><p>Whenever you see this error in a child class, first check: did I call <code>super().__init__(...)</code>?</p>" },
+    { t: "ar", html: "إذا كتب الابن __init__ خاصًا به فإنه يحل محل __init__ الأب. لذلك نستدعي super().__init__(...) أولًا لتعيين الخصائص المشتركة، ثم نضيف خصائص الابن. انتبه{{g:|ي}}: نسيان super() يسبب AttributeError." },
+    { t: "predict", code: c`class Phone:
+    def __init__(self, brand):
+        self.brand = brand
+        self.apps = 0
+class SmartPhone(Phone):
+    def __init__(self, brand, apps):
+        super().__init__(brand)
+        self.apps = apps
+print(SmartPhone("Nokia", 12).apps)`, explain: "<code>super().__init__(brand)</code> runs first and sets <code>self.apps = 0</code>. Then the next line in the child sets <code>self.apps = 12</code>, replacing it. Order matters: the last assignment wins. Output: <code>12</code>." },
 
-s = Student("Lina", "CS")
-print(s.name)`, o: ["It prints `Lina`", "It prints `CS`", "`AttributeError`: no attribute `name`", "It prints `None`"], a: 2, e: "The child's `__init__` replaced the parent's and never called `super().__init__(name)`, so `self.name` was never created.", hint: "Which `__init__` actually ran — the parent's or the child's?" },
-
-    { t: "h", text: "Overriding: doing it differently" },
-    { t: "p", html: "<p>Sometimes the child should do the same job <b>in its own way</b>. An instructor introduces themselves as \"Dr. …\". If the child defines a method with the <b>same name</b> as the parent, the child's version wins. This is called <b>overriding</b>. And if the child wants to <i>add</i> to the parent's version instead of replacing it, it can call <code>super().method()</code> inside.</p>" },
+    { t: "h", text: "Overriding methods" },
+    { t: "p", html: "<p>Sometimes the child should do the <b>same job differently</b>. An instructor introduces themselves as \"Dr. ...\". To change an inherited method, simply define a method with the <b>same name</b> in the child. This is called <b>overriding</b>.</p>" },
     { t: "code", code: c`class Person:
     def __init__(self, name):
         self.name = name
-
     def introduce(self):
         return f"I am {self.name}"
-
 class Instructor(Person):
-    def introduce(self):                      # replaces the parent's version
+    def introduce(self):
         return f"Dr. {self.name} here"
-
-class Student(Person):
-    def introduce(self):                      # extends the parent's version
-        return super().introduce() + ", a student"
-
 print(Person("Guest").introduce())
-print(Instructor("Hamed").introduce())
-print(Student("{{name}}").introduce())`, note: "<p>Three classes, one method name, three different answers. <code>Student</code> reuses the parent's sentence and adds to the end of it.</p>" },
-    { t: "ar", html: "إذا كتب الابن دالة بنفس اسم دالة الأب فنسخة الابن هي التي تعمل (overriding). ويمكنه استدعاء نسخة الأب بـ super() ثم الإضافة عليها." },
-    { t: "check", q: "What does this print?", code: c`class Drink:
-    def price(self):
-        return 10
-
-class Latte(Drink):
-    def price(self):
-        return super().price() + 8
-
-print(Latte().price())`, o: ["10", "8", "18", "An error"], a: 2, e: "`Latte` overrides `price`, but it calls the parent's version first (10) and adds 8: 18.", hint: "What does `super().price()` return?" },
+print(Instructor("Hamed").introduce())`, before: "<p>Both classes have a method called <code>introduce</code>. Run it and compare the two lines.</p>", note: "<p>Line by line:</p><ul><li><code>Instructor</code> inherits <code>__init__</code> (it has none), so <code>self.name</code> is set by Person.</li><li>It defines its own <code>introduce</code>, which <b>overrides</b> the parent's.</li><li><code>Person(\"Guest\").introduce()</code> uses Person's version → <code>I am Guest</code>.</li><li><code>Instructor(\"Hamed\").introduce()</code>: Python looks in Instructor <b>first</b>, finds <code>introduce</code> there and stops → <code>Dr. Hamed here</code>.</li></ul><p>The parent's method is not deleted: Person objects still use it. Only Instructor objects use the new one.</p>" },
+    { t: "code", code: c`class Person:
+    def __init__(self, name):
+        self.name = name
+    def introduce(self):
+        return f"I am {self.name}"
+class Student(Person):
+    def introduce(self):
+        return super().introduce() + ", a student"
+print(Student("{{name}}").introduce())`, before: "<p>Often you don't want to throw away the parent's version — you want to <b>add</b> to it. <code>super()</code> works for any method, not only <code>__init__</code>.</p>", note: "<p>Line by line:</p><ul><li>Student overrides <code>introduce</code>.</li><li>Inside it, <code>super().introduce()</code> calls the <b>parent's</b> version, which returns <code>\"I am {{name}}\"</code>.</li><li>Then <code>+ \", a student\"</code> joins more text to it.</li><li>Output: <code>I am {{name}}, a student</code>.</li></ul><p>So you have two choices when overriding: <b>replace</b> the parent's behavior completely (Instructor), or <b>extend</b> it with <code>super()</code> (Student).</p>" },
+    { t: "ar", html: "إعادة التعريف (overriding) تعني أن يكتب الابن دالة بنفس اسم دالة الأب، فيستخدم بايثون نسخة الابن. ويمكن{{g:ك|كِ}} استدعاء نسخة الأب داخلها بـ super().اسم_الدالة() لإضافة شيء عليها بدل استبدالها." },
+    { t: "predict", code: c`class A:
+    def hi(self):
+        return "A"
+class B(A):
+    def hi(self):
+        return "B" + super().hi()
+class C(B):
+    pass
+print(A().hi(), B().hi(), C().hi())`, explain: "A uses its own <code>hi</code> → <code>A</code>. B overrides and extends: <code>\"B\" + \"A\"</code> → <code>BA</code>. C has no <code>hi</code>, so Python looks in its parent B → <code>BA</code>. Output: <code>A BA BA</code>. A child of a child inherits from the whole chain." },
 
     { t: "h", text: "Polymorphism: same call, different behavior" },
-    { t: "p", html: "<p>Here is where it all pays off. If different classes have a method with the <b>same name</b>, you can put their objects in one list and call that method in one loop — without asking \"what kind of object is this?\". Each object answers in its own way. This is <b>polymorphism</b> (Greek for \"many shapes\").</p>" },
-    { t: "analogy", title: "One button, many devices", html: "<p>The ▶ \"play\" button looks the same on a music app, a video app and a podcast app. You press the same button; each app plays in its own way. Your loop is the finger pressing <code>area()</code>; each shape decides what that means.</p>" },
+    { t: "p", html: "<p><b>Polymorphism</b> is a big word for a simple idea: you call the <b>same method name</b> on different objects, and each object answers in its own way. The code that calls the method does not need to know which kind of object it has. This lets one loop handle many types.</p>" },
     { t: "viz", code: c`class Shape:
     def area(self):
         return 0
-
 class Square(Shape):
     def __init__(self, side):
         self.side = side
     def area(self):
         return self.side ** 2
+for s in [Square(3), Shape(), Square(1)]:
+    print(s.area())`, before: "<p>Visualize it and press Next ▶ slowly. Each time <code>s.area()</code> is called, watch which <code>area</code> Python jumps to.</p>", note: "<p>Step by step:</p><ul><li>The list holds three objects: a Square with side 3, a plain Shape, a Square with side 1.</li><li>Round 1: <code>s</code> is <code>Square(3)</code>. Python finds <code>area</code> in Square → <code>3 ** 2</code> → <code>9</code>.</li><li>Round 2: <code>s</code> is a <code>Shape</code>. Python uses Shape's <code>area</code> → <code>0</code>.</li><li>Round 3: <code>Square(1)</code> → <code>1</code>.</li></ul><p>The loop line <code>print(s.area())</code> never changes. The <b>object</b> decides what happens. Add a new shape class with its own <code>area</code> tomorrow, and this loop works with it without any change.</p>" },
+    { t: "code", code: c`class Person:
+    def role(self):
+        return "person"
+    def __str__(self):
+        return "I am a " + self.role()
+class Student(Person):
+    def role(self):
+        return "student"
+print(Person())
+print(Student())`, before: "<p>Polymorphism also works <b>inside</b> the parent. <code>__str__</code> is written only in Person — but watch what it prints for a Student.</p>", note: "<p>Line by line:</p><ul><li><code>print</code> on an object calls its <code>__str__</code> (Day 18). Student has no <code>__str__</code>, so Person's version runs for both objects.</li><li>Inside it, <code>self.role()</code> is called. <code>self</code> is the real object being printed.</li><li>For <code>Person()</code>, <code>self.role()</code> uses Person's version → <code>I am a person</code>.</li><li>For <code>Student()</code>, <code>self.role()</code> uses <b>Student's</b> version → <code>I am a student</code>.</li></ul><p>The parent defines the general shape of the answer, and each child fills in its own details. <code>self.method()</code> always starts looking in the object's real class.</p>" },
+    { t: "tip", title: "Duck typing", html: "<p>Python doesn't even require a common parent. If an object has an <code>area()</code> method, the loop above can use it — \"if it walks like a duck and quacks like a duck, it is a duck\". Inheritance is still useful to <b>share code</b> and to make the family relationship clear.</p>" },
+    { t: "ar", html: "تعدد الأشكال (polymorphism) يعني أن نستدعي نفس اسم الدالة على كائنات مختلفة، وكل كائن ينفذ نسخته الخاصة. و self.method() تبحث دائمًا في كلاس الكائن الحقيقي أولًا." },
+    { t: "predict", code: c`class A:
+    def who(self):
+        return "A" + self.tag()
+    def tag(self):
+        return "a"
+class B(A):
+    def tag(self):
+        return "b"
+print(B().who())`, explain: "B has no <code>who</code>, so A's <code>who</code> runs. Inside it, <code>self</code> is a B object, so <code>self.tag()</code> runs <b>B's</b> <code>tag</code> → <code>\"b\"</code>. Output: <code>Ab</code>." },
 
-class Triangle(Shape):
-    def __init__(self, base, height):
-        self.base, self.height = base, height
-    def area(self):
-        return self.base * self.height / 2
-
-shapes = [Square(3), Triangle(4, 5), Square(1)]
-for s in shapes:
-    print(type(s).__name__, s.area())`, before: "<p>The loop doesn't care what kind of shape it has — it just calls <code>area()</code>. Visualize it and watch which <code>area</code> runs each time around the loop. (<code>type(s).__name__</code> just gives the class name as text, like <code>Square</code>, so you can see which shape is printed.)</p>" },
-    { t: "ar", html: "تعدد الأشكال: نفس الاستدعاء s.area() على كائنات مختلفة، وكل كائن ينفّذ نسخته الخاصة. هذا يجعل الحلقة بسيطة جدًا." },
-    { t: "check", q: "What does this print?", code: c`class Cat:
-    def sound(self):
-        return "Meow"
-
-class Cow:
-    def sound(self):
-        return "Moo"
-
-for animal in [Cow(), Cat(), Cow()]:
-    print(animal.sound(), end=" ")`, o: ["`Meow Moo Meow`", "`Moo Meow Moo`", "`Moo Moo Moo`", "An error, they have no parent"], a: 1, e: "Each object uses its own class's `sound()`. They don't even need a shared parent — they only need a method with the same name.", hint: "Follow the order of the list." },
-
-    { t: "h", text: "Checking types: isinstance" },
-    { t: "p", html: "<p>Sometimes you do want to ask what an object is. <code>isinstance(obj, Class)</code> answers <code>True</code> if the object was made from that class <b>or any child of it</b> — because a Cat <i>is an</i> Animal.</p>" },
-    { t: "code", code: c`class Animal: pass
-class Cat(Animal): pass
-
+    { t: "h", text: "Checking types: isinstance and issubclass" },
+    { t: "p", html: "<p>Sometimes you need to ask \"what kind of object is this?\" Python has two built-in functions for that. <code>isinstance(obj, Class)</code> asks about an <b>object</b>; <code>issubclass(Child, Parent)</code> asks about two <b>classes</b>. Both return <code>True</code> or <code>False</code>.</p>" },
+    { t: "code", code: c`class Animal:
+    pass
+class Cat(Animal):
+    pass
 tom = Cat()
 print(isinstance(tom, Cat), isinstance(tom, Animal))
 print(isinstance(Animal(), Cat))
-print(issubclass(Cat, Animal))`, note: "<p>A Cat is an Animal (<code>True</code>), but a plain Animal is not a Cat (<code>False</code>). <code>issubclass</code> asks the same question about two classes.</p>" },
+print(issubclass(Cat, Animal))`, before: "<p>Predict each <code>True</code>/<code>False</code>, then run it.</p>", note: "<p>Line by line:</p><ul><li><code>isinstance(tom, Cat)</code> → <code>True</code>: tom was made from Cat.</li><li><code>isinstance(tom, Animal)</code> → <code>True</code> as well: a Cat <b>is an</b> Animal, so the answer includes parent classes.</li><li><code>isinstance(Animal(), Cat)</code> → <code>False</code>: a general animal is not necessarily a cat. The relation goes one way.</li><li><code>issubclass(Cat, Animal)</code> → <code>True</code>: Cat is a child of Animal.</li></ul><p>Use <code>isinstance</code> rarely: usually polymorphism (each class has its own method) is cleaner than many <code>if isinstance(...)</code> checks.</p>" },
+    { t: "ar", html: "isinstance(كائن, كلاس) تسأل: هل هذا الكائن من هذا الكلاس أو من أحد أبنائه؟ و issubclass(ابن, أب) تسأل عن العلاقة بين كلاسين. انتبه{{g:|ي}}: القط حيوان، لكن ليس كل حيوان قطًا." },
 
-    { t: "h", text: "Is-a vs has-a" },
-    { t: "p", html: "<p>Use inheritance only for <b>is-a</b> relationships: a Student <i>is a</i> Person, a Square <i>is a</i> Shape. For <b>has-a</b> relationships use <b>composition</b> — store one object inside another as an attribute: a Course <i>has</i> Students; a Car <i>has an</i> Engine. Beginners overuse inheritance; composition is often simpler. Quick test: say the sentence out loud. \"A car is an engine\" sounds wrong, so don't inherit.</p>" },
+    { t: "h", text: "Is-a vs has-a: inheritance or composition?" },
+    { t: "p", html: "<p>Use inheritance only for <b>is-a</b> relationships: a Student <i>is a</i> Person, a Square <i>is a</i> Shape. For <b>has-a</b> relationships use <b>composition</b>: store one object <b>inside</b> another as an attribute. A Car <i>has an</i> Engine; a Course <i>has</i> Students. A car is not a kind of engine, so <code>class Car(Engine)</code> would be wrong.</p>" },
     { t: "code", code: c`class Engine:
     def start(self):
         return "Vroom"
-
 class Car:
     def __init__(self):
-        self.engine = Engine()     # has-a
+        self.engine = Engine()
     def drive(self):
         return self.engine.start() + ", driving!"
+my_car = Car()
+print(my_car.drive())`, before: "<p>Here Car does <b>not</b> inherit from anything. Find the line where the Car gets its engine.</p>", note: "<p>Line by line:</p><ul><li><code>Engine</code> is a small class with one method.</li><li>In <code>Car.__init__</code>, <code>self.engine = Engine()</code> creates an Engine object and stores it as an attribute: the car <b>has</b> an engine.</li><li><code>drive</code> asks its engine to start (<code>self.engine.start()</code> → <code>\"Vroom\"</code>) and adds text.</li><li>Output: <code>Vroom, driving!</code></li></ul><p>A quick test: say the sentence out loud. \"A car <b>is an</b> engine\" sounds wrong; \"a car <b>has an</b> engine\" sounds right → composition. Beginners overuse inheritance; composition is often simpler.</p>" },
+    { t: "table", head: ["OOP idea", "Meaning"], rows: [["Encapsulation", "an object bundles its data and methods and hides details"], ["Inheritance", "a child class reuses and extends a parent (is-a)"], ["Polymorphism", "the same method name works differently per class"], ["Abstraction", "users see what an object does, not how"]] },
+    { t: "p", html: "<p>These are the four classic ideas of object-oriented programming. You have now used all of them: Day 18 gave you encapsulation and abstraction (an object's methods hide the details), and today added inheritance and polymorphism. Composition is how objects work <b>together</b> without being related.</p>" },
+    { t: "ar", html: "اسأل{{g:|ي}} نفسك: هل هو \"نوع من\" (is-a)؟ استخدم{{g:|ي}} الوراثة. هل \"يحتوي على\" (has-a)؟ استخدم{{g:|ي}} التركيب: خزّن كائنًا داخل كائن آخر كخاصية، مثل self.engine = Engine()." },
 
-print(Car().drive())` },
-
-    { t: "steps", title: "Gym membership fees", problem: "<p>A gym in Riyadh charges a normal member 150 SAR a month. Student members get 30% off, and VIP members pay 150 SAR plus 100 SAR for a personal trainer. Write classes for the three kinds and one function that totals the monthly fees for any list of members.</p>", steps: [
-      { html: "<p><b>Understand.</b> All three are members (is-a!) with a name and a fee. Only the fee rule differs. So: one parent <code>Member</code> with <code>fee()</code>, and children that <b>override</b> <code>fee()</code>.</p>" },
-      { html: "<p><b>Parent class.</b> Store the name and give the normal fee. Add <code>__str__</code> once here — every child will inherit it.</p>", code: c`class Member:
+    { t: "h", text: "Putting it together: university people" },
+    { t: "code", code: c`class Person:
     def __init__(self, name):
         self.name = name
-
-    def fee(self):
-        return 150
-
-    def __str__(self):
-        return f"{self.name}: {self.fee()} SAR"` },
-      { html: "<p><b>Children.</b> Each overrides <code>fee()</code> and reuses the parent's price with <code>super().fee()</code>, so if the normal price changes, the others follow.</p>", code: c`class StudentMember(Member):
-    def fee(self):
-        return super().fee() * 0.7
-
-class VipMember(Member):
-    def fee(self):
-        return super().fee() + 100` },
-      { html: "<p><b>Polymorphism.</b> The total function does not care which kind of member it gets — it just calls <code>fee()</code>.</p>", code: c`def monthly_total(members):
-    total = 0
-    for m in members:
-        total += m.fee()
-    return total` },
-      { html: "<p><b>Test.</b> Put all kinds in one list, print each (the inherited <code>__str__</code> calls the right <code>fee()</code>!) and print the total.</p>" },
-    ], code: c`class Member:
-    def __init__(self, name):
-        self.name = name
-
-    def fee(self):
-        return 150
-
-    def __str__(self):
-        return f"{self.name}: {self.fee()} SAR"
-
-class StudentMember(Member):
-    def fee(self):
-        return super().fee() * 0.7
-
-class VipMember(Member):
-    def fee(self):
-        return super().fee() + 100
-
-def monthly_total(members):
-    total = 0
-    for m in members:
-        total += m.fee()
-    return total
-
-gym = [Member("Omar"), StudentMember("{{name}}"), VipMember("Faisal")]
-for m in gym:
-    print(m)
-print("Total:", monthly_total(gym), "SAR")`, ar: "الأب فيه الكود المشترك، وكل ابن يعدّل دالة fee فقط. والدالة monthly_total تعمل مع أي نوع عضو بفضل تعدد الأشكال." },
-
-    { t: "table", head: ["OOP idea", "Meaning"], rows: [["Encapsulation", "an object bundles its data and methods and hides details"], ["Inheritance", "a child class reuses and extends a parent: `class B(A):`"], ["`super()`", "reach the parent's version: `super().__init__(...)`, `super().method()`"], ["Overriding", "the child redefines a parent method with the same name"], ["Polymorphism", "the same method call works differently per class"], ["Composition", "has-a: an object stored inside another object"]] },
+    def role(self):
+        return "visitor"
+class Student(Person):
+    def __init__(self, name, major):
+        super().__init__(name)
+        self.major = major
+    def role(self):
+        return "student of " + self.major
+class Instructor(Person):
+    def role(self):
+        return "instructor"
+for p in [Student("{{name}}", "CS"), Instructor("Hamed"), Person("Guest")]:
+    print(p.name, "-", p.role())`, together: true, before: "<p>This program uses every idea from today. Before running, guess the three lines it will print. Then add a <code>Staff</code> class whose role is <code>\"staff\"</code> and put one in the list.</p>", note: "<p>How it works:</p><ul><li><b>Parent:</b> <code>Person</code> holds what everybody shares: a name and a default <code>role</code>.</li><li><b>super():</b> <code>Student</code> needs an extra attribute, so it writes its own <code>__init__</code> and calls <code>super().__init__(name)</code> first to keep the name.</li><li><b>Inherited __init__:</b> <code>Instructor</code> has no <code>__init__</code>, so Person's is used.</li><li><b>Overriding:</b> both children replace <code>role</code> with their own version.</li><li><b>Polymorphism:</b> the loop calls <code>p.role()</code> on three different kinds of objects and never asks which kind it is.</li></ul><p>Output: <code>{{name}} - student of CS</code>, <code>Hamed - instructor</code>, <code>Guest - visitor</code>. Adding a new kind of person needs a new small class — and no change at all to the loop.</p>" },
+    { t: "ar", html: "الأب يحمل الجزء المشترك، والأبناء يرثونه ويعيدون تعريف role، والحلقة تستدعي نفس الدالة على كائنات مختلفة (تعدد الأشكال). إضافة نوع جديد لا تحتاج تغيير الحلقة." },
   ],
   mistakes: [
     { title: "Forgetting super().__init__", html: "The child's <code>__init__</code> replaces the parent's, so shared attributes are never set.", wrong: c`class Student(Person):
@@ -259,17 +187,13 @@ print("Total:", monthly_total(gym), "SAR")`, ar: "الأب فيه الكود ا�
 # Student(...).name -> AttributeError`, right: c`class Student(Person):
     def __init__(self, name, pid, major):
         super().__init__(name, pid)
-        self.major = major`, ar: "إذا كتبت{{g:|ِ}} __init__ في الابن لا تنس{{g:|ي}} استدعاء super().__init__ للأب." },
+        self.major = major` },
     { title: "Inheritance for has-a", html: "A Course is not a kind of Student.", wrong: c`class Course(Student): ...`, right: c`class Course:
     def __init__(self):
         self.students = []`, ar: "اسأل{{g:|ي}} نفسك: هل هو نوع من (is-a) أم يحتوي على (has-a)؟" },
-    { title: "Passing self to super()", html: "<code>super().__init__</code> already knows the object. Adding <code>self</code> gives one argument too many: <code>TypeError</code>.", wrong: c`super().__init__(self, name, pid)`, right: c`super().__init__(name, pid)` },
-    { title: "Forgetting to return the parent's result", html: "Calling <code>super().introduce()</code> without using its return value throws the text away, and the method returns <code>None</code>.", wrong: c`def introduce(self):
-    super().introduce()`, right: c`def introduce(self):
-    return super().introduce() + ", a student"` },
   ],
   tricks: [
-    { title: "Operator overloading", html: "Dunder methods let your objects use operators. <code>__add__</code> runs when you write <code>a + b</code>.", code: c`class Money:
+    { title: "Operator overloading", html: "Dunder methods let your objects use operators.", code: c`class Money:
     def __init__(self, sar):
         self.sar = sar
     def __add__(self, other):
@@ -277,19 +201,7 @@ print("Total:", monthly_total(gym), "SAR")`, ar: "الأب فيه الكود ا�
     def __str__(self):
         return f"{self.sar} SAR"
 print(Money(10) + Money(25))` },
-    { title: "__eq__ and __lt__", html: "Define <code>__eq__</code> for <code>==</code> and <code>__lt__</code> (less than) so <code>sorted()</code> can sort your objects.", code: c`class Score:
-    def __init__(self, points):
-        self.points = points
-    def __lt__(self, other):
-        return self.points < other.points
-    def __eq__(self, other):
-        return self.points == other.points
-
-print(Score(5) == Score(5))
-print([s.points for s in sorted([Score(9), Score(2), Score(7)])])` },
-    { title: "The class name of any object", html: "<code>type(obj).__name__</code> gives the class name as a string — great for printing what kind of object you have in a polymorphic loop.", code: c`class Square: pass
-print(type(Square()).__name__)
-print(type(3.5).__name__)` },
+    { title: "__eq__ and __lt__", html: "Define <code>__eq__</code> for <code>==</code> and <code>__lt__</code> so <code>sorted()</code> can sort your objects." },
   ],
   practice: [
     { t: "predict", code: c`class A:
@@ -305,45 +217,9 @@ print(B().hi(), C().hi())`, explain: "B inherits hi unchanged: <code>A</code>. C
     { t: "try", title: "Employee payroll", html: "<p>Create <code>Employee(name, salary)</code> with <code>pay()</code>, then <code>Manager(Employee)</code> whose pay adds a 20% bonus. Put both in a list and print everyone's pay with one loop.</p>", code: c`class Employee:
     pass
 ` },
-    { t: "predict", code: c`class Vehicle:
-    def __init__(self, wheels):
-        self.wheels = wheels
-
-class Bike(Vehicle):
-    def __init__(self):
-        super().__init__(2)
-
-b = Bike()
-print(b.wheels, isinstance(b, Vehicle))`, explain: "<code>Bike()</code> passes 2 up to the parent, which stores it: <code>2 True</code>. A Bike is a Vehicle." },
-    { t: "predict", code: c`class Phone:
-    def ring(self):
-        return "ring"
-
-class Silent(Phone):
-    def ring(self):
-        return "..."
-
-for p in [Phone(), Silent(), Phone()]:
-    print(p.ring())`, explain: "Polymorphism: each object uses its own <code>ring</code>. Output: <code>ring</code>, <code>...</code>, <code>ring</code> on three lines." },
-    { t: "parsons", title: "A teacher is a person", prompt: "Arrange the lines so the program prints <code>Huda teaches Math</code>. The child must reuse the parent's constructor.", lines: ["class Person:", "    def __init__(self, name):", "        self.name = name", "class Teacher(Person):", "    def __init__(self, name, subject):", "        super().__init__(name)", "        self.subject = subject", "t = Teacher(\"Huda\", \"Math\")", "print(t.name, \"teaches\", t.subject)"], distractors: ["        super().__init__(self, name)"], explain: "<code>super().__init__(name)</code> sets the name; then the child stores its subject. Passing <code>self</code> to <code>super().__init__</code> would be one argument too many." },
-    { t: "try", title: "Animals choir", html: "<p>Add two more animals (any you like) that override <code>sound()</code>, add them to the list, and run. Notice you never touch the loop.</p>", code: c`class Animal:
-    def __init__(self, name):
-        self.name = name
-    def sound(self):
-        return "..."
-
-class Camel(Animal):
-    def sound(self):
-        return "Hrrr"
-
-choir = [Camel("Jamal"), Animal("Mystery")]
-for a in choir:
-    print(a.name, "says", a.sound())
-` },
   ],
   exercises: [
     { id: "vehicles", lvl: "seed", title: "Vehicles", prompt: "<p>Class <code>Vehicle(brand, wheels)</code> with <code>describe()</code> returning <code>\"BRAND with N wheels\"</code>. Children <code>Car(brand)</code> (4 wheels) and <code>Bike(brand)</code> (2 wheels) set the wheels automatically with <code>super()</code>.</p>", starter: "class Vehicle:\n    pass\n\nclass Car(Vehicle):\n    pass\n\nclass Bike(Vehicle):\n    pass\n", tests: [{ after: "print(Car('Toyota').describe())\nprint(Bike('Trek').describe())\nprint(isinstance(Car('X'), Vehicle))", expected: "Toyota with 4 wheels\nTrek with 2 wheels\nTrue" }],
-      hint: "In <code>Car</code>: <code>def __init__(self, brand):</code> then <code>super().__init__(brand, 4)</code>.", ar: "الابن يمرر عدد العجلات للأب عن طريق super().__init__.",
       solutions: [{ name: "super()", code: c`class Vehicle:
     def __init__(self, brand, wheels):
         self.brand = brand
@@ -359,47 +235,7 @@ class Car(Vehicle):
 class Bike(Vehicle):
     def __init__(self, brand):
         super().__init__(brand, 2)` }] },
-    { id: "animals19", lvl: "seed", title: "Animal sounds", prompt: "<p>Parent <code>Animal(name)</code> with <code>sound()</code> returning <code>\"...\"</code> and <code>speak()</code> returning <code>\"NAME says SOUND\"</code>. Children <code>Dog</code> (<code>Woof</code>) and <code>Cat</code> (<code>Meow</code>) override <b>only</b> <code>sound()</code>.</p>", starter: "class Animal:\n    pass\n\nclass Dog(Animal):\n    pass\n\nclass Cat(Animal):\n    pass\n", tests: [{ after: "for a in [Dog('Rex'), Cat('Mishmish'), Animal('Nemo')]:\n    print(a.speak())", expected: "Rex says Woof\nMishmish says Meow\nNemo says ..." }],
-      hint: "<code>speak</code> is written once in the parent and calls <code>self.sound()</code>. For a Dog object, <code>self.sound()</code> runs Dog's version.",
-      solutions: [{ name: "Override one method", code: c`class Animal:
-    def __init__(self, name):
-        self.name = name
-
-    def sound(self):
-        return "..."
-
-    def speak(self):
-        return f"{self.name} says {self.sound()}"
-
-class Dog(Animal):
-    def sound(self):
-        return "Woof"
-
-class Cat(Animal):
-    def sound(self):
-        return "Meow"`, note: "The children don't need <code>__init__</code> at all — they inherit the parent's." }] },
-    { id: "sale19", lvl: "star", title: "Products on sale", prompt: "<p>Parent <code>Product(name, price)</code> with <code>final_price()</code> (just the price) and <code>__str__</code> → <code>\"NAME: X SAR\"</code> using <code>final_price()</code>. Child <code>SaleProduct(name, price, percent)</code> uses <code>super().__init__</code>, stores <code>percent</code> and overrides <code>final_price()</code> to take the percent off (rounded to 2 decimals).</p>", starter: "class Product:\n    pass\n\nclass SaleProduct(Product):\n    pass\n", tests: [{ after: "print(Product('Notebook', 12))\nprint(SaleProduct('Headphones', 200, 25))\nprint(SaleProduct('Pen', 3.5, 10).final_price())", expected: "Notebook: 12 SAR\nHeadphones: 150.0 SAR\n3.15" }],
-      hint: "<code>round(self.price * (100 - self.percent) / 100, 2)</code>. The parent's <code>__str__</code> calls <code>self.final_price()</code>, so the child gets the right text without its own <code>__str__</code>.",
-      solutions: [{ name: "super + override", code: c`class Product:
-    def __init__(self, name, price):
-        self.name = name
-        self.price = price
-
-    def final_price(self):
-        return self.price
-
-    def __str__(self):
-        return f"{self.name}: {self.final_price()} SAR"
-
-class SaleProduct(Product):
-    def __init__(self, name, price, percent):
-        super().__init__(name, price)
-        self.percent = percent
-
-    def final_price(self):
-        return round(self.price * (100 - self.percent) / 100, 2)` }] },
     { id: "shapes", lvl: "star", title: "Total area (polymorphism)", prompt: "<p>Classes <code>Rect(w, h)</code>, <code>Circle(r)</code> (use 3.14) and <code>Square(s)</code> — Square must inherit from Rect. Then write <code>total_area(shapes)</code> that sums <code>area()</code> for any list of shapes, rounded to 2 decimals.</p>", starter: "class Rect:\n    pass\n\nclass Square(Rect):\n    pass\n\nclass Circle:\n    pass\n\ndef total_area(shapes):\n    pass\n", tests: [{ after: "print(total_area([Rect(2, 3), Square(2), Circle(1)]))\nprint(isinstance(Square(1), Rect))", expected: "13.14\nTrue" }],
-      hint: "A square is a rectangle with equal sides: <code>super().__init__(s, s)</code>.",
       solutions: [{ name: "Inheritance + loop", code: c`class Rect:
     def __init__(self, w, h):
         self.w, self.h = w, h
@@ -419,7 +255,6 @@ class Circle:
 def total_area(shapes):
     return round(sum(s.area() for s in shapes), 2)`, note: "Circle doesn't inherit from Rect, yet <code>total_area</code> works with it: all it needs is an <code>area()</code> method (Python calls this <b>duck typing</b>)." }] },
     { id: "accounts", lvl: "star", title: "Savings account", prompt: "<p>Parent <code>Account(owner, balance=0)</code> with <code>deposit</code> and <code>withdraw</code> (withdraw returns False if not enough). Child <code>SavingsAccount</code> adds <code>add_interest(rate)</code> and <b>overrides</b> withdraw so it also refuses to go below 100 SAR.</p>", starter: "class Account:\n    pass\n\nclass SavingsAccount(Account):\n    pass\n", tests: [{ after: "s = SavingsAccount('Sara', 500)\nprint(s.withdraw(450), s.withdraw(400), s.balance)\ns.add_interest(0.1)\nprint(round(s.balance, 2))\na = Account('Omar', 50)\nprint(a.withdraw(50), a.balance)", expected: "False True 100\n110.0\nTrue 0" }],
-      hint: "In the child's <code>withdraw</code>: if the balance would drop below 100, <code>return False</code>; otherwise <code>return super().withdraw(amount)</code>.",
       solutions: [{ name: "Override with super", code: c`class Account:
     def __init__(self, owner, balance=0):
         self.owner = owner
@@ -445,7 +280,6 @@ class SavingsAccount(Account):
     def add_interest(self, rate):
         self.deposit(self.balance * rate)` }] },
     { id: "zoo", lvl: "fire", title: "University people", prompt: "<p>Parent <code>Person(name)</code> with <code>role()</code> returning <code>\"person\"</code> and <code>__str__</code> → <code>\"NAME (ROLE)\"</code>. Children <code>Student</code> and <code>Instructor</code> override only <code>role()</code>. Write <code>count_roles(people)</code> returning a dict role → count.</p>", starter: "class Person:\n    pass\n\nclass Student(Person):\n    pass\n\nclass Instructor(Person):\n    pass\n\ndef count_roles(people):\n    pass\n", tests: [{ after: "ps = [Student('Sara'), Instructor('Hamed'), Student('Omar'), Person('Guest')]\nfor p in ps: print(p)\nprint(count_roles(ps))", expected: "Sara (student)\nHamed (instructor)\nOmar (student)\nGuest (person)\n{'student': 2, 'instructor': 1, 'person': 1}" }],
-      hint: "The parent's <code>__str__</code> calls <code>self.role()</code>. For counting, use a dictionary with <code>counts.get(key, 0) + 1</code>.",
       solutions: [{ name: "Template method", code: c`class Person:
     def __init__(self, name):
         self.name = name
@@ -478,7 +312,6 @@ class Student(Person):
 
     def info(self):
         return f"{name}, {self.major}, GPA {self.gpa}"`, tests: [{ after: "print(Student('Lina', 'CS', 3.9).info())", expected: "Lina, CS, GPA 3.9" }],
-      hint: "Two bugs: the parent never gets to set the name, and inside <code>info</code> the name must be read from the object.", ar: "ناقص super().__init__(name)، و name داخل info يجب أن تكون self.name.",
       solutions: [{ name: "Fixed", code: c`class Person:
     def __init__(self, name):
         self.name = name
@@ -498,7 +331,6 @@ class Student(Person):
     { q: "A child defines a method with the same name as the parent. This is…", o: ["overloading", "overriding", "a SyntaxError", "composition"], a: 1, e: "The child's version is used." },
     { q: "Car has an Engine. Best design?", o: ["`class Car(Engine)`", "`class Engine(Car)`", "Car stores an Engine object", "Global variables"], a: 2, e: "Has-a → composition." },
     { q: "`isinstance(Student(...), Person)` is…", o: ["True", "False", "Error", "None"], a: 0, e: "A Student is a Person." },
-    { q: "A loop calls `x.area()` on squares, circles and triangles, and each gives its own answer. This is…", o: ["composition", "polymorphism", "recursion", "encapsulation"], a: 1, e: "Same call, different behavior per class." },
   ],
   puzzle: { title: "Method resolution", q: "<p>What does this print?</p>", code: c`class A:
     def who(self):
@@ -516,14 +348,5 @@ print(A().who(), B().who())`, answers: ["aa ab"], hint: "<code>who</code> is onl
     { f: "Polymorphism", b: "Same method call, different behavior depending on the object's class." },
     { f: "is-a vs has-a", b: "is-a → inheritance; has-a → composition (store an object inside)." },
   ],
-  remember: [
-    "`class Child(Parent):` — the child gets every attribute and method of the parent for free.",
-    "A child can **add** new methods; the parent does not get them.",
-    "If the child has its own `__init__`, call `super().__init__(...)` first (without `self`).",
-    "**Overriding**: a method with the same name in the child replaces the parent's; `super().method()` still reaches the original.",
-    "**Polymorphism**: one loop can call the same method on different kinds of objects.",
-    "is-a → inheritance; has-a → composition (an object stored as an attribute).",
-  ],
-  rememberAr: "الابن يرث كل شيء من الأب، ويضيف أو يعدّل. super() للوصول لنسخة الأب. ونفس الاستدعاء على كائنات مختلفة = تعدد الأشكال.",
 };
 })();

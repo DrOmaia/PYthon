@@ -5,106 +5,14 @@ DAYS[20] = {
   title: "Review + project: Grades Manager",
   intro: "Functions, modules, error handling, files, classes, inheritance — this week gave you the tools of real software. Today you build a small but real application, milestone by milestone: a <b>Grades Manager</b> that an instructor could actually use.",
   introAr: "اليوم نبني تطبيقًا حقيقيًا: مدير درجات لمقرر دراسي. نستخدم الكلاسات والدوال ومعالجة الأخطاء والملفات، ونبنيه على أربع مراحل، ونختبر كل مرحلة قبل الانتقال للتي بعدها.",
-  goals: ["Recall the key idea of each lesson of Week 3", "Design classes for a real problem", "Build and test an application in milestones", "Validate data with exceptions", "Save and load data with CSV", "Write a command loop (a tiny text interface)"],
+  goals: ["Design classes for a real problem", "Build and test an application in milestones", "Validate data with exceptions", "Save and load data with CSV", "Write a command loop (a tiny text interface)"],
   learn: [
-    { t: "h", text: "Week 3 recap" },
-    { t: "p", html: "<p>This week changed how you write programs, {{name}}. In Weeks 1–2 you wrote code from top to bottom. This week you learned to <b>organize</b> it: functions for actions, modules for tools, exceptions for problems, files for memory, and classes for things. Before the project, spend ten minutes on this recap — one small example and one quick check per day. If a check feels hard, open that day again for five minutes; it's time well spent.</p>" },
+    { t: "h", text: "Today's plan: one app, four milestones" },
+    { t: "p", html: "<p>Today there are no new big topics. You will use this week's tools to build one real program: a <b>Grades Manager</b>. We build it in four <b>milestones</b> (the exercises below). Each milestone adds one layer and is tested before you move on:</p><ol><li><b>Course basics</b>: a class that stores students and marks and refuses bad data.</li><li><b>Statistics</b>: averages, the top student, letter-grade counts.</li><li><b>Save and load</b>: keep the data in a CSV file.</li><li><b>Command interface</b>: a small text menu that a user can type into.</li></ol><p>This Learn page reminds you of every tool each milestone needs, with a small example of each.</p>" },
+    { t: "analogy", title: "Building a house", html: "<p>Nobody builds the roof first. You pour the foundation, check it is level, then build the walls, then the roof. If the walls lean, you find out <b>before</b> the roof is on top of them. Milestones are the same: Milestone 1 is the foundation, and every later milestone stands on it.</p>" },
+    { t: "ar", html: "نبني التطبيق على أربع مراحل، ونختبر كل مرحلة قبل الانتقال للتي بعدها. هكذا نكتشف الأخطاء مبكرًا وهي صغيرة وسهلة الإصلاح." },
 
-    { t: "h", text: "Day 15 — Functions" },
-    { t: "p", html: "<p>A function is a named block of code you write once and call many times. Parameters bring information in; <code>return</code> sends a result back to the caller. Remember the biggest beginner trap: <code>print</code> only <i>shows</i> a value, while <code>return</code> <i>gives it back</i> so the program can keep using it. Variables created inside a function are local — they disappear when it ends.</p>" },
-    { t: "code", code: c`def total_price(price, qty=1):
-    return price * qty
-
-bill = total_price(18, 2) + total_price(6)
-print(bill)` },
-    { t: "check", q: "What does this print?", code: c`def double(x):
-    print(x * 2)
-
-y = double(3)
-print(y)`, o: ["`6` then `6`", "`6` then `None`", "`None` then `6`", "An error"], a: 1, e: "`double` prints 6 but returns nothing, so `y` is `None`. Use `return` when the caller needs the value.", hint: "Does `double` have a `return`?" },
-
-    { t: "h", text: "Day 16 — Modules, lambda and recursion" },
-    { t: "p", html: "<p><code>import</code> opens Python's toolbox: <code>math</code>, <code>random</code>, <code>datetime</code>, <code>statistics</code>. Functions are values, so you can pass one to another — like <code>key=</code> in <code>sorted</code> — and <code>lambda</code> writes a tiny one in a single line. A recursive function calls itself and must have a <b>base case</b> that stops it.</p>" },
-    { t: "code", code: c`import math
-students = [("Sara", 95), ("Omar", 82), ("Lina", 90)]
-print(sorted(students, key=lambda s: s[1]))
-print(math.sqrt(81))` },
-    { t: "check", q: "What does this print?", code: c`words = ["kiwi", "fig", "banana"]
-print(sorted(words, key=len))`, o: ["`['banana', 'fig', 'kiwi']`", "`['fig', 'kiwi', 'banana']`", "`['kiwi', 'fig', 'banana']`", "`[3, 4, 6]`"], a: 1, e: "`key=len` sorts by length: fig (3), kiwi (4), banana (6). The words themselves are returned, not the lengths.", hint: "`key=len` means: compare the words by their length." },
-
-    { t: "h", text: "Day 17 — Errors and files" },
-    { t: "p", html: "<p><code>try</code>/<code>except</code> lets your program survive bad input instead of crashing; always catch a <b>specific</b> error like <code>ValueError</code>. <code>raise</code> creates your own error when data breaks a rule. Files are opened with <code>with open(path, mode)</code>: <code>\"r\"</code> reads, <code>\"w\"</code> erases and writes, <code>\"a\"</code> adds to the end, and the <code>csv</code> module handles tables.</p>" },
-    { t: "code", code: c`def to_mark(text):
-    mark = int(text)
-    if not 0 <= mark <= 100:
-        raise ValueError("mark must be 0-100")
-    return mark
-
-for t in ["88", "abc", "120"]:
-    try:
-        print(to_mark(t))
-    except ValueError as e:
-        print("Error:", e)` },
-    { t: "check", q: "What does this print?", code: c`try:
-    n = int("12a")
-    print("A")
-except ValueError:
-    print("B")
-print("C")`, o: ["`A` `C`", "`B` `C`", "`A` `B` `C`", "Only `B`"], a: 1, e: "`int(\"12a\")` fails, so Python jumps straight to `except` (A is skipped), prints B, and then continues normally with C.", hint: "When a line inside `try` fails, the rest of the `try` block is skipped." },
-
-    { t: "h", text: "Day 18 — Classes and objects" },
-    { t: "p", html: "<p>A class is a blueprint; each object built from it has its own data. <code>__init__</code> runs automatically when an object is created, <code>self</code> means \"this object\", attributes store data (<code>self.name</code>), methods are functions inside the class, and <code>__str__</code> returns the text <code>print</code> shows.</p>" },
-    { t: "code", code: c`class Student:
-    def __init__(self, name):
-        self.name = name
-        self.marks = []
-
-    def __str__(self):
-        return f"{self.name}: {len(self.marks)} marks"
-
-s = Student("{{name}}")
-s.marks.append(91)
-print(s)` },
-    { t: "check", q: "What does this print?", code: c`class Box:
-    def __init__(self):
-        self.items = 0
-    def add(self):
-        self.items += 1
-
-a = Box()
-b = Box()
-a.add()
-a.add()
-b.add()
-print(a.items, b.items)`, o: ["`3 3`", "`2 1`", "`1 2`", "`0 0`"], a: 1, e: "Each object has its own `items` attribute: `a` was changed twice, `b` once.", hint: "`self.items` belongs to one object." },
-
-    { t: "h", text: "Day 19 — Inheritance and polymorphism" },
-    { t: "p", html: "<p><code>class Child(Parent):</code> gives the child everything the parent has. The child can add methods, extend <code>__init__</code> with <code>super().__init__(...)</code>, and override methods by defining them again. Polymorphism means one loop can call the same method on different kinds of objects. Use inheritance for <b>is-a</b>, composition for <b>has-a</b>.</p>" },
-    { t: "code", code: c`class Member:
-    def fee(self):
-        return 150
-
-class StudentMember(Member):
-    def fee(self):
-        return super().fee() - 50
-
-for m in [Member(), StudentMember()]:
-    print(m.fee())` },
-    { t: "check", q: "What does this print?", code: c`class A:
-    def name(self):
-        return "A"
-
-class B(A):
-    def name(self):
-        return "B" + super().name()
-
-print(B().name())`, o: ["`A`", "`B`", "`BA`", "`AB`"], a: 2, e: "B overrides `name` and adds the parent's result after its own letter: `B` + `A`.", hint: "What does `super().name()` return?" },
-    { t: "ar", html: "قبل المشروع: راجع{{g:|ي}} كل يوم من أيام الأسبوع بمثال صغير وسؤال سريع. إذا كان سؤال صعبًا، افتح{{g:|ي}} درس ذلك اليوم خمس دقائق." },
-
-    { t: "h", text: "Week 3 in one table" },
-    { t: "table", head: ["Day", "Tool", "Remember"], rows: [["15", "functions", "`def`, parameters, `return` ≠ `print`, local scope"], ["16", "modules, lambda, recursion", "`import`, `key=`, base case"], ["17", "errors and files", "`try/except X`, `raise`, `with open`, modes r/w/a, csv"], ["18", "classes", "`__init__`, `self.attr`, methods, `__str__`"], ["19", "inheritance", "`class B(A)`, `super()`, overriding, polymorphism"]] },
-
-    { t: "h", text: "Project: design before code" },
+    { t: "h", text: "Design before code" },
     { t: "p", html: "<p><b>Requirements:</b> an instructor wants to register students, record marks (0–100), see statistics (average, top student, letter-grade distribution), and save everything to a file to continue next time.</p><p><b>Design:</b> one class <code>Course</code> holding a dictionary <code>{student name: [marks]}</code>. Methods for each requirement. Invalid actions <b>raise</b> errors; the interface catches them and shows friendly messages. That split — logic that raises, interface that talks to the user — is how professional apps are organized.</p>" },
     { t: "static", code: c`Course
  ├─ code, students {name: [marks]}
@@ -115,70 +23,115 @@ print(B().name())`, o: ["`A`", "`B`", "`BA`", "`AB`"], a: 2, e: "B overrides `na
  ├─ distribution()           {"A": 2, "B": 1, ...}
  ├─ save(path) / load(path)  CSV: name,mark
  └─ command loop: add / mark / report / quit` },
+    { t: "p", html: "<p>Read the plan like a to-do list. Each line is one small method you can write and test on its own. Notice that no method in the class uses <code>input()</code> or <code>print()</code>: the class only stores, calculates and complains (raises). Talking to the user is the job of the command loop at the bottom.</p>" },
     { t: "ar", html: "قاعدة مهمة: الكلاس لا يطبع ولا يقرأ من المستخدم، فقط يحسب ويرفع أخطاء. واجهة الأوامر هي التي تطبع وتلتقط الأخطاء. هذا الفصل يجعل الكود قابلًا للاختبار وإعادة الاستخدام." },
-    { t: "p", html: "<p>Before you start the milestones, watch the same pattern on a smaller problem. The worked example below is <i>not</i> the Grades Manager, but it is built exactly the way you will build yours.</p>" },
-    { t: "steps", title: "Attendance tracker (logic raises, interface catches)", problem: "<p>A teacher runs 4 lessons. She wants to register students, mark a student present, and see each student's attendance rate. Wrong actions (unknown student, registering twice) must show a friendly error, never crash.</p>", steps: [
-      { html: "<p><b>Understand and design.</b> One class <code>Attendance</code>. It knows the number of lessons and a dictionary <code>name → times present</code>. Its methods never print — they <code>raise</code> when something is wrong.</p>" },
-      { html: "<p><b>Set up and register.</b> <code>__init__</code> stores the data; <code>add_student</code> refuses duplicates.</p>", code: c`class Attendance:
-    def __init__(self, lessons):
-        self.lessons = lessons
-        self.present = {}
 
-    def add_student(self, name):
-        if name in self.present:
-            raise ValueError(f"{name} already registered")
-        self.present[name] = 0` },
-      { html: "<p><b>Mark and calculate.</b> <code>mark</code> raises <code>KeyError</code> for an unknown name; <code>rate</code> returns a percentage.</p>", code: c`    def mark(self, name):
-        if name not in self.present:
-            raise KeyError(name)
-        self.present[name] += 1
+    { t: "h", text: "Week 3 in review" },
+    { t: "table", head: ["Day", "Tool", "Remember"], rows: [["15", "functions", "`def`, parameters, `return` ≠ `print`, local scope"], ["16", "modules, lambda, recursion", "`import`, `key=`, base case"], ["17", "errors and files", "`try/except X`, `raise`, `with open`, modes r/w/a, csv"], ["18", "classes", "`__init__`, `self.attr`, methods, `__str__`"], ["19", "inheritance", "`class B(A)`, `super()`, overriding, polymorphism"]] },
+    { t: "p", html: "<p><b>Functions (Day 15)</b> package a job under a name. A function <b>returns</b> its answer; printing is a different thing. Variables made inside a function are local and disappear when it ends. Use a function whenever you would otherwise copy the same lines twice.</p><p><b>Modules, lambda, recursion (Day 16)</b>: <code>import</code> brings in ready-made tools (<code>math</code>, <code>random</code>, <code>csv</code>). Functions are values, so you can pass one to another function — like <code>max(names, key=average)</code> — or store them in a dictionary. Recursion is a function calling itself, always with a base case that stops it.</p><p><b>Errors and files (Day 17)</b>: <code>try/except</code> catches an error so the program keeps going; <code>raise</code> creates your own error when data is wrong. <code>with open(...)</code> reads and writes files and closes them for you; the <code>csv</code> module handles tables.</p><p><b>Classes (Day 18)</b> bundle data (<code>self.students</code>) with the methods that use it. <code>__init__</code> sets up a new object; <code>__str__</code> decides how it prints.</p><p><b>Inheritance (Day 19)</b> lets a child class reuse a parent and change only what differs, with <code>super()</code> to call the parent's version. Today's project needs only one class, so inheritance appears in the review questions rather than in the milestones.</p>" },
+    { t: "ar", html: "هذا الأسبوع تعلمنا أدوات البرامج الحقيقية: الدوال، والوحدات، ومعالجة الأخطاء والملفات، والكلاسات والوراثة. في المشروع نستخدمها كلها معًا، فراجع{{g:|ي}} أي يوم تشعر{{g:|ين}} أنه غير واضح قبل البدء." },
 
-    def rate(self, name):
-        return round(self.present[name] / self.lessons * 100)` },
-      { html: "<p><b>The interface.</b> A loop over commands (here a list, in the project <code>input()</code>). The <code>try</code> wraps each command; each <code>except</code> turns an error into a friendly message.</p>", code: c`for line in commands:
-    cmd, name = line.split()
+    { t: "h", text: "Milestone 1 toolkit: raise in the logic, catch in the interface" },
+    { t: "p", html: "<p><b>Plan for Milestone 1:</b> write <code>__init__</code> (store the code and an empty dict), then <code>add_student</code>, then <code>add_mark</code>, then <code>average</code>. After <b>each</b> method, create a small Course and call it to see that it works — including with bad data. Two tools do most of the work: raising errors and a dictionary of lists.</p>" },
+    { t: "code", code: c`def spend(balance, amount):
+    if amount > balance:
+        raise ValueError("not enough money")
+    return balance - amount
+
+for amount in [5, 30]:
     try:
-        ...
-    except KeyError:
-        print("Error: no student", name)
+        print("Left:", spend(20, amount))
     except ValueError as e:
-        print("Error:", e)` },
-      { html: "<p><b>Test everything</b>, including the commands that should fail. Then print the report.</p>" },
-    ], code: c`class Attendance:
-    def __init__(self, lessons):
-        self.lessons = lessons
-        self.present = {}
+        print("Error:", e)`, before: "<p>The same pattern your Course methods need, shown on a tiny function. Run it and find the line that \"complains\" and the line that \"talks\".</p>", note: "<p>Line by line:</p><ul><li><code>spend</code> is the <b>logic</b>. When the data is bad it does not print anything; it <code>raise</code>s a <code>ValueError</code> with a message and stops.</li><li>The loop is the <b>interface</b>. It calls <code>spend</code> inside <code>try</code>.</li><li><code>amount = 5</code>: no problem → <code>Left: 15</code>.</li><li><code>amount = 30</code>: <code>spend</code> raises, Python jumps to <code>except</code>, and <code>e</code> holds the error. Printing <code>e</code> shows its message → <code>Error: not enough money</code>.</li></ul><p>A method inside a class works exactly the same way. In Milestone 1, <code>add_student</code> raises <code>ValueError(f\"{name} already registered\")</code> and <code>add_mark</code> raises when the mark is outside 0–100.</p>" },
+    { t: "code", code: c`students = {}
+students["Sara"] = []
+students["Sara"].append(90)
+students["Sara"].append(85)
+students["Omar"] = []
+print(students)
+print("Sara" in students, "Ali" in students)
+marks = students["Omar"]
+print(round(sum(marks) / len(marks), 1) if marks else 0)`, before: "<p>The Course stores <code>{name: [marks]}</code>: a dictionary whose values are lists. Run it and look at the shape of the printed dictionary.</p>", note: "<p>Line by line:</p><ul><li><code>students[\"Sara\"] = []</code> registers Sara with an <b>empty</b> list of marks.</li><li><code>students[\"Sara\"].append(90)</code> finds Sara's list and adds a mark to it.</li><li><code>\"Sara\" in students</code> checks the keys → <code>True</code>; <code>\"Ali\"</code> → <code>False</code>. Use this to detect duplicates and unknown students.</li><li>Omar has no marks. <code>sum([]) / len([])</code> would crash with <code>ZeroDivisionError</code>, so the one-line choice <code>... if marks else 0</code> (Day 5) returns 0 for an empty list. An empty list counts as False.</li></ul><p>Output: <code>{'Sara': [90, 85], 'Omar': []}</code>, <code>True False</code>, <code>0</code>. This is exactly what <code>average(name)</code> needs.</p>" },
+    { t: "code", code: c`def check(mark):
+    if not 0 <= mark <= 100:
+        raise ValueError("mark must be 0-100")
+    return mark
 
-    def add_student(self, name):
-        if name in self.present:
-            raise ValueError(f"{name} already registered")
-        self.present[name] = 0
-
-    def mark(self, name):
-        if name not in self.present:
-            raise KeyError(name)
-        self.present[name] += 1
-
-    def rate(self, name):
-        return round(self.present[name] / self.lessons * 100)
-
-att = Attendance(4)
-commands = ["add Sara", "add Omar", "mark Sara", "mark Sara", "mark Ali", "add Sara", "mark Omar", "mark Sara"]
-for line in commands:
-    cmd, name = line.split()
+for action in [lambda: check(120), lambda: {}["Ali"]]:
     try:
-        if cmd == "add":
-            att.add_student(name)
-        else:
-            att.mark(name)
-        print("OK:", line)
-    except KeyError:
-        print("Error: no student", name)
-    except ValueError as e:
-        print("Error:", e)
+        action()
+    except (KeyError, ValueError) as e:
+        print(type(e).__name__, e)`, before: "<p>The Milestone 1 test catches <b>two</b> error types with one <code>except</code>. Run it and look at how each error prints.</p>", note: "<p>Line by line:</p><ul><li><code>not 0 &lt;= mark &lt;= 100</code> is True when the mark is outside the range (a chained comparison from Day 5, flipped with <code>not</code>).</li><li>The list holds two small <code>lambda</code> functions (Day 16), each causing one error when called.</li><li><code>except (KeyError, ValueError) as e:</code> — a <b>tuple</b> of types in parentheses catches <b>either</b> one.</li><li><code>type(e).__name__</code> is the name of the error's class, like <code>ValueError</code>.</li></ul><p>Output: <code>ValueError mark must be 0-100</code> and <code>KeyError 'Ali'</code>. Notice the quotes: a <code>KeyError</code> prints the missing key with quotes around it. In Milestone 1 you raise it with <code>raise KeyError(name)</code>.</p>" },
+    { t: "ar", html: "في المرحلة الأولى: الدوال داخل الكلاس ترفع خطأ (raise) عند البيانات الخاطئة ولا تطبع شيئًا، والقاموس يحفظ لكل طالب قائمة درجات. ويمكن التقاط نوعين من الأخطاء معًا بـ except (KeyError, ValueError) as e. انتبه{{g:|ي}} للقسمة على صفر عندما تكون القائمة فارغة." },
 
-for name in att.present:
-    print(f"{name}: {att.rate(name)}%")`, ar: "نفس طريقة المشروع: الكلاس يحسب ويرفع الأخطاء فقط، والحلقة الخارجية تلتقط الأخطاء وتطبع رسالة لطيفة." },
+    { t: "h", text: "Milestone 2 toolkit: max with key, helpers and static methods" },
+    { t: "p", html: "<p><b>Plan for Milestone 2:</b> copy your Milestone 1 class and add one method at a time: <code>class_average</code>, then <code>top_student</code>, then <code>distribution</code>. Test each with the students in the exercise. Careful with students who have <b>no marks</b>: leave them out of the statistics.</p>" },
+    { t: "code", code: c`marks = {"Sara": [95, 91], "Omar": [70, 80], "Lina": [88]}
+
+def average(name):
+    return sum(marks[name]) / len(marks[name])
+
+print(max(marks, key=average))
+print(average("Omar"))`, before: "<p>Which student has the highest average? <code>max</code> can answer if you tell it <b>what to compare</b>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>max(marks)</code> alone would loop over the <b>keys</b> (names) and return the alphabetically last one — not what we want.</li><li><code>key=average</code> passes the function itself (no parentheses!). <code>max</code> calls <code>average(name)</code> for every name and compares those results: 93.0, 75.0, 88.0.</li><li>It returns the <b>name</b> whose result was biggest → <code>Sara</code>.</li></ul><p>In your class you write <code>max(names, key=self.average)</code> — a method is a value too. If nobody has marks, return <code>None</code> instead of calling <code>max</code> on an empty list (which crashes).</p>" },
+    { t: "code", code: c`class Course:
+    @staticmethod
+    def letter(avg):
+        for cut, grade in ((90, "A"), (80, "B"), (70, "C"), (60, "D")):
+            if avg >= cut:
+                return grade
+        return "F"
+
+print(Course.letter(93), Course.letter(75), Course.letter(41))`, before: "<p>A method that needs no <code>self</code> can be marked with <code>@staticmethod</code>. Run it and notice we call it on the class, without making an object.</p>", note: "<p>Line by line:</p><ul><li><code>@staticmethod</code> (written on the line just above <code>def</code>) tells Python: this method does not receive <code>self</code>. It only uses its own parameter <code>avg</code>.</li><li>The loop walks through pairs (Day 11 tuple unpacking): first <code>cut = 90, grade = \"A\"</code>, then 80/\"B\", and so on. The first cut that <code>avg</code> reaches wins, like an <code>elif</code> chain.</li><li>If no cut matches, the loop ends and <code>return \"F\"</code> runs.</li></ul><p>Output: <code>A C F</code>. You can also call it from another method as <code>self.letter(...)</code>. Related convention: a method whose name starts with <code>_</code>, like <code>_graded</code>, is an <b>internal helper</b> — meant for the class itself, not for users of the class.</p>" },
+    { t: "ar", html: "max(names, key=average) تقارن نتائج الدالة وترجع الاسم صاحب أعلى نتيجة، ونمرر الدالة بدون أقواس. و ‎@staticmethod‎ تعني أن الدالة لا تحتاج self. استبعد{{g:|ي}} الطلاب الذين ليس لديهم درجات من الإحصاءات." },
+
+    { t: "h", text: "Milestone 3 toolkit: CSV save and load" },
+    { t: "p", html: "<p><b>Plan for Milestone 3:</b> first write <code>save</code> and open the file to look at it with your own eyes. Only when the file looks right, write <code>load_course</code> and check that loading gives back the same dictionary. One row per mark: <code>Sara,90</code>. A student with no marks still needs a row (<code>Lina,</code>) or they would be lost.</p>" },
+    { t: "code", code: c`import csv
+with open("demo.csv", "w", newline="") as f:
+    w = csv.writer(f, lineterminator="\n")
+    w.writerow(["name", "mark"])
+    w.writerow(["Sara", 90])
+    w.writerow(["Lina", ""])
+with open("demo.csv") as f:
+    for row in csv.DictReader(f):
+        print(row["name"], repr(row["mark"]))`, before: "<p>Write a tiny CSV and read it back, like Day 17. Look carefully at the type of each mark that comes back.</p>", note: "<p>Line by line:</p><ul><li><code>csv.writer(f, lineterminator=\"\\n\")</code>: by default the csv module ends lines with <code>\\r\\n</code> (Windows style). <code>lineterminator</code> makes it a plain <code>\\n</code>, so the file text matches the test exactly.</li><li>Each <code>writerow</code> writes one line. An empty string gives an empty cell: <code>Lina,</code>.</li><li><code>csv.DictReader</code> uses the header row as keys, so each row is a dict like <code>{'name': 'Sara', 'mark': '90'}</code>.</li><li><code>repr</code> shows the quotes: the mark comes back as the <b>text</b> <code>'90'</code>, and Lina's as the empty text <code>''</code>.</li></ul><p>So when loading: convert with <code>int(...)</code>, and skip empty marks (<code>if row[\"mark\"]:</code> is False for <code>''</code>). Reuse <code>add_student</code> and <code>add_mark</code> while loading, so file data is checked by the same rules.</p>" },
+    { t: "ar", html: "عند الحفظ نكتب صفًا لكل درجة، وصفًا بدرجة فارغة للطالب الذي ليس له درجات. وعند القراءة تعود القيم نصوصًا، فحوّل{{g:|ي}}ها بـ int() وتجاهل{{g:|ي}} الخانات الفارغة." },
+
+    { t: "h", text: "Milestone 4 toolkit: the command loop" },
+    { t: "p", html: "<p><b>Plan for Milestone 4:</b> start with a loop that only understands <code>quit</code> and \"Unknown command\". Then add one command at a time (<code>add</code>, then <code>mark</code>, then <code>avg</code>, then <code>top</code>), testing each by typing it. Last, wrap the commands in <code>try/except</code> so bad input prints <code>Error: ...</code> instead of crashing.</p>" },
+    { t: "code", code: c`while True:
+    parts = input("> ").split()
+    if parts[0] == "quit":
+        break
+    elif parts[0] == "hello":
+        print("Hello,", parts[1])
+    else:
+        print("Unknown command")`, stdin: "hello Sara\ndance\nquit", before: "<p>Three commands are already in the Input box. Run it, then add your own lines to the Input box (keep <code>quit</code> last).</p>", note: "<p>Line by line:</p><ul><li><code>while True:</code> repeats forever; only <code>break</code> leaves it.</li><li><code>input().split()</code> cuts the typed line at the spaces: <code>\"hello Sara\"</code> → <code>['hello', 'Sara']</code>.</li><li><code>parts[0]</code> is the command word; <code>parts[1]</code> is its first argument.</li><li><code>hello Sara</code> → <code>Hello, Sara</code>; <code>dance</code> → <code>Unknown command</code>; <code>quit</code> → <code>break</code>.</li></ul><p>Your Milestone 4 loop has this exact shape, with one <code>elif</code> per command and the course methods called inside them.</p>" },
+    { t: "code", code: c`students = {"Sara": [90]}
+for text in ["85", "abc"]:
+    try:
+        if not text.isdigit():
+            raise ValueError("mark must be a number")
+        students["Ali"].append(int(text))
+    except KeyError as e:
+        print("Error: no student", e.args[0])
+    except ValueError as e:
+        print("Error:", e)`, before: "<p>Milestone 4 needs exact error messages. Here are two tricks for that. Run it and match each output line to its <code>except</code>.</p>", note: "<p>Line by line:</p><ul><li><code>\"85\"</code>: <code>int</code> works. Then <code>students[\"Ali\"]</code> raises <code>KeyError</code>. Printing <code>e</code> would show <code>'Ali'</code> with quotes; <code>e.args[0]</code> is the original value without quotes → <code>Error: no student Ali</code>.</li><li><code>\"abc\"</code>: <code>.isdigit()</code> (Day 9) is False, so we <b>raise our own</b> <code>ValueError</code> with a friendly message before <code>int</code> could fail with Python's long one. The <code>except ValueError</code> block catches it → <code>Error: mark must be a number</code>.</li></ul><p>Several <code>except</code> blocks can follow one <code>try</code>; Python uses the first one whose type matches. (Another way: wrap <code>int(text)</code> in its own small <code>try</code> and, in its <code>except ValueError:</code>, <code>raise ValueError(\"mark must be a number\")</code> — raising a new error with a better message.)</p>" },
+    { t: "code", code: c`def hello(name):
+    return "Hello, " + name
+
+def shout(word):
+    return word.upper() + "!"
+
+COMMANDS = {"hello": hello, "shout": shout}
+for line in ["hello Sara", "shout py30"]:
+    cmd, arg = line.split()
+    print(COMMANDS[cmd](arg))`, before: "<p>An optional upgrade for Milestone 4: a <b>dispatch table</b> — a dictionary whose values are functions.</p>", note: "<p>Line by line:</p><ul><li><code>COMMANDS</code> maps each command word to a function (no parentheses: we store the functions, we don't call them).</li><li><code>cmd, arg = line.split()</code> unpacks the two words.</li><li><code>COMMANDS[cmd]</code> looks up the function, and <code>(arg)</code> calls it.</li><li>Output: <code>Hello, Sara</code> and <code>PY30!</code>.</li></ul><p>To add a command you write one function and one dictionary entry — no new <code>elif</code>. Use <code>COMMANDS.get(cmd)</code> to get <code>None</code> for an unknown command instead of a <code>KeyError</code>.</p>" },
+    { t: "ar", html: "حلقة الأوامر: while True مع input().split()، والكلمة الأولى هي الأمر، و break عند quit. ضع{{g:|ي}} الأوامر داخل try حتى تطبع رسالة خطأ بدل التوقف. و e.args[0] تعطي المفتاح بدون علامات التنصيص، ويمكن استخدام قاموس من الدوال بدل سلسلة elif طويلة." },
+
+    { t: "h", text: "How to test as you go" },
+    { t: "p", html: "<p>After every method, test three kinds of input: a <b>normal</b> case (Sara gets 90), an <b>edge</b> case (a student with no marks, a mark of exactly 0 or 100), and a <b>bad</b> case (a duplicate name, a mark of 120, an unknown student). The exercise tests do exactly this — read them before you start, they are part of the specification. When a test fails, print the dictionary <code>course.students</code> to see what is really stored. Finally, combine all four milestones in the Playground and add <code>save</code>/<code>load</code> commands: that is a complete application.</p>" },
+    { t: "ar", html: "اختبر{{g:|ي}} كل دالة بثلاث حالات: حالة عادية، وحالة حدّية (طالب بلا درجات أو درجة 0 أو 100)، وحالة خاطئة (اسم مكرر أو درجة 120). واقرأ{{g:|ي}} اختبارات التمرين قبل البدء لأنها جزء من المطلوب." },
   ],
   practice: [
     { t: "predict", code: c`def safe(f, x):
@@ -196,18 +149,6 @@ class Child(Base):
     pass
 Base(); Child(); Child()
 print(Base.count)`, explain: "Child uses Base's <code>__init__</code>, so all three increase the shared counter: <code>3</code>." },
-    { t: "predict", code: c`def letter(avg):
-    for cut, g in ((90, "A"), (80, "B"), (70, "C"), (60, "D")):
-        if avg >= cut:
-            return g
-    return "F"
-
-print(letter(95), letter(80), letter(79.9), letter(12))`, explain: "<code>return</code> leaves the function at the first cut that matches: 95 → <code>A</code>, 80 → <code>B</code> (80 >= 80), 79.9 → <code>C</code>, 12 matches nothing → <code>F</code>. You will use this in Milestone 2." },
-    { t: "predict", code: c`marks = {"Sara": [90, 80], "Omar": [], "Lina": [70]}
-graded = [n for n, m in marks.items() if m]
-print(graded)
-print(max(graded, key=lambda n: sum(marks[n]) / len(marks[n])))`, explain: "The comprehension keeps only students with marks (an empty list counts as False): <code>['Sara', 'Lina']</code>. Then <code>max</code> with a <code>key</code> picks the best average: <code>Sara</code> (85 vs 70)." },
-    { t: "parsons", title: "Catch, don't crash", prompt: "Arrange the lines so a bad mark prints <code>Error: mark must be 0-100</code> instead of crashing.", lines: ["def check(mark):", "    if not 0 <= mark <= 100:", "        raise ValueError(\"mark must be 0-100\")", "try:", "    check(120)", "except ValueError as e:", "    print(\"Error:\", e)"], distractors: ["        print(\"mark must be 0-100\")"], explain: "The logic function <b>raises</b>; the interface code <b>catches</b> and prints. That is the Grades Manager design in seven lines." },
   ],
   exercises: [
     { id: "m1", lvl: "seed", title: "Milestone 1: Course basics", prompt: "<p>Create <code>class Course(code)</code> with a <code>students</code> dict. Methods:</p><ul><li><code>add_student(name)</code> — raise <code>ValueError(\"NAME already registered\")</code> for duplicates</li><li><code>add_mark(name, mark)</code> — raise <code>KeyError(name)</code> if unknown, <code>ValueError(\"mark must be 0-100\")</code> if invalid</li><li><code>average(name)</code> — rounded to 1 decimal, 0 if no marks</li></ul>", starter: "class Course:\n    pass\n", tests: [{ after: "c = Course('IS201')\nc.add_student('Sara'); c.add_student('Omar')\nc.add_mark('Sara', 90); c.add_mark('Sara', 85)\nprint(c.average('Sara'), c.average('Omar'))\nfor action in (lambda: c.add_student('Sara'), lambda: c.add_mark('Ali', 50), lambda: c.add_mark('Omar', 120)):\n    try:\n        action()\n    except (KeyError, ValueError) as e:\n        print(type(e).__name__, e)", expected: "87.5 0\nValueError Sara already registered\nKeyError 'Ali'\nValueError mark must be 0-100" }],
@@ -481,16 +422,5 @@ for s in gen(3):
     { f: "Dispatch table", b: "A dict mapping names to functions, e.g. commands." },
     { f: "Keep try blocks…", b: "Small: only around the line that can fail." },
   ],
-  remember: [
-    "Functions: `return` gives a value back; `print` only shows it. Variables inside a function are local.",
-    "Modules: `import math` / `random` / `datetime`; pass functions as values, e.g. `sorted(x, key=len)`.",
-    "Recursion needs a base case that stops it.",
-    "Catch specific errors with `try` / `except ValueError as e:`; `raise` your own when data breaks a rule.",
-    "`with open(path, \"a\")` adds, `\"w\"` erases first; the `csv` module reads and writes tables.",
-    "Classes: `__init__` sets up, `self` is this object, methods act on it, `__str__` returns its print text.",
-    "Inheritance: `class B(A):`, `super().__init__(...)`, override by redefining; polymorphism = same call, different behavior.",
-    "App design: the logic class raises errors, the interface reads input, prints and catches them.",
-  ],
-  rememberAr: "هذا الأسبوع تعلمت{{g:|ِ}} تنظيم الكود: دوال، ووحدات، ومعالجة أخطاء، وملفات، وكلاسات ووراثة. وفي التطبيق: الكلاس يحسب ويرفع الأخطاء، والواجهة تطبع وتلتقطها.",
 };
 })();

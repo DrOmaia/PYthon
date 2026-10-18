@@ -7,144 +7,132 @@ DAYS[4] = {
   introAr: "النصوص في كل مكان: أسماء ورسائل وبيانات. اليوم نتعلم كيف نصل لأي حرف، ونقص أجزاء من النص، ونستخدم دوال النصوص، ونكتب مخرجات مرتبة باستخدام f-strings.",
   goals: ["Get characters by index, including negative indexes", "Slice strings with `[start:stop:step]`", "Use `len()` and methods like `.upper()`, `.strip()`, `.replace()`, `.count()`, `.find()`", "Check membership with `in`", "Format output with f-strings: decimals, commas, alignment"],
   learn: [
-    { t: "h", text: "Why strings matter" },
-    { t: "p", html: "<p>Think about the apps on your phone. Your name in the university portal, a WhatsApp message, the email you log in with, the words you type into a search box — all of it is <b>text</b>. In Python, text is called a <b>string</b> (<code>str</code>). Today you learn to work <b>inside</b> a string: take one letter, cut out a piece, clean up spaces, search for a word and print it all neatly.</p>" },
-    { t: "analogy", title: "A string is a row of lockers", html: "<p>Picture a row of lockers in a school corridor. Each locker holds <b>one character</b> — a letter, a digit, a space or a symbol — and each locker has a <b>number</b> painted on its door. The first locker is number <b>0</b>, not 1. If you know the number, you can open that locker directly and see what is inside.</p>" },
+    { t: "h", text: "Why text matters" },
+    { t: "p", html: "<p>Think of what people type into programs: their name, an email, a password, a message to a chatbot. Almost all of it is <b>text</b>. On Day 2 you met the <code>str</code> type; today you look <b>inside</b> a string. You will learn to grab one letter, cut out a piece, clean messy input, search for a word, and print neat, well-formatted results.</p>" },
+    { t: "analogy", title: "A string is a row of numbered lockers", html: "<p>Picture a row of lockers in a university hallway. Each locker holds exactly <b>one character</b> (a letter, a digit, a space, a symbol), and each locker has a number painted on its door. The surprise: the numbering starts at <b>0</b>, not 1. Once you know a locker's number, you can open it directly.</p>" },
+    { t: "ar", html: "النص (string) هو صف من الحروف، وكل حرف في خانة لها رقم. اليوم نتعلم كيف نصل لأي حرف، ونقص جزءًا من النص، وننظفه، ونبحث فيه، ونطبعه بشكل مرتب." },
+
     { t: "h", text: "Indexes: every character has a number" },
+    { t: "p", html: "<p>The number of a character's position is called its <b>index</b>. You write the index in square brackets right after the string: <code>word[0]</code>. Each character has <b>two</b> indexes: one counting from the start (0, 1, 2, …) and one counting from the end (-1, -2, …).</p>" },
     { t: "static", code: c` P   y   t   h   o   n
  0   1   2   3   4   5     <- index from the start
 -6  -5  -4  -3  -2  -1     <- index from the end` },
     { t: "code", code: c`word = "Python"
 print(word[0])
-print(word[1])
-print(word[5])`, before: "<p>To get one character, write the variable and then a number in <b>square brackets</b>. That number is called the <b>index</b>.</p>", note: "<p>Index 0 is the first letter, <code>P</code>. The word has 6 letters, so the last index is <b>5</b>, not 6.</p>" },
-    { t: "lines", rows: [
-      [c`word = "Python"`, "Store the text in a variable called <code>word</code>. It has 6 characters, in lockers 0 to 5."],
-      [c`print(word[0])`, "<code>[0]</code> means \"open locker 0\" — the first character: <code>P</code>."],
-      [c`print(word[1])`, "Locker 1 holds the <b>second</b> character: <code>y</code>."],
-      [c`print(word[5])`, "Locker 5 is the sixth and last character: <code>n</code>. Asking for <code>word[6]</code> would be an <code>IndexError</code> — that locker does not exist."]] },
-    { t: "ar", html: "العد في بايثون يبدأ من <b>صفر</b> وليس واحد! أول حرف رقمه 0، والثاني رقمه 1، وآخر حرف رقمه (عدد الحروف - 1)." },
-    { t: "h", text: "Counting from the end, and len()" },
-    { t: "p", html: "<p>Very often you want the <b>last</b> character: the last digit of a student ID, the last letter of a word. Python has a shortcut: <b>negative indexes</b> count from the end. <code>-1</code> is the last character, <code>-2</code> is the one before it, and so on. The built-in function <code>len()</code> tells you how many characters a string has — spaces and symbols count too.</p>" },
+print(word[3])`, before: "<p>Run it and compare the output with the diagram above. Then change <code>3</code> to <code>5</code> and run again.</p>", note: "<p>Line by line:</p><ul><li><code>word = \"Python\"</code> stores a string of 6 characters.</li><li><code>word[0]</code> opens locker 0, the <b>first</b> character → <code>P</code>.</li><li><code>word[3]</code> counts P=0, y=1, t=2, h=3 → <code>h</code>. It is the <b>fourth</b> letter, because counting starts at 0.</li></ul><p>With <code>5</code> you get <code>n</code>, the last letter. The result of <code>word[3]</code> is itself a (very short) string, so you can store it or print it like any other text.</p>" },
     { t: "code", code: c`word = "Python"
-print(word[-1])
-print(word[-2])
 print(len(word))
-print(len("CS 101"))`, note: "<p><code>len(\"CS 101\")</code> is 6: C, S, the space, 1, 0, 1. A space is a character like any other.</p>" },
-    { t: "check", q: "What does this print?", code: c`city = "Riyadh"
-print(city[2], city[-1])`, o: ["`i h`", "`y h`", "`y d`", "`R h`"], a: 1, e: "Index 2 is the third letter, `y` (R is 0, i is 1, y is 2). Index -1 is always the last letter: `h`.", hint: "Start counting at 0: R is 0, i is 1, …", ar: "تذكّر{{g:|ي}}: [2] هو الحرف الثالث، و [-1] هو آخر حرف دائمًا." },
+print(word[-1])
+print(word[-2])`, before: "<p><code>len()</code> counts the characters. Negative indexes count from the end. Run it and match each line with the diagram.</p>", note: "<p>Line by line:</p><ul><li><code>len(word)</code> → <code>6</code>. Spaces and symbols count too: <code>len(\"CS 101\")</code> is 6.</li><li><code>word[-1]</code> → <code>n</code>, the <b>last</b> character, whatever the length.</li><li><code>word[-2]</code> → <code>o</code>, the second from the end.</li></ul><p>Key fact: a string of length 6 has indexes 0 to <b>5</b>, so the last index is always <code>len(word) - 1</code>. Writing <code>[-1]</code> is just the easy way to say \"the last one\".</p>" },
+    { t: "code", code: c`word = "Python"
+print(word[6])`, expectError: true, before: "<p>This one crashes on purpose. Run it and read the last line of the error.</p>", note: "<p>Python stops with <code>IndexError: string index out of range</code>. The word has 6 characters, so its indexes go from 0 to 5: locker 6 simply does not exist. Whenever you see this error, check two things: did you forget that counting starts at 0, and is the string shorter than you thought? To get the last character safely, use <code>word[-1]</code>.</p>" },
+    { t: "predict", code: c`city = "Dammam"
+print(city[1], city[-3], len(city))`, explain: "Indexes: D=0, a=1, m=2, m=3, a=4, m=5. <code>city[1]</code> is <code>a</code>. <code>city[-3]</code> counts m(-1), a(-2), m(-3) → <code>m</code>. The length is <code>6</code>. Output: <code>a m 6</code>." },
+    { t: "ar", html: "العد يبدأ من <b>صفر</b> وليس واحد! أول حرف رقمه 0، وآخر حرف رقمه len - 1، ويمكن الوصول له بسهولة بـ [-1]. وانتبه{{g:|ي}}: طلب رقم غير موجود يسبب الخطأ IndexError." },
+
     { t: "h", text: "Slicing: taking a piece" },
-    { t: "p", html: "<p>One character is useful, but often you need a <b>piece</b>: the first 3 letters of a name for a username, the year from a date like <code>2026-09-29</code>, the last 4 digits of a phone number. Taking a piece of a string is called <b>slicing</b>. You write two indexes with a colon between them: <code>s[start:stop]</code>.</p>" },
-    { t: "analogy", title: "The stop index is a fence", html: "<p>Think of the indexes as fences <i>between</i> the letters. <code>s[0:4]</code> means \"from fence 0 to fence 4\" — so you get 4 characters, and the character at index 4 is <b>not</b> included.</p>" },
-    { t: "code", code: c`date = "2026-09-29"
-year = date[0:4]
-month = date[5:7]
-print(year)
-print(month)`, before: "<p>Look at the two numbers in each slice. A slice starts <b>at</b> start and stops <b>before</b> stop.</p>" },
-    { t: "lines", rows: [
-      [c`date = "2026-09-29"`, "Ten characters, indexes 0 to 9. The dashes are at index 4 and index 7."],
-      [c`year = date[0:4]`, "From index 0 up to, but <b>not including</b>, index 4: characters 0, 1, 2, 3 → <code>2026</code>."],
-      [c`month = date[5:7]`, "Characters 5 and 6 → <code>09</code>. The dash at index 7 is not included."],
-      [c`print(year)`, "Shows <code>2026</code>. A slice is a <b>new</b> string; <code>date</code> itself did not change."]] },
-    { t: "p", html: "<p>You can leave out a number. No start means \"from the beginning\"; no stop means \"to the end\". Negative numbers work in slices too, so <code>s[-7:]</code> is \"the last 7 characters\".</p>" },
+    { t: "p", html: "<p>Often you need more than one character: the first 3 letters of a name for a username, or the last 2 digits of a birth year. A <b>slice</b> cuts out a piece: <code>s[start:stop]</code> gives the characters from <code>start</code> up to, but <b>not including</b>, <code>stop</code>.</p>" },
     { t: "code", code: c`s = "Computer Science"
-print(s[:8])     # from the start up to 8
-print(s[9:])     # from 9 to the end
-print(s[-7:])    # the last 7 characters` },
-    { t: "p", html: "<p>A slice can have a third number, the <b>step</b>: <code>s[start:stop:step]</code>. A step of 2 takes every second character. A step of <code>-1</code> walks backwards — a famous trick to reverse a string.</p>" },
-    { t: "code", code: c`s = "Python"
-print(s[::2])
-print(s[::-1])`, note: "<p><code>s[::2]</code> takes indexes 0, 2, 4 → <code>Pto</code>. <code>s[::-1]</code> gives <code>nohtyP</code>.</p>" },
-    { t: "ar", html: "في القص [start:stop] نبدأ من start ونتوقف <b>قبل</b> stop. إذا تركت{{g:|ِ}} الرقم الأول فارغًا نبدأ من البداية، وإذا تركت{{g:|ِ}} الثاني فارغًا نكمل للنهاية." },
-    { t: "check", q: "What does `\"Sultan\"[1:4]` give?", o: ["`Sul`", "`ult`", "`ulta`", "`Sult`"], a: 1, e: "Indexes 1, 2 and 3 — index 4 is not included: u, l, t → `ult`.", hint: "S is index 0. Stop at index 4, but do not include it." },
-    { t: "h", text: "Methods: tools that belong to a string" },
-    { t: "p", html: "<p>Users type in messy ways: <code>  sara  </code> with extra spaces, <code>SARA</code> in capitals, <code>sArA</code> by accident. Before you compare or save a name, you want to clean it. Strings come with built-in tools for this job, called <b>methods</b>. A method is a function that belongs to a value; you call it with a <b>dot</b> after the value: <code>value.method()</code>.</p>" },
-    { t: "code", code: c`name = "  sARA alharbi  "
-print(name.strip())
-print(name.upper())
-print(name.lower())
-print(name.strip().title())`, note: "<p>Notice the spaces that are still around the result of <code>.upper()</code> and <code>.lower()</code>: only <code>.strip()</code> removes them.</p>" },
-    { t: "lines", rows: [
-      [c`name.strip()`, "Removes spaces (and new lines) from <b>both ends</b>. Spaces in the middle stay."],
-      [c`name.upper()`, "Every letter becomes a capital: <code>SARA ALHARBI</code>."],
-      [c`name.lower()`, "Every letter becomes small. Great before comparing two names: <code>\"SARA\".lower()</code> and <code>\"sArA\".lower()</code> both give <code>\"sara\"</code>."],
-      [c`name.strip().title()`, "<b>Chaining</b>: first strip, then <code>.title()</code> makes the first letter of every word a capital → <code>Sara Alharbi</code>."]] },
-    { t: "h", text: "Strings never change (they are immutable)" },
-    { t: "analogy", title: "A method gives you a photocopy", html: "<p>When you ask a string method for a change, Python does not write on the original. It hands you a <b>photocopy</b> with the change. If you do not keep the copy — store it in a variable — it is thrown away. That is what <b>immutable</b> means: a string can never be changed in place.</p>" },
+print(s[0:8])
+print(s[9:16])`, before: "<p>Count the positions first: <code>Computer</code> fills indexes 0–7, the space is at 8, and <code>Science</code> fills 9–15. Then run it.</p>", note: "<p>Line by line:</p><ul><li><code>s[0:8]</code> takes indexes 0, 1, …, 7 → <code>Computer</code>. Index 8 (the space) is the stop, so it is <b>not</b> included.</li><li><code>s[9:16]</code> takes indexes 9 to 15 → <code>Science</code>. There is no index 16, but that is fine: a slice's stop may go up to the length.</li></ul><p>A quick way to know the size of a slice: <code>stop - start</code>. Here <code>8 - 0 = 8</code> characters and <code>16 - 9 = 7</code> characters.</p>" },
+    { t: "analogy", title: "The stop index is a fence", html: "<p>Think of the indexes as fences <i>between</i> the letters. <code>s[0:8]</code> means \"from fence 0 to fence 8\" — so you get 8 characters, and the character at index 8 is <b>not</b> included. That is why <code>s[:3] + s[3:]</code> always gives back the whole string: the two pieces meet at the same fence.</p>" },
+    { t: "code", code: c`s = "Computer Science"
+print(s[:3])
+print(s[9:])
+print(s[:3] + s[3:])`, before: "<p>You may leave out the start or the stop. Predict each line, then run it.</p>", note: "<p>Line by line:</p><ul><li><code>s[:3]</code> has no start, so it begins at the <b>beginning</b> → indexes 0, 1, 2 → <code>Com</code>.</li><li><code>s[9:]</code> has no stop, so it goes to the <b>end</b> → <code>Science</code>.</li><li><code>s[:3] + s[3:]</code> glues <code>Com</code> and <code>puter Science</code> back together → the whole string.</li></ul><p>These two short forms are the ones you will use most: \"the first N characters\" is <code>s[:N]</code> and \"everything from position N\" is <code>s[N:]</code>.</p>" },
+    { t: "code", code: c`s = "Computer Science"
+print(s[-7:])
+print(s[-7:-4])`, before: "<p>Negative indexes work in slices too. They are handy when you care about the <b>end</b> of a string.</p>", note: "<p>Line by line:</p><ul><li><code>s[-7:]</code> starts 7 characters from the end and goes to the end → the last 7 characters, <code>Science</code>.</li><li><code>s[-7:-4]</code> starts at -7 (<code>S</code>) and stops <b>before</b> -4 (the <code>e</code>) → <code>Sci</code>.</li></ul><p>This is how you take the last 2 digits of a year stored as text: <code>year[-2:]</code>. It works for any length, because you count from the end.</p>" },
+    { t: "code", code: c`digits = "0123456789"
+print(digits[::2])
+print(digits[1:8:2])
+print(digits[::-1])`, before: "<p>A slice can have a third number, the <b>step</b>: <code>[start:stop:step]</code>. We use digits so you can see exactly which positions are picked.</p>", note: "<p>Line by line:</p><ul><li><code>digits[::2]</code>: from the start to the end, jumping 2 each time → indexes 0, 2, 4, 6, 8 → <code>02468</code> (every second character).</li><li><code>digits[1:8:2]</code>: start at 1, stop before 8, step 2 → indexes 1, 3, 5, 7 → <code>1357</code>.</li><li><code>digits[::-1]</code>: a step of <b>-1</b> walks backwards from the end → <code>9876543210</code>.</li></ul><p><code>[::-1]</code> reverses <b>any</b> string: <code>\"Python\"[::-1]</code> is <code>nohtyP</code>. Remember it — it is the classic way to reverse text in Python.</p>" },
+    { t: "predict", code: c`w = "university"
+print(w[3:7], w[-4:], w[::-1])`, explain: "Indexes: u0 n1 i2 v3 e4 r5 s6 i7 t8 y9. <code>w[3:7]</code> takes 3, 4, 5, 6 → <code>vers</code>. <code>w[-4:]</code> is the last 4 → <code>sity</code>. <code>w[::-1]</code> reverses → <code>ytisrevinu</code>. Output: <code>vers sity ytisrevinu</code>." },
+    { t: "ar", html: "القص s[start:stop] يأخذ من start إلى ما قبل stop، فرقم النهاية <b>لا يدخل</b>. بدون بداية يبدأ من أول النص، وبدون نهاية يذهب لآخره، والخطوة -1 تعكس النص: s[::-1]." },
+
+    { t: "h", text: "String methods: changing case and cleaning" },
+    { t: "p", html: "<p>A <b>method</b> is a function that belongs to a value. You call it with a dot: <code>value.method()</code>. Strings come with many useful methods. The first group changes capital letters and removes extra spaces — exactly what you need when users type their names in messy ways.</p>" },
+    { t: "code", code: c`msg = "Hello Python World"
+print(msg.upper())
+print(msg.lower())
+print("sara al harbi".title())`, before: "<p>Run it and look at how the capital letters change on each line.</p>", note: "<p>Line by line:</p><ul><li><code>.upper()</code> makes every letter a capital → <code>HELLO PYTHON WORLD</code>.</li><li><code>.lower()</code> makes every letter small → <code>hello python world</code>.</li><li><code>.title()</code> makes the first letter of <b>each word</b> a capital and the rest small → <code>Sara Al Harbi</code>.</li></ul><p>Notice the empty brackets <code>()</code>: they are required, because a method is a function you <b>call</b>. Digits, spaces and symbols are not changed by these methods.</p>" },
+    { t: "code", code: c`raw = "   sara ahmed  "
+print("[" + raw + "]")
+print("[" + raw.strip() + "]")
+print(raw.strip().title())`, before: "<p>Spaces are invisible, so we print the text between <code>[</code> and <code>]</code> to see them.</p>", note: "<p>Line by line:</p><ul><li>Line 2 shows the spaces at both ends: <code>[   sara ahmed  ]</code>.</li><li><code>.strip()</code> removes spaces at the <b>start and end</b> only → <code>[sara ahmed]</code>. The space between the two words stays.</li><li>Line 4 <b>chains</b> two methods: <code>raw.strip()</code> gives a clean string, and <code>.title()</code> is called on that result → <code>Sara Ahmed</code>.</li></ul><p>Users often type an extra space by accident, so <code>.strip()</code> is one of the most used methods on input.</p>" },
     { t: "code", code: c`name = "sara"
 name.upper()
 print(name)
 name = name.upper()
-print(name)`, note: "<p>The first <code>print</code> still shows <code>sara</code>: the uppercase copy was made and lost. After <code>name = name.upper()</code> the variable holds the new copy, so you see <code>SARA</code>.</p>" },
-    { t: "ar", html: "دوال النص لا تغيّر النص الأصلي أبدًا، بل ترجع نسخة جديدة. إذا أردت{{g:|ِ}} الاحتفاظ بالنتيجة اكتب{{g:|ي}}: name = name.upper()" },
-    { t: "check", q: "What does this print?", code: c`city = "  jeddah "
-city.strip()
-print(city.title())`, o: ["`Jeddah` with no spaces", "`Jeddah` with the spaces still around it", "`jeddah` with the spaces", "An error"], a: 1, e: "The result of `city.strip()` was not saved, so `city` still has its spaces. `.title()` only changes the letters. To keep the clean version write `city = city.strip()`." },
-    { t: "h", text: "Searching and replacing" },
-    { t: "p", html: "<p>Other methods answer questions about the text: <i>How many times does this word appear? Where does it start? Can I swap one word for another?</i> And the keyword <code>in</code> asks the simplest question of all: <i>is this piece inside that text?</i> The answer is <code>True</code> or <code>False</code>.</p>" },
-    { t: "code", code: c`msg = "I love tea, tea is life"
-print(msg.count("tea"))
-print(msg.find("tea"))
-print(msg.find("coffee"))
-print(msg.replace("tea", "coffee"))`, note: "<p><code>.find()</code> gives the index where the text <b>first</b> starts (7 here), or <code>-1</code> when it is not there at all. <code>.replace()</code> changes <b>every</b> match — in a new string, of course.</p>" },
+print(name)`, before: "<p>An important rule. Predict both prints before you run it.</p>", note: "<p>Line by line:</p><ul><li>Line 2 calls <code>name.upper()</code>, which makes a <b>new</b> string <code>\"SARA\"</code>… and throws it away, because we did not store it.</li><li>Line 3 prints <code>sara</code>: the original did not change.</li><li>Line 4 stores the new string back in <code>name</code>, so line 5 prints <code>SARA</code>.</li></ul><p>Strings are <b>immutable</b>: they can never be changed in place. Methods always <b>return a new string</b>. If you want to keep the result, store it: <code>name = name.upper()</code>.</p>" },
+    { t: "ar", html: "الدالة (method) تُستدعى بنقطة وأقواس: <code>name.upper()</code>. النص لا يتغير أبدًا (immutable)، والدالة ترجع نصًا جديدًا، فخزّن{{g:|ي}} النتيجة: <code>name = name.upper()</code>. و strip تحذف المسافات من الطرفين فقط." },
+
+    { t: "h", text: "Search and replace inside text" },
+    { t: "p", html: "<p>The second group of methods looks <b>inside</b> the text: replace a word with another, count how many times something appears, or find <b>where</b> it starts.</p>" },
+    { t: "code", code: c`msg = "Hello Python World"
+print(msg.replace("World", "{{name}}"))
+print(msg.count("o"))
+print(msg.find("Python"))
+print(msg.find("Java"))`, before: "<p>Run it. For the last two lines, count the positions in <code>msg</code> yourself to check the answers.</p>", note: "<p>Line by line:</p><ul><li><code>.replace(\"World\", \"{{name}}\")</code> returns a new string where every <code>World</code> becomes your name. (<code>msg</code> itself is unchanged.)</li><li><code>.count(\"o\")</code> → <code>3</code>: one <code>o</code> in Hello, one in Python, one in World. Capital <code>O</code> would not count.</li><li><code>.find(\"Python\")</code> → <code>6</code>: the index where <code>Python</code> <b>starts</b> (H=0 … the space is 5, P is 6).</li><li><code>.find(\"Java\")</code> → <code>-1</code>, which means \"not found\".</li></ul><p><code>.find()</code> is useful together with slicing: once you know where something starts, you can cut the text there.</p>" },
+    { t: "predict", code: c`text = "Mississippi"
+print(text.count("s"), text.find("s"), text.replace("ss", "SS"))`, explain: "There are 4 <code>s</code> letters. The first <code>s</code> is at index 2 (M=0, i=1, s=2). <code>replace</code> changes both <code>ss</code> pairs → <code>MiSSiSSippi</code>. Output: <code>4 2 MiSSiSSippi</code>." },
+    { t: "ar", html: "replace تستبدل نصًا بآخر، و count تعدّ مرات الظهور، و find ترجع رقم مكان البداية أو -1 إذا لم تجده. وكلها حساسة لحالة الحروف: \"o\" ليست \"O\"." },
+
+    { t: "h", text: "Is it inside? in, startswith, endswith" },
+    { t: "p", html: "<p>Sometimes you only need a yes/no answer: does this email contain <code>@</code>? Does it end with <code>.edu.sa</code>? These checks give a <b>boolean</b>, <code>True</code> or <code>False</code>, the type you met on Day 2. Tomorrow you will use such answers to make decisions.</p>" },
     { t: "code", code: c`email = "Sara@PSU.edu.sa"
 print("@" in email)
-print("gmail" in email)
-print(email.lower().endswith(".edu.sa"))
-print(email.startswith("sara"))`, note: "<p>The last line is <code>False</code> because <code>startswith</code> cares about capitals: the email starts with a capital S. Use <code>.lower()</code> first whenever capitals should not matter.</p>" },
-    { t: "table", head: ["Method / tool", "What it does", "Example → result"], rows: [["`len(s)`", "number of characters", "`len(\"tea\")` → `3`"], ["`s.strip()`", "remove spaces at both ends", "`\" hi \".strip()` → `\"hi\"`"], ["`s.upper()` / `s.lower()`", "all capitals / all small", "`\"Hi\".upper()` → `\"HI\"`"], ["`s.title()`", "capital first letter of each word", "`\"ali omar\".title()` → `\"Ali Omar\"`"], ["`s.count(x)`", "how many times x appears", "`\"banana\".count(\"a\")` → `3`"], ["`s.find(x)`", "index of the first x, or -1", "`\"banana\".find(\"n\")` → `2`"], ["`s.replace(a, b)`", "new string with every a changed to b", "`\"tea\".replace(\"t\", \"s\")` → `\"sea\"`"], ["`x in s`", "is x inside s?", "`\"@\" in \"a@b.sa\"` → `True`"], ["`s.startswith(x)` / `s.endswith(x)`", "does s begin / end with x?", "`\"IS201\".startswith(\"IS\")` → `True`"]] },
-    { t: "check", q: "What does `\"banana\".find(\"an\")` return?", o: ["`1`", "`2`", "`3`", "`-1`"], a: 0, e: "`b` is index 0, so the first `an` starts at index 1. `.find()` reports only the first match.", hint: "`.find()` gives the index where the first match starts." },
-    { t: "h", text: "f-strings: text with values inside" },
-    { t: "p", html: "<p>On Day 3 you built messages with <code>+</code> and <code>str()</code>: <code>\"You are \" + str(age) + \" years old\"</code>. It works, but it is easy to forget a space or a <code>str()</code>. An <b>f-string</b> is the clean way: put <code>f</code> just before the opening quote and write any variable — or even a calculation — inside curly braces <code>{ }</code>.</p>" },
-    { t: "analogy", title: "An f-string is a form with blanks", html: "<p>Think of a printed form: <i>Name: ______ &nbsp; Age: ______</i>. The <code>{ }</code> are the blanks. When the line runs, Python fills every blank with the current value and hands you the finished text.</p>" },
+print("gmail" in email)`, before: "<p>The word <code>in</code> asks: \"is the left text found somewhere inside the right text?\"</p>", note: "<p>Line by line:</p><ul><li><code>\"@\" in email</code> → <code>True</code>, because the email contains an <code>@</code>.</li><li><code>\"gmail\" in email</code> → <code>False</code>: that piece of text does not appear anywhere.</li></ul><p>Notice the order: the piece you look for comes <b>first</b>, then <code>in</code>, then the text you search. <code>in</code> works for a single character or a longer piece, like <code>\"PSU\" in email</code>.</p>" },
+    { t: "code", code: c`email = "Sara@PSU.edu.sa"
+print(email.endswith(".edu.sa"))
+print(email.startswith("sara"))
+print(email.lower().startswith("sara"))`, before: "<p>These two methods check only the <b>beginning</b> or the <b>end</b>. Look carefully at the capital letters before you run it.</p>", note: "<p>Line by line:</p><ul><li><code>.endswith(\".edu.sa\")</code> → <code>True</code>: the email finishes with that text.</li><li><code>.startswith(\"sara\")</code> → <code>False</code>! The email starts with a capital <code>S</code>, and for Python <code>S</code> and <code>s</code> are different characters.</li><li>The fix is to chain: <code>email.lower()</code> makes <code>sara@psu.edu.sa</code> first, and then <code>.startswith(\"sara\")</code> is <code>True</code>.</li></ul><p>Lowering the text before checking is a common habit, because users type capitals in unpredictable ways.</p>" },
+    { t: "ar", html: "in تسأل: هل هذا الجزء موجود داخل النص؟ و startswith و endswith تفحص البداية والنهاية فقط. النتيجة دائمًا True أو False. وانتبه{{g:|ي}} للحروف الكبيرة: استخدم{{g:|ي}} lower() قبل الفحص." },
+
+    { t: "h", text: "f-strings: putting values into text" },
+    { t: "p", html: "<p>Until now, to mix text and numbers you used commas in <code>print</code>, or <code>+</code> with <code>str()</code>. Both get messy. An <b>f-string</b> is cleaner: put the letter <code>f</code> before the quotes, and anything inside <code>{ }</code> is calculated and inserted into the text.</p>" },
     { t: "code", code: c`name = "{{name}}"
-age = 19
-print("You are " + str(age) + " years old")
-print(f"You are {age} years old")
-print(f"Hi {name}, next year you will be {age + 1}")` },
-    { t: "lines", rows: [
-      [c`print("You are " + str(age) + " years old")`, "The Day 3 way: three pieces glued with <code>+</code>, and <code>age</code> must be converted with <code>str()</code>."],
-      [c`print(f"You are {age} years old")`, "The <code>f</code> makes it an f-string. <code>{age}</code> is replaced by <code>19</code>. No <code>str()</code>, no <code>+</code>."],
-      [c`print(f"Hi {name}, next year you will be {age + 1}")`, "Several blanks in one string. Inside <code>{ }</code> you can even calculate: <code>{age + 1}</code> becomes <code>20</code>."]] },
-    { t: "ar", html: "f-string هي أسهل وأنظف طريقة لدمج النص مع المتغيرات: اكتب{{g:|ي}} f قبل علامة التنصيص وضع{{g:|ي}} المتغير بين { }. لا تحتاج{{g:|ين}} str() ولا علامة +." },
-    { t: "h", text: "Formatting numbers" },
-    { t: "p", html: "<p>Prices and averages look messy with many decimals: <code>4.6666</code>. Inside the braces, after a <b>colon</b>, you can add a format: <code>:.2f</code> means \"show 2 digits after the dot\", and <code>:,</code> puts a comma between thousands so big numbers are easy to read.</p>" },
+gpa = 4.6666
+print(f"Hi {name}, your GPA is {gpa}")
+print(f"Next year you will be {19 + 1}")`, before: "<p>Run it, then remove the <code>f</code> from line 3 and run again to see what changes.</p>", note: "<p>Line by line:</p><ul><li>In line 3, <code>{name}</code> is replaced by the value of <code>name</code> and <code>{gpa}</code> by <code>4.6666</code>. No <code>str()</code> and no <code>+</code> needed, even for a number.</li><li>In line 4, <code>{19 + 1}</code> shows that the braces can hold a calculation: Python works out <code>20</code> and inserts it.</li></ul><p>Without the <code>f</code>, Python prints the braces literally: <code>Hi {name}, your GPA is {gpa}</code>. Forgetting the <code>f</code> is the most common f-string mistake.</p>" },
     { t: "code", code: c`gpa = 4.6666
 price = 1500000
-print(f"GPA: {gpa:.2f}")
-print(f"GPA: {gpa:.1f}")
-print(f"Price: {price:,} SAR")`, note: "<p><code>.2f</code> rounds to 2 decimals: <code>4.67</code>. The variable <code>gpa</code> itself does not change — only the way it is shown.</p>" },
-    { t: "p", html: "<p>To make tidy columns — a receipt, a timetable — give a width: <code>&lt;8</code> left-aligns in 8 characters, <code>&gt;8</code> right-aligns, <code>^8</code> centers. The square brackets below are only there so you can see the spaces.</p>" },
-    { t: "code", code: c`item = "Tea"
-print(f"[{item:<8}]")
-print(f"[{item:>8}]")
-print(f"[{item:^8}]")` },
-    { t: "table", head: ["Format", "Meaning", "Example → result"], rows: [["`{x:.2f}`", "2 decimals", "`f\"{3.14159:.2f}\"` → `3.14`"], ["`{x:,}`", "thousands separator", "`f\"{25000:,}\"` → `25,000`"], ["`{s:<8}`", "left-align in 8 characters", "`Tea` followed by 5 spaces"], ["`{s:>8}`", "right-align in 8 characters", "5 spaces, then `Tea`"], ["`{s:^8}`", "center in 8 characters", "spaces on both sides of `Tea`"]] },
-    { t: "check", q: "What does this print?", code: c`price = 12.5
+print(f"Rounded: {gpa:.2f}")
+print(f"Price: {price:,} SAR")`, before: "<p>After the value, inside the braces, you can add a colon and a <b>format</b>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>{gpa:.2f}</code> means \"show it as a decimal number with exactly <b>2</b> digits after the point\" → <code>4.67</code> (rounded). Try <code>.1f</code> or <code>.3f</code>.</li><li><code>{price:,}</code> adds thousands separators → <code>1,500,000</code>, much easier to read.</li></ul><p>The format changes only how the value is <b>displayed</b>. The variable <code>gpa</code> still holds <code>4.6666</code>. You can also combine both: <code>{price:,.2f}</code> → <code>1,500,000.00</code>.</p>" },
+    { t: "code", code: c`name = "{{name}}"
+print(f"[{name:>10}]")
+print(f"[{name:<10}]")
+print(f"[{name:^10}]")`, before: "<p>A number after <code>&gt;</code>, <code>&lt;</code> or <code>^</code> gives the value a fixed width. The brackets let you see the padding spaces.</p>", note: "<p>Each line puts your name in a space <b>10 characters wide</b> and fills the rest with spaces:</p><ul><li><code>&gt;10</code> aligns to the <b>right</b> (spaces on the left).</li><li><code>&lt;10</code> aligns to the <b>left</b> (spaces on the right).</li><li><code>^10</code> <b>centers</b> it (spaces on both sides).</li></ul><p>Think of the arrow as pointing to the side where the text goes. Fixed widths make columns line up, which is how receipts and tables are printed.</p>" },
+    { t: "table", head: ["Format", "Meaning", "Example", "Result"], rows: [["`:.2f`", "2 decimal places", "`f\"{3.14159:.2f}\"`", "`3.14`"], ["`:,`", "thousands separators", "`f\"{1500000:,}\"`", "`1,500,000`"], ["`:>8`", "right-align in 8", "`f\"{'hi':>8}\"`", "`      hi`"], ["`:<8`", "left-align in 8", "`f\"{'hi':<8}\"`", "`hi      `"], ["`:^8`", "center in 8", "`f\"{'hi':^8}\"`", "`   hi   `"]] },
+    { t: "predict", code: c`price = 7.5
 qty = 3
-print(f"{price * qty:.2f}")`, o: ["`37.5`", "`37.50`", "`{price * qty:.2f}`", "`37`"], a: 1, e: "Python calculates `12.5 * 3 = 37.5` inside the braces, then `.2f` shows exactly two decimals: `37.50`.", hint: "`.2f` always shows two digits after the dot." },
-    { t: "steps", title: "A student email maker", problem: "<p>The university creates student emails like this: the <b>first letter</b> of the first name + the <b>last name</b>, all lowercase, + the <b>last 3 digits</b> of the student ID, then <code>@student.psu.edu.sa</code>. The user types messy names. Read the first name, last name and ID, and print a small card:</p><pre class=\"code-static\">Student: Sara Alharbi\nEmail:   salharbi345@student.psu.edu.sa</pre>",
-      steps: [
-        { html: "<p><b>Understand.</b> Inputs: first name, last name, ID (three lines). Output: two lines. By hand for <code>  sara </code>, <code>AlHarbi</code>, <code>441012345</code>: first letter <code>s</code>, last name <code>alharbi</code>, last 3 digits <code>345</code>.</p>" },
-        { html: "<p><b>Clean the inputs.</b> Remove spaces with <code>.strip()</code>. Keep the ID as a string — we want its characters, not its value.</p>", code: c`first = input().strip()
-last = input().strip()
-student_id = input().strip()` },
-        { html: "<p><b>Build the pieces</b> with an index, a slice and <code>.lower()</code>.</p>", code: c`user = first[0].lower() + last.lower() + student_id[-3:]
-email = user + "@student.psu.edu.sa"` },
-        { html: "<p><b>Print the card</b> with f-strings. <code>.title()</code> makes the names look neat. Then test with a second name, e.g. <code>OMAR</code>, <code>khalid</code>, <code>442000017</code>.</p>", code: c`print(f"Student: {first.title()} {last.title()}")
-print(f"Email:   {email}")` }],
-      code: c`first = input("First name: ").strip()
-last = input("Last name: ").strip()
-student_id = input("Student ID: ").strip()
-user = first[0].lower() + last.lower() + student_id[-3:]
-email = user + "@student.psu.edu.sa"
-print(f"Student: {first.title()} {last.title()}")
-print(f"Email:   {email}")`, stdin: "  sara \nAlHarbi\n441012345", ar: "الفكرة: نظّف{{g:|ي}} المدخلات أولًا بـ strip، ثم خذ{{g:|ي}} الأجزاء بالفهرس والقص، ثم اجمعها واطبعها بـ f-string." },
+print(f"{qty} x {price:.2f} = {qty * price:.2f} SAR")`, explain: "<code>{qty}</code> → <code>3</code>. <code>{price:.2f}</code> → <code>7.50</code> (two decimals, even though the value is 7.5). The braces can calculate: <code>3 * 7.5</code> is 22.5, shown as <code>22.50</code>. Output: <code>3 x 7.50 = 22.50 SAR</code>." },
+    { t: "ar", html: "f-string هي أسهل وأنظف طريقة لدمج النص مع المتغيرات: ضع{{g:|ي}} f قبل علامة التنصيص والمتغير بين { }. لا تحتاج{{g:|ين}} str() ولا علامة +. و .2f لرقمين بعد الفاصلة، و , للفواصل بين الآلاف. وبدون حرف f ستُطبع الأقواس كما هي." },
+
+    { t: "h", text: "Building new strings from pieces" },
+    { t: "p", html: "<p>Because every index, slice and method gives back a string, you can combine their results with <code>+</code> to build something new, like initials or a formatted full name.</p>" },
     { t: "viz", code: c`first = "sara"
 last = "alqahtani"
 initials = first[0].upper() + "." + last[0].upper() + "."
 full = first.title() + " " + last.title()
-print(initials, full)`, before: "<p>Watch how each method returns a <b>new</b> string that we combine. The original variables never change.</p>" },
+print(initials, full)`, before: "<p>Visualize it and press Next ▶. Watch each new variable appear, while <code>first</code> and <code>last</code> never change.</p>", note: "<p>Line by line:</p><ul><li><code>first[0]</code> is <code>\"s\"</code>, and <code>.upper()</code> on it gives <code>\"S\"</code>. The same for <code>last[0]</code> → <code>\"A\"</code>.</li><li><code>+</code> glues the pieces: <code>\"S\" + \".\" + \"A\" + \".\"</code> → <code>S.A.</code></li><li><code>first.title()</code> → <code>Sara</code>, and with a space and <code>Alqahtani</code> we get the full name.</li><li>The print shows <code>S.A. Sara Alqahtani</code>.</li></ul><p>Notice <code>first[0].upper()</code>: you can call a method directly on the result of an index, because that result is a string too.</p>" },
+    { t: "ar", html: "كل فهرسة أو قص أو دالة ترجع نصًا جديدًا، لذلك يمكن دمج النتائج بعلامة + لبناء نص جديد مثل الأحرف الأولى. والمتغيرات الأصلية لا تتغير." },
+
+    { t: "h", text: "Putting it together: a student card" },
+    { t: "code", code: c`full = input("Full name: ").strip().title()
+email = input("Email: ").strip().lower()
+fee = float(input("Fee (SAR): "))
+space = full.find(" ")
+first = full[:space]
+last = full[space + 1:]
+initials = first[0] + "." + last[0] + "."
+print(f"{'STUDENT CARD':^24}")
+print(f"Name:     {full}")
+print(f"Initials: {initials}")
+print(f"PSU mail: {'psu.edu.sa' in email}")
+print(f"Fee:      {fee:,.2f} SAR")`, stdin: "  {{name}} alharbi \nSTUDENT@PSU.EDU.SA\n12500", together: true, before: "<p>This program cleans messy input and prints a neat card, using everything from today. Read it first and guess the output, then run it. Try your own name and email in the Input box.</p>", note: "<p>How it works:</p><ul><li>Lines 1–2 chain methods on <code>input()</code> directly: the typed text is stripped of extra spaces, then fixed with <code>.title()</code> (name) or <code>.lower()</code> (email).</li><li>Line 3 reads the fee as a number with <code>float()</code>, as on Day 3.</li><li>Line 4 uses <code>.find(\" \")</code> to get the index of the first space. Lines 5–6 slice around it: everything <b>before</b> the space is the first name, everything <b>after</b> it (<code>space + 1</code>) is the rest.</li><li>Line 7 builds the initials from index 0 of each part.</li><li>Line 8 centers the title in 24 characters. Inside an f-string written with double quotes, we write the text <code>'STUDENT CARD'</code> with <b>single</b> quotes so the quotes do not clash.</li><li>Line 11 prints the <code>True</code>/<code>False</code> answer of <code>in</code>, and line 12 shows the fee with thousands separators and 2 decimals: <code>12,500.00</code>.</li></ul><p>Small tools, combined in the right order, turn messy input into clean, professional output.</p>" },
+    { t: "ar", html: "في هذا البرنامج نظّفنا المدخلات بـ strip و title و lower، ثم استخدمنا find والقص لفصل الاسم الأول عن الأخير، ثم طبعنا كل شيء بشكل مرتب باستخدام f-strings. انتبه{{g:|ي}}: داخل f-string بعلامات \" نكتب النص بعلامات ' مفردة." },
   ],
   mistakes: [
     { title: "Index out of range", html: "A 6-letter word has indexes 0 to 5. Index 6 does not exist.", wrong: c`word = "Python"
@@ -187,9 +175,6 @@ email = "  OMAR@PSU.EDU.SA"
 print(f"Name: {name} | Email: {email}")` },
     { t: "predict", code: c`msg = "banana"
 print(msg.count("a"), msg.find("n"), msg.replace("a", "o", 1))`, explain: "There are 3 <code>a</code>s. The first <code>n</code> is at index 2. <code>replace(\"a\", \"o\", 1)</code> replaces only the first occurrence: <code>bonana</code>." },
-    { t: "predict", code: c`s = "Data Science"
-print(s[:4].upper(), s[-7:].lower())`, explain: "<code>s[:4]</code> is <code>Data</code> → <code>DATA</code>. <code>s[-7:]</code> is the last 7 characters, <code>Science</code> → <code>science</code>. Output: <code>DATA science</code>." },
-    { t: "parsons", title: "Hide a phone number", prompt: "Arrange the lines so the program reads a phone number and prints only its last 4 digits, like <code>Phone: ******4567</code>.", lines: [c`phone = input().strip()`, c`hidden = "*" * (len(phone) - 4) + phone[-4:]`, c`print(f"Phone: {hidden}")`], distractors: [c`hidden = "*" * 6 + phone[4:]`, c`print("Phone: {hidden}")`], explain: "<code>len(phone) - 4</code> stars cover everything except the last 4 characters, and <code>phone[-4:]</code> keeps those 4. The print needs the <code>f</code>." },
   ],
   exercises: [
     { id: "shout", lvl: "seed", title: "Shout it", prompt: "<p>Read a word and print it in capital letters.</p><pre class=\"code-static\">Input: python\nOutput: PYTHON</pre>", tests: [{ stdin: "python", expected: "PYTHON" }, { stdin: "Hello there", expected: "HELLO THERE" }],
@@ -261,7 +246,7 @@ print(s)`, o: ["`HI`", "`hi`", "`Hi`", "An error"], a: 1, e: "The uppercase resu
     { q: "`\"PSU\" in \"Prince Sultan University (PSU)\"` is…", o: ["`True`", "`False`", "An error", "`3`"], a: 0, e: "`in` checks whether a piece of text appears inside another." },
   ],
   puzzle: { title: "Secret message", q: "<p>A friend sent you a coded message. The rule: <b>reverse the string, then take every second character</b>. What does the code print?</p>", code: c`secret = "Xn*oxhYtFy?P"
-print(secret[::-1][::2])`, answers: ["python"], hint: "First reverse it (write it down backwards), then keep characters at positions 0, 2, 4, …", ar: "اعكس{{g:|ي}} النص أولًا، ثم خذ{{g:|ي}} حرفًا واترك{{g:|ي}} حرفًا.", e: "Reversed: <code>P?yFtYhxo*nX</code>. Keeping every second character (indexes 0, 2, 4, 6, 8, 10) gives <code>P y t h o n</code> → <code>Python</code>. Chaining two slices like this is a neat trick — and a reminder that careful counting beats guessing." },
+print(secret[::-1][::2])`, answers: ["python"], hint: "First reverse it (write it down backwards), then keep characters at positions 0, 2, 4, …", ar: "اعكس{{g:|ي}} النص أولًا، ثم خذ{{g:|ي}} حرفًا وأترك{{g:|ي}} حرفًا.", e: "Reversed: <code>P?yFtYhxo*nX</code>. Keeping every second character (indexes 0, 2, 4, 6, 8, 10) gives <code>P y t h o n</code> → <code>Python</code>. Chaining two slices like this is a neat trick — and a reminder that careful counting beats guessing." },
   cards: [
     { f: "Index of the first and last character?", b: "`s[0]` and `s[-1]`." },
     { f: "What does `s[2:5]` include?", b: "Indexes 2, 3 and 4 — the stop index is not included." },
@@ -269,14 +254,5 @@ print(secret[::-1][::2])`, answers: ["python"], hint: "First reverse it (write i
     { f: "Why does `name.upper()` alone not change `name`?", b: "Strings are immutable. Save it: `name = name.upper()`." },
     { f: "f-string with 2 decimals", b: "`f\"{value:.2f}\"`" },
   ],
-  remember: [
-    "Indexes start at **0**; `s[-1]` is the last character and `len(s)` counts every character, spaces too.",
-    "`s[start:stop]` takes a piece and **stops before** `stop`; `s[::-1]` reverses a string.",
-    "Methods are called with a dot: `s.strip()`, `s.lower()`, `s.title()`, `s.replace(a, b)`, `s.find(x)`, `s.count(x)`.",
-    "Strings are **immutable**: a method returns a new string, so save it: `name = name.strip()`.",
-    "`\"x\" in s` gives True or False — use `.lower()` first when capitals should not matter.",
-    "f-strings: `f\"Hi {name}\"`; formats after a colon: `{x:.2f}`, `{n:,}`, `{s:<10}`.",
-  ],
-  rememberAr: "الفهرس يبدأ من صفر، والقص يتوقف قبل الرقم الثاني، ودوال النص ترجع نسخة جديدة فاحفظ{{g:|ي}}ها في متغير، و f-string هي أفضل طريقة لطباعة نص مرتب.",
 };
 })();

@@ -8,174 +8,207 @@ DAYS[10] = {
   goals: ["Create lists and access items by index and slice", "Add, change and remove items (`append`, `insert`, `remove`, `pop`)", "Loop over lists and compute totals, max and averages", "Sort with `sort()` and `sorted()`", "Build a list from user input with `split()`"],
   learn: [
     { t: "h", text: "Why lists?" },
-    { t: "p", html: "<p>Your marks this term: 85, 92, 78, 95, 60. With what you know, you would write <code>mark1 = 85</code>, <code>mark2 = 92</code>… five variables. For a class of 40, forty variables — and no loop can walk through them. A <b>list</b> keeps all the values together, in order, under <b>one</b> name.</p>" },
-    { t: "analogy", title: "A list is like a train", html: "<p>A train has carriages joined in a row. Each carriage carries one thing, and the carriages are numbered from the front — starting at <b>0</b>. You can look into carriage 2, replace what is inside, add a carriage at the end, or take one away. The whole train still has one name.</p>" },
-    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
-names = ["{{name}}", "Omar", "Lina"]
-print(marks)
-print(names)
-print(len(marks), "marks")`, before: "<p>Square brackets <code>[ ]</code> make a list; commas separate the items.</p>" },
-    { t: "lines", rows: [
-      ["marks = [85, 92, 78, 95, 60]", "One variable, five values. The order is kept exactly as you wrote it."],
-      ["names = [\"{{name}}\", \"Omar\", \"Lina\"]", "Items can be strings too (a list may even mix types, but usually all items are the same kind)."],
-      ["print(marks)", "Prints the whole list, with brackets and commas."],
-      ["len(marks)", "<code>len</code> works like on strings: the number of items, here 5."],
-    ] },
-    { t: "ar", html: "القائمة تُكتب بين أقواس مربعة [ ] والعناصر بينها فواصل. و len تعطي عدد العناصر." },
-    { t: "check", q: "What does `len([\"tea\", \"coffee\", \"juice\", \"water\"])` give?", o: ["3", "4", "21", "An error"], a: 1, e: "Four items. `len` counts **items**, not letters." },
+    { t: "p", html: "<p>Imagine a class of 40 students. Until now, to store their marks you would need 40 variables: <code>mark1</code>, <code>mark2</code>, … <code>mark40</code>. Adding them up would be a 40-part sum, and if a new student joins you would have to change the program. A <b>list</b> solves this: it keeps <b>many values, in order, under one name</b>. With a <code>for</code> loop (Day 9) you can then process all of them in two lines, whether there are 4 values or 4 million.</p>" },
+    { t: "analogy", title: "A list is a row of numbered lockers", html: "<p>Picture a row of lockers in a university hallway. The whole row has one name (<code>marks</code>), and every locker has a number painted on it, starting from <b>0</b>. You can open locker 2 to see what is inside, replace its contents, add a new locker at the end of the row, or remove one. That is exactly what you can do with a list.</p>" },
+    { t: "ar", html: "القائمة (list) تخزن قيمًا كثيرة بترتيب تحت اسم واحد، بدلًا من إنشاء متغير لكل قيمة. وكل عنصر له رقم (فهرس) يبدأ من صفر." },
 
-    { t: "h", text: "Reading items: index and slice" },
-    { t: "p", html: "<p>Everything you learned on Day 4 about string indexes works on lists. <code>marks[0]</code> is the first item, <code>marks[-1]</code> the last, and a slice <code>marks[1:3]</code> gives a <b>new list</b> with items 1 and 2.</p>" },
+    { t: "h", text: "Creating a list and reading one item" },
     { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+print(marks)
 print(marks[0])
 print(marks[-1])
-print(marks[1:3])
-print(95 in marks)`, note: "<p><code>in</code> also works: <code>95 in marks</code> is True. Asking for an index that does not exist, like <code>marks[5]</code>, gives <code>IndexError</code>.</p>" },
-    { t: "check", q: "With `days = [\"Sun\", \"Mon\", \"Tue\", \"Wed\", \"Thu\"]`, what is `days[1:4]`?", o: ["`['Sun', 'Mon', 'Tue']`", "`['Mon', 'Tue', 'Wed']`", "`['Mon', 'Tue', 'Wed', 'Thu']`", "`'Mon'`"], a: 1, e: "Start at index 1, stop **before** 4: items 1, 2, 3." },
-
-    { t: "h", text: "Changing an item" },
-    { t: "p", html: "<p>Here is the big difference from strings: lists are <b>mutable</b> — you can change them in place. The teacher re-marked your second exam? Just put the new value at that index.</p>" },
+print(len(marks))`, before: "<p>A list is written with <b>square brackets</b> <code>[ ]</code> and the items are separated by commas. Run it and match each output line to its <code>print</code>.</p>", note: "<p>Line by line:</p><ul><li><code>marks = [85, 92, 78, 95, 60]</code> creates one list holding five numbers and gives it the name <code>marks</code>.</li><li><code>print(marks)</code> shows the whole list, brackets and all: <code>[85, 92, 78, 95, 60]</code>.</li><li><code>marks[0]</code> reads the item at <b>index 0</b>, the first one: <code>85</code>. Just like strings on Day 4, counting starts at 0.</li><li><code>marks[-1]</code> counts from the end: <code>-1</code> is the last item, <code>60</code>.</li><li><code>len(marks)</code> gives the number of items: <code>5</code>.</li></ul><p>So the valid indexes are 0 to 4, which is <code>0</code> to <code>len(marks) - 1</code>.</p>" },
+    { t: "code", code: c`names = ["{{name}}", "Omar", "Lina"]
+mixed = [19, "CS", 4.5, True]
+empty = []
+print(names[1], len(names))
+print(mixed)
+print(len(empty))`, before: "<p>A list can hold any kind of value: text, numbers, even a mix. It can also be empty. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>names</code> is a list of three strings. <code>names[1]</code> is the <b>second</b> name, <code>Omar</code>, and <code>len(names)</code> is <code>3</code>.</li><li><code>mixed</code> holds an int, a string, a float and a boolean. Python allows it, although in practice most lists hold one kind of value (all marks, all names).</li><li><code>empty = []</code> is a list with nothing in it yet, so its length is <code>0</code>. Empty lists are very useful: you will soon fill them inside a loop.</li></ul>" },
     { t: "code", code: c`marks = [85, 92, 78, 95, 60]
-marks[1] = 97
-print(marks)`, note: "<p><code>marks[1] = 97</code> replaces the item at index 1. Try the same with a string (<code>word[0] = \"X\"</code>) and you get an error — strings cannot be changed.</p>" },
-    { t: "ar", html: "القائمة قابلة للتعديل (mutable) عكس النص. يمكن تغيير عنصر بكتابة marks[1] = 97." },
+print(marks[4])
+print(marks[5])`, expectError: true, before: "<p>What happens if you ask for a locker that does not exist? This example crashes on purpose. Run it and read the error.</p>", note: "<p>Line 2 works: index 4 is the last item, <code>60</code>. Line 3 crashes with <code>IndexError: list index out of range</code>. The list has 5 items, so the indexes go from 0 to 4 — there is no index 5. This is the most common list mistake: the last index is <code>len(marks) - 1</code>, <b>not</b> <code>len(marks)</code>. If you just want the last item, use <code>marks[-1]</code> and you never have to count.</p>" },
+    { t: "predict", code: c`days = ["Sun", "Mon", "Tue", "Wed", "Thu"]
+print(days[1], days[-2], len(days))`, explain: "Index 1 is the <b>second</b> item, <code>Mon</code>. Index -2 is the second from the end, <code>Wed</code>. There are 5 items. Output: <code>Mon Wed 5</code>." },
+    { t: "ar", html: "تُكتب القائمة بين أقواس مربعة [ ]، والعنصر الأول فهرسه 0 والأخير فهرسه -1. وانتبه{{g:|ي}}: آخر فهرس هو len - 1، والفهرس len يسبب الخطأ IndexError." },
 
-    { t: "h", text: "Adding items: append and insert" },
-    { t: "analogy", title: "A shopping cart", html: "<p>An online cart starts empty. Each time you tap <i>Add</i>, the item goes to the end of the cart. Sometimes you want something at the top of the list instead. <code>append</code> adds at the end; <code>insert</code> puts an item at a chosen position.</p>" },
-    { t: "code", code: c`cart = []
-cart.append("milk")
-cart.append("bread")
+    { t: "h", text: "Slices and the in operator" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+print(marks[1:3])
+print(marks[:2])
+print(marks[-2:])
+print(marks[::-1])`, before: "<p>Everything you learned about slicing strings on Day 4 works on lists too. A slice gives you a <b>new, smaller list</b>. Predict each line, then run it.</p>", note: "<p>Line by line:</p><ul><li><code>marks[1:3]</code> starts at index 1 and stops <b>before</b> index 3: items 1 and 2 → <code>[92, 78]</code>.</li><li><code>marks[:2]</code> has no start, so it starts at the beginning: the first two items → <code>[85, 92]</code>.</li><li><code>marks[-2:]</code> starts two from the end and goes to the end → <code>[95, 60]</code>.</li><li><code>marks[::-1]</code> uses a step of -1, which walks backwards → <code>[60, 95, 78, 92, 85]</code>.</li></ul><p>A slice never changes <code>marks</code>; it makes a new list. And unlike a single index, a slice never crashes when it goes past the end — it just stops.</p>" },
+    { t: "code", code: c`names = ["{{name}}", "Omar", "Lina"]
+print("Omar" in names)
+print("omar" in names)
+print("Zaid" not in names)`, before: "<p><code>in</code> asks \"is this value somewhere in the list?\" and answers <code>True</code> or <code>False</code>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>\"Omar\" in names</code> → <code>True</code>: Python walks through the list and finds an item equal to <code>\"Omar\"</code>.</li><li><code>\"omar\" in names</code> → <code>False</code>: the comparison is exact, and a small <code>o</code> is not a capital <code>O</code> (the same rule as Day 5).</li><li><code>not in</code> is the opposite question: is <code>\"Zaid\"</code> missing? → <code>True</code>.</li></ul><p>Because the answer is a boolean, <code>in</code> fits perfectly inside an <code>if</code>: <code>if name in names:</code>.</p>" },
+    { t: "ar", html: "القص [start:stop] يعطي قائمة جديدة من start حتى قبل stop، و [::-1] تعكس الترتيب. و in تسأل: هل القيمة موجودة في القائمة؟ وانتبه{{g:|ي}} أن المقارنة تفرّق بين الحروف الكبيرة والصغيرة." },
+
+    { t: "h", text: "Changing a list" },
+    { t: "p", html: "<p>Here is the big difference between lists and strings. On Day 4 you saw that a string cannot be changed: <code>name[0] = \"X\"</code> is an error. Lists are <b>mutable</b>: you can replace, add and remove items <b>in place</b>, and the same list grows and shrinks. Most of these changes are done with <b>methods</b> — functions that belong to the list and are called with a dot, like <code>cart.append(...)</code>.</p>" },
+    { t: "code", code: c`cart = ["milk", "bread", "eggs"]
+cart[1] = "brown bread"
+print(cart)`, before: "<p>To replace one item, assign to its index, just like assigning to a variable. Run it.</p>", note: "<p><code>cart[1] = \"brown bread\"</code> means \"put <code>\"brown bread\"</code> into locker 1\". The old value <code>\"bread\"</code> is thrown away and the other items do not move. Output: <code>['milk', 'brown bread', 'eggs']</code>. Notice Python prints strings inside a list with single quotes; that is just how it displays them.</p>" },
+    { t: "code", code: c`cart = ["milk", "bread"]
+cart.append("dates")
+print(cart)
 cart.insert(0, "coffee")
-print(cart)` },
-    { t: "lines", rows: [
-      ["cart = []", "An <b>empty list</b>: a train with no carriages yet."],
-      ["cart.append(\"milk\")", "A <b>method</b> (Day 4) of the list: add <code>\"milk\"</code> at the end. The list itself changes — no need to write <code>cart = …</code>."],
-      ["cart.append(\"bread\")", "Now the cart is <code>['milk', 'bread']</code>."],
-      ["cart.insert(0, \"coffee\")", "Insert at index 0; the others move one step right: <code>['coffee', 'milk', 'bread']</code>."],
-    ] },
-
-    { t: "h", text: "Removing items: remove and pop" },
-    { t: "viz", code: c`cart = ["coffee", "milk", "bread", "dates"]
+print(cart)`, before: "<p>Two ways to add an item. Watch <b>where</b> each new item lands.</p>", note: "<p>Line by line:</p><ul><li><code>cart.append(\"dates\")</code> adds one item at the <b>end</b>: <code>['milk', 'bread', 'dates']</code>. This is the method you will use most.</li><li><code>cart.insert(0, \"coffee\")</code> puts <code>\"coffee\"</code> at index 0, and every other item shifts one place to the right: <code>['coffee', 'milk', 'bread', 'dates']</code>.</li></ul><p>Careful: <code>append</code> always adds exactly <b>one</b> item. <code>cart.append([\"tea\", \"sugar\"])</code> would add one item that is itself a list, so the length grows by 1, not 2.</p>" },
+    { t: "code", code: c`cart = ["coffee", "milk", "bread", "dates"]
+cart.remove("milk")
+print(cart)
+last = cart.pop()
+print(cart, last)
+first = cart.pop(0)
+print(cart, first)`, before: "<p>Two ways to remove an item: by <b>value</b> with <code>remove</code>, or by <b>position</b> with <code>pop</code>. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>cart.remove(\"milk\")</code> finds the first <code>\"milk\"</code> and deletes it → <code>['coffee', 'bread', 'dates']</code>. If the value is not in the list, <code>remove</code> crashes with a <code>ValueError</code>, so check with <code>in</code> first when you are not sure.</li><li><code>cart.pop()</code> with no index removes the <b>last</b> item and <b>gives it back</b>. We store it in <code>last</code>, so we print <code>['coffee', 'bread'] dates</code>.</li><li><code>cart.pop(0)</code> removes the item at index 0 and returns it → <code>['bread'] coffee</code>.</li></ul><p>The key difference: <code>remove</code> just deletes, while <code>pop</code> deletes <b>and</b> hands you the item, which is handy when you still need it.</p>" },
+    { t: "viz", code: c`cart = ["milk", "bread"]
+cart.append("dates")
+cart.insert(0, "coffee")
+cart[2] = "brown bread"
 cart.remove("milk")
 last = cart.pop()
-first = cart.pop(0)
-print(cart)
-print(last, first)`, before: "<p>Visualize and watch the list shrink after each line.</p>" },
-    { t: "p", html: "<p><code>remove(x)</code> deletes the first item equal to <code>x</code> (an error if it is missing). <code>pop()</code> removes the <b>last</b> item and gives it back, so you can store it; <code>pop(i)</code> does the same for index i.</p>" },
-    { t: "check", q: "What is printed?", code: c`a = [1, 2, 3]
-a.append(4)
-x = a.pop(0)
-print(a, x)`, o: ["`[1, 2, 3] 4`", "`[2, 3, 4] 1`", "`[1, 2, 3, 4] 1`", "`[2, 3] 4`"], a: 1, e: "After append: [1, 2, 3, 4]. `pop(0)` removes and returns 1, leaving [2, 3, 4]." },
-    { t: "table", head: ["Method", "What it does"], rows: [["`lst.append(x)`", "add x at the end"], ["`lst.insert(i, x)`", "insert x at position i"], ["`lst[i] = x`", "replace the item at i"], ["`lst.remove(x)`", "delete the first x (error if missing)"], ["`lst.pop()` / `lst.pop(i)`", "remove and return the last / item i"], ["`lst.sort()`", "sort in place (returns None!)"], ["`sorted(lst)`", "return a new sorted list"], ["`lst.count(x)`, `lst.index(x)`", "how many x / position of x"]] },
+print(cart, last)`, before: "<p>Now all the changes together. Visualize it and press Next ▶ after each line. Say out loud what the list will look like <b>before</b> you press.</p>", note: "<p>The list after each line:</p><ul><li><code>['milk', 'bread']</code></li><li>append → <code>['milk', 'bread', 'dates']</code></li><li>insert at 0 → <code>['coffee', 'milk', 'bread', 'dates']</code></li><li><code>cart[2] = ...</code> → index 2 was <code>'bread'</code>: <code>['coffee', 'milk', 'brown bread', 'dates']</code></li><li>remove milk → <code>['coffee', 'brown bread', 'dates']</code></li><li>pop → <code>last</code> becomes <code>'dates'</code> and the list is <code>['coffee', 'brown bread']</code></li></ul><p>Notice how indexes shift after insert and remove: the item at index 2 is not always the same item. That is why we visualize.</p>" },
+    { t: "table", head: ["Method", "What it does"], rows: [["`lst.append(x)`", "add x at the end"], ["`lst.insert(i, x)`", "insert x at position i"], ["`lst[i] = x`", "replace the item at i"], ["`lst.remove(x)`", "delete the first x (error if missing)"], ["`lst.pop()` / `lst.pop(i)`", "remove and return the last / item i"], ["`lst.sort()`", "sort in place (returns None!)"], ["`sorted(lst)`", "return a new sorted list"], ["`lst.reverse()`", "flip the order in place"], ["`lst.count(x)`, `lst.index(x)`", "how many x / position of x"]] },
+    { t: "predict", code: c`nums = [1, 2, 3]
+nums.append(4)
+nums.insert(1, 9)
+x = nums.pop()
+print(nums, x)`, explain: "After <code>append</code>: <code>[1, 2, 3, 4]</code>. <code>insert(1, 9)</code> puts 9 at index 1: <code>[1, 9, 2, 3, 4]</code>. <code>pop()</code> removes and returns the last item, 4. Output: <code>[1, 9, 2, 3] 4</code>." },
+    { t: "ar", html: "القائمة قابلة للتعديل عكس النص. append تضيف في النهاية، و insert تضيف في موضع محدد، و remove تحذف بالقيمة، و pop تحذف بالموضع وترجع العنصر المحذوف. وانتبه{{g:|ي}} أن الفهارس تتغير بعد الإضافة والحذف." },
+
+    { t: "h", text: "Careful: = does not copy a list" },
+    { t: "code", code: c`a = [1, 2]
+b = a
+b.append(3)
+print(a)
+c = a.copy()
+c.append(99)
+print(a, c)`, before: "<p>This one surprises almost everyone. Predict what line 4 prints, then run it.</p>", note: "<p>Line by line:</p><ul><li><code>b = a</code> does <b>not</b> make a second list. It gives the <b>same</b> list a second name, like one locker row with two signs on it.</li><li>So <code>b.append(3)</code> changes that one list, and <code>print(a)</code> shows <code>[1, 2, 3]</code> — <code>a</code> changed too!</li><li><code>a.copy()</code> really makes a new, separate list. Appending to <code>c</code> leaves <code>a</code> alone: <code>[1, 2, 3] [1, 2, 3, 99]</code>.</li></ul><p>Rule: when you want an independent copy, use <code>.copy()</code> (or the slice <code>a[:]</code>, which also makes a new list).</p>" },
+    { t: "ar", html: "b = a لا تنسخ القائمة، بل تعطيها اسمًا ثانيًا، فأي تعديل عبر b يظهر في a. للحصول على نسخة مستقلة استخدم{{g:|ي}} a.copy()." },
 
     { t: "h", text: "Lists + loops = superpower" },
-    { t: "p", html: "<p>Yesterday <code>for</code> walked through the letters of a string. It walks through a list the same way: one item per round. Now the accumulator pattern can total a whole class.</p>" },
+    { t: "p", html: "<p>On Day 9 you wrote <code>for ch in \"hello\":</code> to visit each character of a string. A <code>for</code> loop visits each <b>item</b> of a list in exactly the same way, from first to last. This is where lists become powerful: one short loop handles the whole class.</p>" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+for m in marks:
+    print("Mark:", m)`, before: "<p>Run it. Count how many times the indented line runs.</p>", note: "<p>The loop variable <code>m</code> takes each value of the list in turn: first <code>85</code>, then <code>92</code>, and so on until <code>60</code>. The indented line runs once per item — 5 times here. If you add a sixth mark to the list, the loop automatically runs 6 times; you never change the loop itself. You choose the name <code>m</code>; a clear name like <code>mark</code> or <code>m</code> beats <code>x</code>.</p>" },
     { t: "code", code: c`marks = [85, 92, 78, 95, 60]
 total = 0
 for m in marks:
     total += m
 print("Total:", total)
-print("Average:", total / len(marks))` },
-    { t: "lines", rows: [
-      ["for m in marks:", "Each round, <code>m</code> is the next mark: 85, then 92, … then 60."],
-      ["    total += m", "Add the current mark to the running total."],
-      ["total / len(marks)", "Divide by the number of items — the code still works if the list has 5 or 500 marks."],
-    ] },
-    { t: "ar", html: "for m in marks تمر على عناصر القائمة واحدًا واحدًا. نجمعها في total ثم نقسم على len للحصول على المتوسط." },
-    { t: "check", q: "What does this print?", code: c`prices = [10, 25, 5]
-count = 0
-for p in prices:
-    if p > 8:
-        count += 1
-print(count)`, o: ["1", "2", "3", "40"], a: 1, e: "10 and 25 are greater than 8: **2**." },
+print("Average:", total / len(marks))`, before: "<p>The <b>accumulator</b> pattern from Day 9, now on a list: start at 0 and add each item.</p>", note: "<p>Line by line:</p><ul><li><code>total = 0</code> prepares an empty \"bucket\" before the loop.</li><li>Each turn, <code>total += m</code> adds the current mark: 85, then 177, 255, 350, and finally 410.</li><li>After the loop (not indented!) we print the total, <code>410</code>.</li><li>The average is the total divided by how many marks there are: <code>410 / 5</code> = <code>82.0</code>. Using <code>len(marks)</code> instead of typing 5 means the program still works if the list changes.</li></ul>" },
+    { t: "code", code: c`names = ["Sara", "Omar", "Lina"]
+marks = [88, 91, 97]
+for i in range(len(names)):
+    print(i, names[i], marks[i])`, before: "<p>Sometimes you need the <b>position</b>, not just the value — for example when two lists belong together. Run it.</p>", note: "<p><code>len(names)</code> is 3, so <code>range(3)</code> gives the indexes <code>0, 1, 2</code> (Day 9). Each turn, <code>i</code> is a position, and we use it to read from <b>both</b> lists: <code>names[i]</code> and <code>marks[i]</code> always belong to the same student. Output: <code>0 Sara 88</code>, <code>1 Omar 91</code>, <code>2 Lina 97</code>. Use <code>for m in marks</code> when you only need the values, and <code>for i in range(len(...))</code> when you need the index.</p>" },
+    { t: "ar", html: "حلقة for تمر على كل عنصر في القائمة بالترتيب. لحساب المجموع ابدأ{{g:|ي}} بمتغير قيمته 0 قبل الحلقة وأضف{{g:|ي}} إليه كل عنصر. وللحصول على رقم الموضع استخدم{{g:|ي}} range(len(lst))." },
 
-    { t: "h", text: "Built-in helpers: sum, max, min, sorted" },
-    { t: "p", html: "<p>Totals and maximums are so common that Python has ready-made functions. <code>sorted(lst)</code> gives a <b>new</b> sorted list; <code>lst.sort()</code> sorts the list itself and returns nothing (<code>None</code>).</p>" },
+    { t: "h", text: "Built-in helpers: sum, max, min, count, index" },
     { t: "code", code: c`marks = [85, 92, 78, 95, 60]
-print(sum(marks), max(marks), min(marks))
-print(sorted(marks))
-print(sorted(marks, reverse=True)[:3])
-print(marks)`, note: "<p>The last line shows that <code>sorted</code> did not change <code>marks</code>. <code>reverse=True</code> sorts from big to small, and the slice <code>[:3]</code> takes the top 3.</p>" },
-    { t: "lines", rows: [
-      ["sum(marks), max(marks), min(marks)", "Total, biggest and smallest item: <code>410 95 60</code>. No loop needed."],
-      ["sorted(marks)", "A <b>new</b> list from small to big: <code>[60, 78, 85, 92, 95]</code>."],
-      ["sorted(marks, reverse=True)[:3]", "Sort big to small, then slice the first 3: <code>[95, 92, 85]</code> — the top 3."],
-      ["print(marks)", "Still <code>[85, 92, 78, 95, 60]</code>: <code>sorted</code> never touches the original."],
-    ] },
-    { t: "check", q: "After `x = [3, 1, 2]` and `y = sorted(x)`, what is `x`?", o: ["`[1, 2, 3]`", "`[3, 1, 2]`", "`None`", "`[3, 2, 1]`"], a: 1, e: "`sorted` returns a new list and leaves `x` unchanged. Only `x.sort()` would change it." },
+print(sum(marks))
+print(max(marks))
+print(min(marks))
+print(sum(marks) / len(marks))`, before: "<p>Adding up a list is so common that Python has a ready-made function for it. Compare the result with the loop above.</p>", note: "<p>Line by line:</p><ul><li><code>sum(marks)</code> adds all the items → <code>410</code>, exactly what our loop computed.</li><li><code>max(marks)</code> gives the biggest item → <code>95</code>.</li><li><code>min(marks)</code> gives the smallest → <code>60</code>.</li><li><code>sum(marks) / len(marks)</code> is the average in one line → <code>82.0</code>.</li></ul><p>Why learn the loop at all, then? Because the loop is how these functions work inside, and very often you need something slightly different (sum only the passing marks, for example) that no built-in does for you.</p>" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60, 92]
+print(marks.count(92))
+print(marks.index(95))
+print(marks.index(max(marks)))`, before: "<p>Two methods that <b>search</b> the list. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>marks.count(92)</code> counts how many times 92 appears → <code>2</code>.</li><li><code>marks.index(95)</code> tells you <b>where</b> 95 is: index <code>3</code>. If the value appears more than once, you get the first position; if it does not appear at all, it is a <code>ValueError</code>.</li><li><code>marks.index(max(marks))</code> combines both ideas: first <code>max</code> finds the best mark (95), then <code>index</code> finds its position (3). With a parallel <code>names</code> list, <code>names[3]</code> would be the top student.</li></ul>" },
+    { t: "ar", html: "sum تجمع العناصر، و max و min تعطيان الأكبر والأصغر، و count تعدّ مرات ظهور قيمة، و index تعطي موضعها الأول. وانتبه{{g:|ي}}: index تسبب خطأ إذا لم تكن القيمة موجودة." },
 
-    { t: "h", text: "Building a new list with a loop" },
-    { t: "p", html: "<p>Often you want a list of <i>some</i> items: the marks that passed, the long words. Start with an empty list and <code>append</code> inside the loop — the list version of the accumulator.</p>" },
+    { t: "h", text: "Sorting: sort(), sorted() and reverse" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+ordered = sorted(marks)
+print(ordered)
+print(marks)`, before: "<p><code>sorted()</code> is a function that gives you a <b>new</b> sorted list. Look at both outputs.</p>", note: "<p><code>sorted(marks)</code> builds a new list in increasing order and we store it in <code>ordered</code>: <code>[60, 78, 85, 92, 95]</code>. The original <code>marks</code> is <b>untouched</b>: it still prints <code>[85, 92, 78, 95, 60]</code>. Use <code>sorted()</code> when you want to keep the original order too.</p>" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+marks.sort()
+print(marks)
+result = marks.sort()
+print(result)`, before: "<p><code>.sort()</code> is a list method that sorts the list <b>itself</b>. Pay attention to the last line.</p>", note: "<p>Line by line:</p><ul><li><code>marks.sort()</code> rearranges <code>marks</code> in place, so line 3 prints <code>[60, 78, 85, 92, 95]</code>. The old order is gone.</li><li><code>sort()</code> does its work but returns nothing. In Python \"nothing\" is the special value <code>None</code>, so <code>result</code> is <code>None</code>.</li></ul><p>That is the classic trap: <code>marks = marks.sort()</code> replaces your list with <code>None</code>. Either call <code>marks.sort()</code> alone on its own line, or write <code>marks = sorted(marks)</code>.</p>" },
+    { t: "code", code: c`marks = [85, 92, 78, 95, 60]
+high_first = sorted(marks, reverse=True)
+print(high_first)
+print(high_first[:3])`, before: "<p>To sort from biggest to smallest, add the option <code>reverse=True</code>. Then a slice gives you the top 3.</p>", note: "<p>Line by line:</p><ul><li><code>reverse=True</code> is a <b>named option</b> (a keyword argument): you write the option's name, <code>=</code>, and its value. It tells <code>sorted</code> to go from high to low → <code>[95, 92, 85, 78, 60]</code>. It works with <code>.sort(reverse=True)</code> too.</li><li><code>high_first[:3]</code> is a slice of the first three items → <code>[95, 92, 85]</code>, the top 3 marks.</li></ul><p>You could write it in one line, <code>sorted(marks, reverse=True)[:3]</code>: Python first sorts, then slices the result.</p>" },
+    { t: "code", code: c`x = [5, 3, 8]
+x.reverse()
+print(x)
+print(x[::-1])`, before: "<p><code>reverse()</code> is <b>not</b> sorting. Predict the output first.</p>", note: "<p><code>x.reverse()</code> simply flips the current order in place, without comparing values: <code>[5, 3, 8]</code> becomes <code>[8, 3, 5]</code> (not <code>[8, 5, 3]</code>!). Like <code>sort()</code>, it changes the list and returns <code>None</code>. The slice <code>x[::-1]</code> makes a reversed <b>copy</b> without changing <code>x</code>, so it shows <code>[5, 3, 8]</code> — the reverse of the already-reversed list.</p>" },
+    { t: "predict", code: c`nums = [4, 1, 3]
+a = sorted(nums)
+b = nums.sort()
+print(a, b, nums)`, explain: "<code>sorted(nums)</code> returns a new list, so <code>a</code> is <code>[1, 3, 4]</code>. <code>nums.sort()</code> sorts <code>nums</code> itself and returns <code>None</code>, so <code>b</code> is <code>None</code>. Output: <code>[1, 3, 4] None [1, 3, 4]</code>." },
+    { t: "ar", html: "sorted(lst) ترجع قائمة جديدة مرتبة وتترك الأصلية كما هي، أما lst.sort() فترتب القائمة نفسها وترجع None. لا تكتب{{g:|ي}} lst = lst.sort(). و reverse=True للترتيب من الأكبر للأصغر." },
+
+    { t: "h", text: "Building a list step by step" },
     { t: "code", code: c`passed = []
 for m in [85, 42, 78, 55, 91]:
     if m >= 60:
         passed.append(m)
-print(passed)` },
+print(passed)
+print(len(passed), "students passed")`, before: "<p>A pattern you will use every week: start with an <b>empty list</b>, loop, and <code>append</code> only the items you want. Run it.</p>", note: "<p>Line by line:</p><ul><li><code>passed = []</code> creates an empty list <b>before</b> the loop. If you put it inside the loop, it would be emptied again every turn.</li><li>The loop visits each mark. The <code>if</code> (Day 5) lets only marks of 60 or more through.</li><li><code>passed.append(m)</code> adds the passing mark at the end. 42 and 55 are skipped.</li><li>After the loop: <code>[85, 78, 91]</code> and <code>3 students passed</code>.</li></ul><p>This is called <b>filtering</b>: keep only the items that pass a test.</p>" },
+    { t: "ar", html: "لبناء قائمة: أنشئ{{g:|ي}} قائمة فارغة قبل الحلقة، ثم أضف{{g:|ي}} إليها بـ append داخل الحلقة ما يحقق الشرط فقط. ولا تضع{{g:|ي}} القائمة الفارغة داخل الحلقة وإلا ستُمسح في كل دورة." },
 
-    { t: "h", text: "split and join: text ↔ list" },
-    { t: "p", html: "<p>Text often arrives as one line: <code>\"python is fun\"</code>. <code>split()</code> cuts a string at the spaces and returns a <b>list of words</b>. <code>join()</code> does the opposite: it glues a list of strings with the separator you choose.</p>" },
+    { t: "h", text: "From text to list and back: split() and join()" },
     { t: "code", code: c`words = "python is fun to learn".split()
-print(words, len(words))
+print(words)
+print(len(words), "words")`, before: "<p><code>split()</code> is a string method that cuts text into a <b>list of words</b>. Run it.</p>", note: "<p>With no argument, <code>split()</code> cuts wherever there are spaces (one or many) and drops the spaces. The result is a real list: <code>['python', 'is', 'fun', 'to', 'learn']</code>, so <code>len(words)</code> is <code>5</code>. This is how a program counts the words in a sentence.</p>" },
+    { t: "code", code: c`date = "2026-09-29".split("-")
+print(date)
+cities = "Riyadh,Jeddah,Dammam".split(",")
+print(cities, cities[0])`, before: "<p>You can tell <code>split</code> where to cut by giving it a <b>separator</b>.</p>", note: "<p><code>split(\"-\")</code> cuts at every dash → <code>['2026', '09', '29']</code>. <code>split(\",\")</code> cuts at every comma → <code>['Riyadh', 'Jeddah', 'Dammam']</code>, and <code>cities[0]</code> is <code>Riyadh</code>. Important: the pieces are always <b>strings</b>. <code>'2026'</code> is text, not a number; to calculate with it you must convert it with <code>int()</code> (Day 3).</p>" },
+    { t: "code", code: c`words = ["python", "is", "fun"]
+print(" ".join(words))
 print("-".join(words))
-print("a,b,c".split(","))` },
-    { t: "ar", html: "split تقسم النص إلى قائمة كلمات، و join تلصق قائمة نصوص في نص واحد. انتبه{{g:|ي}}: الفاصل يُكتب قبل join: \"-\".join(words)." },
+print("".join(words))`, before: "<p><code>join()</code> does the opposite: it glues a list of strings into one string. The string <b>before</b> the dot is the glue.</p>", note: "<p>Line by line:</p><ul><li><code>\" \".join(words)</code> puts a space between the items → <code>python is fun</code>.</li><li><code>\"-\".join(words)</code> uses a dash → <code>python-is-fun</code>.</li><li><code>\"\".join(words)</code> uses empty glue → <code>pythonisfun</code>.</li></ul><p>The order feels backwards at first: you write the glue first, then <code>.join(</code>the list<code>)</code>.</p>" },
+    { t: "code", code: c`marks = [85, 92, 78]
+texts = []
+for m in marks:
+    texts.append(str(m))
+print(", ".join(texts))`, before: "<p><code>join</code> only accepts a list of <b>strings</b>. So how do we join numbers? Run it.</p>", note: "<p><code>\", \".join(marks)</code> would crash with a <code>TypeError</code>, because 85 is a number, not text. So we first build a new list of strings with the empty-list-plus-append pattern: <code>str(m)</code> turns each number into text (Day 3). <code>texts</code> becomes <code>['85', '92', '78']</code>, and the join prints <code>85, 92, 78</code>.</p>" },
+    { t: "ar", html: "split تقطع النص وتحوّله إلى قائمة نصوص (بالمسافات أو بفاصل تحدده)، و join تلصق قائمة نصوص في نص واحد، والفاصل يُكتب قبل النقطة. وانتبه{{g:|ي}}: نتائج split نصوص وليست أرقامًا، و join لا تقبل إلا النصوص." },
 
-    { t: "h", text: "List comprehension: a loop in one line" },
-    { t: "p", html: "<p>Building a new list from another list is so common that Python has a short form. Start from the loop you already know — make a list of squares:</p>" },
-    { t: "code", code: c`squares = []
-for n in [1, 2, 3, 4]:
-    squares.append(n * n)
-print(squares)` },
-    { t: "p", html: "<p>The same thing as a <b>list comprehension</b>: put the value you append first, then the <code>for</code> part, all inside brackets.</p>" },
-    { t: "code", code: c`squares = [n * n for n in [1, 2, 3, 4]]
-print(squares)
-passed = [m for m in [85, 42, 78, 55] if m >= 60]
-print(passed)` },
-    { t: "lines", title: "Read the comprehension", rows: [
-      ["[ n * n ...", "What goes into the new list — the part you passed to <code>append</code>."],
-      ["... for n in [1, 2, 3, 4] ]", "The loop, exactly like the first line of the <code>for</code>."],
-      ["[m for m in ... if m >= 60]", "An optional <code>if</code> at the end keeps only some items — the same as the <code>if</code> around <code>append</code>."],
-    ] },
-    { t: "check", q: "What is `[w.upper() for w in [\"hi\", \"py\"]]`?", o: ["`['hi', 'py']`", "`['HI', 'PY']`", "`'HIPY'`", "An error"], a: 1, e: "For each `w`, the new list gets `w.upper()`." },
+    { t: "h", text: "List comprehension: the loop + append pattern in one line" },
+    { t: "p", html: "<p>You have now written the same shape several times: make an empty list, loop, <code>append</code> something each turn. It is so common that Python has a shorter way to write it, called a <b>list comprehension</b>. It does <b>exactly</b> the same thing — nothing new happens, it is only a shorter spelling. Let's build it from the long version.</p>" },
+    { t: "code", code: c`nums = [1, 2, 3, 4]
+doubled = []
+for x in nums:
+    doubled.append(x * 2)
+print(doubled)`, before: "<p>Step 1: the long version you already know. Run it.</p>", note: "<p>Three parts make this work:</p><ul><li>an empty list: <code>doubled = []</code></li><li>a loop header: <code>for x in nums</code></li><li>the value we append each turn: <code>x * 2</code></li></ul><p>Result: <code>[2, 4, 6, 8]</code>. Keep these three parts in mind for the next example.</p>" },
+    { t: "code", code: c`nums = [1, 2, 3, 4]
+doubled = [x * 2 for x in nums]
+print(doubled)`, before: "<p>Step 2: the same program as a comprehension. Find the three parts from the previous example.</p>", note: "<p>Inside the square brackets:</p><ul><li><b>first</b> comes the value to append: <code>x * 2</code></li><li><b>then</b> the loop header, without the colon: <code>for x in nums</code></li><li>the brackets themselves replace <code>doubled = []</code> and <code>.append</code></li></ul><p>Read it aloud as: \"a list of <code>x * 2</code> for each <code>x</code> in <code>nums</code>\". The output is the same <code>[2, 4, 6, 8]</code>.</p>" },
+    { t: "table", head: ["Loop + append", "List comprehension"], rows: [["`doubled = []`\n`for x in nums:`\n`    doubled.append(x * 2)`", "`doubled = [x * 2 for x in nums]`"], ["`passed = []`\n`for m in marks:`\n`    if m >= 60:`\n`        passed.append(m)`", "`passed = [m for m in marks if m >= 60]`"], ["`nums = []`\n`for s in parts:`\n`    nums.append(int(s))`", "`nums = [int(s) for s in parts]`"]] },
+    { t: "code", code: c`marks = [85, 42, 78, 55, 91]
+passed = [m for m in marks if m >= 60]
+print(passed)`, before: "<p>Step 3: a comprehension can also <b>filter</b>, with an <code>if</code> at the end. Compare it with the \"Building a list step by step\" example above.</p>", note: "<p>This is the second row of the table. The <code>if m &gt;= 60</code> at the end works like the <code>if</code> inside the loop: only marks that pass the test are kept. So the order is: <b>what to keep</b> (<code>m</code>), <b>where from</b> (<code>for m in marks</code>), <b>which ones</b> (<code>if m &gt;= 60</code>). Output: <code>[85, 78, 91]</code>, identical to the long version.</p><p>When should you use which? Use a comprehension when the job is simple and fits comfortably on one line. If you need several steps, prints, or <code>elif</code>, write the normal loop — clear code beats short code.</p>" },
+    { t: "predict", code: c`nums = [3, 8, 5, 10]
+print([n + 1 for n in nums if n > 4])`, explain: "Only the items greater than 4 are kept: 8, 5 and 10 (3 is skipped). For each kept item we compute <code>n + 1</code>. Output: <code>[9, 6, 11]</code>. The long version would be: empty list, <code>for n in nums:</code>, <code>if n &gt; 4:</code>, <code>append(n + 1)</code>." },
+    { t: "ar", html: "list comprehension طريقة مختصرة لنمط \"قائمة فارغة + حلقة + append\"، وتعطي النتيجة نفسها تمامًا. الترتيب: القيمة أولًا ثم for ثم if (اختياري): [x * 2 for x in nums]. وإذا صار المنطق معقدًا استخدم{{g:|ي}} الحلقة العادية." },
 
-    { t: "h", text: "Reading many numbers in one line" },
-    { t: "p", html: "<p>Now you can combine everything: <code>input()</code> gives one string, <code>split()</code> turns it into a list of strings, and a comprehension converts each one with <code>int()</code>.</p>" },
+    { t: "h", text: "Reading many numbers on one line" },
     { t: "code", code: c`parts = input("Numbers separated by spaces: ").split()
 print(parts)
 nums = [int(x) for x in parts]
-print(nums, "sum =", sum(nums))`, stdin: "4 8 15 16 23 42", note: "<p>The first print shows strings like <code>'4'</code>; after conversion they are real numbers you can add.</p>" },
+print(nums, "sum =", sum(nums))`, stdin: "4 8 15 16 23 42", before: "<p>Users often type several numbers on one line. Here <code>split</code> and a comprehension work together. Run it, then change the numbers in the Input box.</p>", note: "<p>Line by line:</p><ul><li><code>input(...)</code> reads the whole line as one string, <code>\"4 8 15 16 23 42\"</code>, and <code>.split()</code> cuts it into a list.</li><li>Line 2 shows the problem: <code>['4', '8', '15', ...]</code> — the quotes tell you these are <b>strings</b>. <code>sum(parts)</code> would crash.</li><li>Line 3 converts each piece: \"a list of <code>int(x)</code> for each <code>x</code> in <code>parts</code>\" → <code>[4, 8, 15, 16, 23, 42]</code>. It is the third row of the table above.</li><li>Now <code>sum</code> works → <code>sum = 108</code>.</li></ul><p>You will often see it squeezed into one line: <code>nums = [int(x) for x in input().split()]</code>. Read it from the inside out: read, split, convert each.</p>" },
+    { t: "ar", html: "لقراءة عدة أرقام في سطر واحد: input().split() تعطي قائمة نصوص، ثم نحوّل كل عنصر إلى رقم بـ [int(x) for x in parts]. وانتبه{{g:|ي}}: بدون التحويل لا يمكن الجمع أو المقارنة كأرقام." },
 
-    { t: "steps", title: "Class report", problem: "<p>The teacher types all marks on one line, for example <code>72 45 90 58 88</code>. Print the number of students, the average (1 decimal), the highest mark, and the passing marks (60 or more) from high to low.</p>", steps: [
-      { html: "<p><b>Understand.</b> One line of input → <code>split()</code>. For <code>72 45 90 58 88</code>: 5 students, average 70.6, highest 90, passed <code>[90, 88, 72]</code>.</p>" },
-      { html: "<p><b>Turn the line into a list of numbers.</b></p>", code: c`marks = [int(x) for x in input().split()]` },
-      { html: "<p><b>Count, average, highest</b> — built-in helpers do the work.</p>", code: c`count = len(marks)
-average = sum(marks) / count
-highest = max(marks)` },
-      { html: "<p><b>Collect the passing marks</b> with a loop and <code>append</code>, then sort them high to low.</p>", code: c`passed = []
+    { t: "h", text: "Putting it together: a class report" },
+    { t: "code", code: c`line = input("Marks: ")
+marks = [int(x) for x in line.split()]
+avg = sum(marks) / len(marks)
+above = []
 for m in marks:
-    if m >= 60:
-        passed.append(m)
-passed.sort(reverse=True)` },
-      { html: "<p><b>Print the report.</b></p>", code: c`print("Students:", count)
-print(f"Average: {average:.1f}")
-print("Highest:", highest)
-print("Passed:", passed)` },
-    ], code: c`marks = [int(x) for x in input().split()]
-count = len(marks)
-average = sum(marks) / count
-highest = max(marks)
-passed = []
-for m in marks:
-    if m >= 60:
-        passed.append(m)
-passed.sort(reverse=True)
-print("Students:", count)
-print(f"Average: {average:.1f}")
-print("Highest:", highest)
-print("Passed:", passed)`, stdin: "72 45 90 58 88", ar: "split ثم int لكل عنصر، ثم sum و len و max، وقائمة جديدة بـ append للناجحين." },
+    if m > avg:
+        above.append(m)
+top3 = sorted(marks, reverse=True)[:3]
+print(f"Students: {len(marks)}")
+print(f"Average: {avg:.1f}")
+print("Highest:", max(marks), "Lowest:", min(marks))
+print("Above average:", above)
+print("Top 3:", top3)`, stdin: "85 92 78 95 60 88 71", together: true, before: "<p>A small report a teacher could really use, built only from today's ideas. Read it and guess the top 3 before you run it. Then type your own marks in the Input box.</p>", note: "<p>How it works:</p><ul><li>Lines 1–2 read one line of text, <code>split</code> it, and convert every piece to an <code>int</code> with a comprehension. Now <code>marks</code> is a real list of 7 numbers.</li><li>Line 3 computes the average with <code>sum</code> and <code>len</code>: <code>569 / 7</code> ≈ <code>81.3</code>.</li><li>Lines 4–7 use the empty-list-plus-append pattern to keep the marks above the average: <code>[85, 92, 95, 88]</code>. (As a comprehension it would be <code>[m for m in marks if m &gt; avg]</code>.)</li><li>Line 8 sorts a <b>copy</b> from high to low and slices the first three: <code>[95, 92, 88]</code>. Because we used <code>sorted()</code>, <code>marks</code> keeps its original order for line 12.</li><li>Lines 9–13 print the report, with <code>{avg:.1f}</code> from Day 4 rounding to one decimal, and <code>max</code>/<code>min</code> for the extremes.</li></ul><p>Notice that the program works for any number of marks: 3 students or 300, with no change to the code. That is the power of lists.</p>" },
+    { t: "ar", html: "جمعنا كل أفكار اليوم: قراءة الأرقام بـ split وتحويلها، ثم sum و len للمتوسط، وبناء قائمة بـ append، و sorted مع reverse=True والقص للحصول على أعلى ثلاث درجات. والبرنامج يعمل مع أي عدد من الدرجات." },
   ],
   mistakes: [
-    { title: "sort() returns None", html: "<code>sort()</code> changes the list and returns <code>None</code>. Storing its result destroys your list.", wrong: c`marks = [3, 1, 2]
+    { title: "sort() returns None", html: "", wrong: c`marks = [3, 1, 2]
 marks = marks.sort()
 print(marks)   # None!`, right: c`marks = [3, 1, 2]
 marks.sort()
@@ -190,17 +223,14 @@ print(a)   # [1, 2, 3] !`, right: c`a = [1, 2]
 b = a.copy()
 b.append(3)
 print(a)   # [1, 2]`, ar: "b = a لا تنسخ القائمة، بل تعطيها اسمًا ثانيًا. استخدم{{g:|ي}} copy()." },
-    { title: "Forgetting to convert after split()", html: "<code>split()</code> gives a list of <b>strings</b>. <code>sum</code> of strings is a <code>TypeError</code>, and <code>max</code> compares them as text (<code>'9' &gt; '10'</code>).", wrong: c`nums = "4 8 15".split()
-print(sum(nums))`, right: c`nums = [int(x) for x in "4 8 15".split()]
-print(sum(nums))`, ar: "عناصر split نصوص، حوّلها إلى أرقام بـ int قبل الحساب." },
   ],
   tricks: [
-    { title: "List comprehensions with range", html: "A comprehension can loop over a <code>range</code> and filter with <code>if</code>:", code: c`squares = [n * n for n in range(1, 6)]
+    { title: "List comprehensions", html: "", code: c`squares = [n * n for n in range(1, 6)]
 evens = [n for n in range(20) if n % 2 == 0]
 print(squares, evens)` },
-    { title: "Unpacking", html: "Spread a list into variables. The <code>*</code> variable collects everything in the middle.", code: c`first, *middle, last = [1, 2, 3, 4, 5]
+    { title: "Unpacking", html: "", code: c`first, *middle, last = [1, 2, 3, 4, 5]
 print(first, middle, last)` },
-    { title: "zip walks two lists together", html: "<code>zip</code> pairs item 0 with item 0, item 1 with item 1, …", code: c`names = ["Sara", "Omar"]
+    { title: "zip walks two lists together", html: "", code: c`names = ["Sara", "Omar"]
 marks = [95, 88]
 for n, m in zip(names, marks):
     print(n, m)` },
@@ -219,20 +249,9 @@ print(x, y)`, explain: "<code>sorted</code> makes a new list, <code>reverse</cod
 avg = sum(marks) / len(marks)
 print(f"Average: {avg:.1f}")
 ` },
-    { t: "predict", code: c`q = ["Ali", "Noura", "Fahad"]
-q.insert(1, "Huda")
-q.remove("Ali")
-print(q, q[0])`, explain: "After insert: <code>['Ali', 'Huda', 'Noura', 'Fahad']</code>. After remove: <code>['Huda', 'Noura', 'Fahad'] Huda</code>." },
-    { t: "predict", code: c`nums = [1, 2, 3, 4, 5, 6]
-print([n * 10 for n in nums if n % 2 == 1])`, explain: "Only the odd numbers 1, 3, 5 pass the <code>if</code>, and each is multiplied by 10: <code>[10, 30, 50]</code>." },
-    { t: "try", title: "My playlist", html: "<p>Add two songs with <code>append</code>, put your favourite first with <code>insert</code>, remove one you are tired of, then print the playlist numbered from 1 (hint: a counter in the loop).</p>", code: c`playlist = ["Song A", "Song B", "Song C"]
-playlist.append("Song D")
-for song in playlist:
-    print(song)` },
   ],
   exercises: [
     { id: "stats", lvl: "seed", title: "Quick stats", prompt: "<p>Read numbers on one line (separated by spaces) and print the sum, the max and the min on three lines.</p><pre class=\"code-static\">Input: 4 9 1 7\nSum: 21\nMax: 9\nMin: 1</pre>", tests: [{ stdin: "4 9 1 7", expected: "Sum: 21\nMax: 9\nMin: 1" }, { stdin: "-3 -8", expected: "Sum: -11\nMax: -3\nMin: -8" }],
-      hint: "<code>nums = [int(x) for x in input().split()]</code>, then <code>sum</code>, <code>max</code>, <code>min</code>.",
       solutions: [{ name: "Built-ins", code: c`nums = [int(x) for x in input().split()]
 print("Sum:", sum(nums))
 print("Max:", max(nums))
@@ -249,13 +268,11 @@ print("Sum:", total)
 print("Max:", biggest)
 print("Min:", smallest)`, note: "How max and min work inside. Notice starting from <code>nums[0]</code>, not 0 — otherwise negative lists break." }] },
     { id: "reverse", lvl: "seed", title: "Reverse the words", prompt: "<p>Read a sentence and print its words in reverse order.</p><pre class=\"code-static\">Input: I love Python\nOutput: Python love I</pre>", tests: [{ stdin: "I love Python", expected: "Python love I" }, { stdin: "one", expected: "one" }],
-      hint: "<code>split()</code> to get the words, the slice <code>[::-1]</code> to reverse, <code>\" \".join(...)</code> to glue.",
       solutions: [{ name: "Slice + join", code: c`words = input().split()
 print(" ".join(words[::-1]))` }, { name: "reverse()", code: c`words = input().split()
 words.reverse()
 print(" ".join(words))` }] },
     { id: "above", lvl: "star", title: "Above average", prompt: "<p>Read marks on one line. Print the average with 1 decimal, then the marks above average (in original order, separated by spaces).</p><pre class=\"code-static\">Input: 70 80 90 100\nAverage: 85.0\nAbove: 90 100</pre>", tests: [{ stdin: "70 80 90 100", expected: "Average: 85.0\nAbove: 90 100" }, { stdin: "50 50 80", expected: "Average: 60.0\nAbove: 80" }],
-      hint: "First compute the average, then loop again and <code>append</code> the marks greater than it. <code>join</code> needs strings: <code>str(m)</code>.",
       solutions: [{ name: "Loop", code: c`marks = [int(x) for x in input().split()]
 avg = sum(marks) / len(marks)
 above = []
@@ -268,14 +285,12 @@ avg = sum(marks) / len(marks)
 print(f"Average: {avg:.1f}")
 print("Above:", *[m for m in marks if m > avg])` }] },
     { id: "dupes", lvl: "star", title: "Remove duplicates, keep order", prompt: "<p>Read words on one line and print them without duplicates, keeping the first appearance order.</p><pre class=\"code-static\">Input: red blue red green blue\nOutput: red blue green</pre>", tests: [{ stdin: "red blue red green blue", expected: "red blue green" }, { stdin: "a a a", expected: "a" }],
-      hint: "Start with an empty list <code>seen</code>; append a word only if it is <code>not in seen</code>.",
       solutions: [{ name: "in check", code: c`seen = []
 for w in input().split():
     if w not in seen:
         seen.append(w)
 print(" ".join(seen))` }, { name: "dict.fromkeys (Day 12 preview)", code: c`print(" ".join(dict.fromkeys(input().split())))`, note: "Dictionaries keep insertion order and cannot have duplicate keys — a clever one-liner." }] },
     { id: "second", lvl: "star", title: "Second largest", prompt: "<p>Read numbers (at least two different values) and print the second largest <b>distinct</b> value.</p>", tests: [{ stdin: "5 9 2 9 7", expected: "7" }, { stdin: "1 2", expected: "1" }],
-      hint: "Find the max, build a new list without it, and take the max of that list.",
       solutions: [{ name: "Sort unique", code: c`nums = [int(x) for x in input().split()]
 unique = sorted(set(nums))
 print(unique[-2])`, note: "<code>set</code> removes duplicates (tomorrow's topic)." }, { name: "Remove the max", code: c`nums = [int(x) for x in input().split()]
@@ -316,26 +331,13 @@ print(f"Top: {names[best]} ({marks[best]})")`, note: "After the loop, <code>i</c
 marks = [88, 91, 97, 79]
 best = marks.index(max(marks))
 print(f"Top: {names[best]} ({marks[best]})")` }] },
-    { id: "cart10", lvl: "seed", title: "Shopping cart total", prompt: "<p>Read prices on one line (they may have decimals). Print how many items are in the cart and the total with 2 decimals.</p><pre class=\"code-static\">Input: 12.5 30 7.25\nItems: 3\nTotal: 49.75</pre>", tests: [{ stdin: "12.5 30 7.25", expected: "Items: 3\nTotal: 49.75" }, { stdin: "5", expected: "Items: 1\nTotal: 5.00" }],
-      hint: "Convert with <code>float</code>: <code>[float(x) for x in input().split()]</code>. Then <code>len</code>, <code>sum</code> and <code>:.2f</code>.",
-      solutions: [{ name: "Comprehension + built-ins", code: c`prices = [float(x) for x in input().split()]
-print("Items:", len(prices))
-print(f"Total: {sum(prices):.2f}")` }, { name: "Loop + append", code: c`prices = []
-for x in input().split():
-    prices.append(float(x))
-total = 0
-for p in prices:
-    total += p
-print("Items:", len(prices))
-print(f"Total: {total:.2f}")`, note: "The long way: build the list with <code>append</code> and add with an accumulator." }] },
   ],
   quiz: [
-    { q: "After `a = [1, 2, 3]` and then `a.append([4, 5])`, what is `len(a)`?", o: ["5", "4", "3", "An error"], a: 1, e: "The whole list [4, 5] is ONE item." },
+    { q: "After `a = [1, 2, 3]; a.append([4, 5])`, what is `len(a)`?", o: ["5", "4", "3", "An error"], a: 1, e: "The whole list [4, 5] is ONE item." },
     { q: "What does `\"a,b,c\".split(\",\")` return?", o: ["`['a,b,c']`", "`['a', 'b', 'c']`", "`('a','b','c')`", "`abc`"], a: 1, e: "split cuts at the separator." },
     { q: "`nums.sort()` returns…", o: ["the sorted list", "`None`", "a copy", "an error"], a: 1, e: "It sorts in place." },
     { q: "What is `[x * 2 for x in [1, 2, 3]]`?", o: ["`[1,2,3,1,2,3]`", "`[2, 4, 6]`", "`6`", "`[1, 2, 3, 2]`"], a: 1, e: "A list comprehension." },
     { q: "`b = a` then `b.append(9)`. What happens to `a`?", o: ["Unchanged", "Also gets 9", "Error", "Becomes empty"], a: 1, e: "Same list, two names." },
-    { q: "What does `[5, 6, 7].pop()` return?", o: ["`5`", "`7`", "`[5, 6]`", "`None`"], a: 1, e: "`pop()` with no index removes and returns the **last** item." },
   ],
   puzzle: { title: "Slice ninja", q: "<p>What does this print?</p>", code: c`a = list(range(10))
 print(a[2:8:2][::-1])`, answers: ["[6, 4, 2]", "[6,4,2]", "6 4 2"], hint: "First slice: 2, 4, 6. Then reverse.", ar: "القص الأول يعطي 2 و 4 و 6 ثم نعكس.", e: "<code>[6, 4, 2]</code>" },
@@ -346,14 +348,5 @@ print(a[2:8:2][::-1])`, answers: ["[6, 4, 2]", "[6,4,2]", "6 4 2"], hint: "First
     { f: "Glue a list of words with spaces", b: "`\" \".join(words)`" },
     { f: "How to really copy a list?", b: "`b = a.copy()` or `a[:]`" },
   ],
-  remember: [
-    "A list keeps many values in order: `marks = [85, 92, 78]`; `len(marks)` is the number of items.",
-    "Indexes start at 0; `lst[-1]` is the last item; slices like `lst[1:3]` give a new list.",
-    "Lists are mutable: `lst[i] = x`, `append`, `insert`, `remove`, `pop` change the list itself.",
-    "`for item in lst:` visits every item; use `sum`, `max`, `min`, `len` for quick statistics.",
-    "`sorted(lst)` returns a new list; `lst.sort()` changes the list and returns `None`.",
-    "`split()` turns text into a list of strings; `[int(x) for x in parts]` converts them all.",
-  ],
-  rememberAr: "القائمة تخزن قيمًا كثيرة بترتيب، ويمكن تعديلها. الترقيم من صفر، و split تعطي نصوصًا يجب تحويلها إلى أرقام.",
 };
 })();

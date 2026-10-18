@@ -22,88 +22,74 @@ DAYS[29] = {
   ],
   learn: [
     { t: "h", text: "How to approach a bigger project" },
-    { t: "p", html: "<p>Big programs are built the same way as small ones — just with more steps:</p><ol><li><b>Describe it in plain words.</b> What can the user do? What does the program remember?</li><li><b>Choose the data structures.</b> A dict of rooms? A class for books? A table of numbers?</li><li><b>Split it into milestones</b>, each testable on its own.</li><li><b>Build one milestone at a time</b> and check it before moving on.</li><li><b>Then make it yours</b> — extra features, better messages, your own ideas.</li></ol>" },
-    { t: "ar", html: "كل مرحلة في المشروع مستقلة ويمكن اختبارها. انسخ{{g:|ي}} حلك من المرحلة السابقة وابنِ{{g:|ي}} عليه. لا تنتقل{{g:|ي}} للمرحلة التالية قبل أن تنجح الاختبارات." },
-    { t: "h", text: "Your three options" },
+    { t: "p", html: "<p>Until now each exercise was one function or one class. A project is bigger: many pieces that must work <b>together</b>. The good news: big programs are built the same way as small ones — just with more steps, done in order:</p><ol><li><b>Describe it in plain words.</b> What can the user do? What does the program remember?</li><li><b>Choose the data structures.</b> A dict of rooms? A class for books? A table of numbers?</li><li><b>Split it into milestones</b>, each testable on its own.</li><li><b>Build the smallest working version first</b>, then grow it one milestone at a time, checking each before moving on.</li><li><b>Then make it yours</b> — extra features, better messages, your own ideas.</li></ol><p>The sections below walk through each step with small examples. Read them once, pick your track, and come back to them whenever you feel lost.</p>" },
+    { t: "analogy", title: "Building a house, not a sandcastle", html: "<p>Nobody builds a house by placing bricks randomly and hoping a house appears. First a plan on paper (step 1), then the materials (step 2), then the foundation, the walls, the roof — in order (steps 3–4), and an inspector checks each stage before the next one starts. Only at the end do you choose the paint colour (step 5). A program is the same: if the foundation is broken, every wall on top of it falls down.</p>" },
+    { t: "ar", html: "المشروع الكبير يُبنى مثل البرنامج الصغير لكن على مراحل: صف{{g:|ي}} الفكرة بالكلمات، ثم اختر{{g:|ي}} هياكل البيانات، ثم قسّم{{g:|ي}} العمل إلى مراحل صغيرة، وابنِ{{g:|ي}} أصغر نسخة تعمل ثم طوّرها. لا تنتقل{{g:|ي}} للمرحلة التالية قبل أن تنجح اختبارات الحالية." },
+
+    { t: "h", text: "Step 1: describe it in plain words" },
+    { t: "p", html: "<p>Before any code, write two or three sentences about what the program does, as if explaining it to a friend. For the text adventure: <i>\"The player stands in a room and reads its description. They type commands like <b>go north</b> or <b>take key</b>. Some doors are locked until they carry the right item. The goal is to reach the treasure room.\"</i></p><p>Now read your description and underline two kinds of words:</p><ul><li><b>Nouns</b> (player, room, description, item, door) are things the program must <b>remember</b> → they become <b>data</b>: variables, dicts, lists, classes and their attributes.</li><li><b>Verbs</b> (read, go, take, unlock) are things the program must <b>do</b> → they become <b>functions</b> or <b>methods</b>.</li></ul><p>For the library: <i>books</i>, <i>members</i>, <i>limits</i> are nouns; <i>borrow</i>, <i>give back</i>, <i>search</i> are verbs. For the AI track: <i>wine samples</i>, <i>features</i>, <i>models</i>, <i>scores</i> are nouns; <i>explore</i>, <i>compare</i>, <i>tune</i> are verbs. This little trick turns a vague idea into a list of things to build.</p>" },
+    { t: "ar", html: "اكتب{{g:|ي}} وصف المشروع في جملتين أو ثلاث. الأسماء (غرفة، كتاب، عضو) تصبح بيانات، والأفعال (اذهب، استعر، قارن) تصبح دوالًا أو methods. هكذا تتحول الفكرة إلى قائمة أشياء واضحة للبناء." },
+
+    { t: "h", text: "Step 2: choose the data structures" },
+    { t: "p", html: "<p>Next, decide <b>how</b> each noun is stored. Ask: do I look things up by name? → a <b>dict</b>. Do I keep things in order? → a <b>list</b>. Does a thing have its own data <b>and</b> its own actions? → a <b>class</b>. Is it a big table of numbers? → a <b>numpy array</b>. A good choice makes the rest of the code short; a bad one makes every function a struggle.</p>" },
+    { t: "code", code: c`rooms = {
+    "gate": {"desc": "An old gate.", "exits": {"north": "hall"}},
+    "hall": {"desc": "A dusty hall.", "exits": {"south": "gate"}},
+}
+print(rooms["gate"]["desc"])
+print(rooms["gate"]["exits"]["north"])
+print(sorted(rooms["hall"]["exits"]))`, before: "<p>A tiny version of the adventure world: a dict of rooms, where each room is itself a dict. Run it and follow each lookup step by step.</p>", note: "<p>Line by line:</p><ul><li><code>rooms</code> is a dict: the key is the room's name, the value is another dict with that room's data. This is a <b>nested dict</b> (Day 12).</li><li><code>rooms[\"gate\"][\"desc\"]</code> reads left to right: first the gate room, then its description → <code>An old gate.</code></li><li><code>rooms[\"gate\"][\"exits\"][\"north\"]</code> goes one level deeper: the gate's exits, then the room to the north → <code>hall</code>. An exit simply stores the <b>name</b> of another room, which links the rooms into a map.</li><li><code>sorted(...)</code> on a dict gives its <b>keys</b> in order → <code>['south']</code>.</li></ul><p>Why a dict? Because the program constantly asks \"what is the room called <i>hall</i>?\" — a lookup by name, which dicts do instantly. The real world in your starter (<code>ROOMS</code>) uses exactly this shape, plus <code>items</code> and <code>locked</code>.</p>" },
+    { t: "table", head: ["Track", "What it remembers", "Data structure"], rows: [["🗺️ Adventure", "rooms, exits, items; where the player is and what they carry", "nested dict `ROOMS`; a `Player` class with `room` and `inventory`"], ["📚 Library", "books, members, who borrowed what", "`Book` and `Member` classes; a `Library` with dicts by title and name"], ["🤖 AI", "178 wine samples with 13 measurements, their classes, scores", "numpy arrays `X` and `y`; a dict of model scores"]] },
+    { t: "ar", html: "اختر{{g:|ي}} هيكل البيانات حسب طريقة استخدامه: البحث بالاسم ← قاموس، الترتيب ← قائمة، بيانات مع أفعال ← كلاس، جدول أرقام ← مصفوفة numpy. الاختيار الصحيح يجعل بقية الكود قصيرًا وواضحًا." },
+
+    { t: "h", text: "Step 3: break it into milestones" },
+    { t: "p", html: "<p>A <b>milestone</b> is a piece small enough to finish in one sitting, with a clear input and output so you can <b>test it alone</b>. Good milestones follow the dependencies: build first what other pieces need. In the adventure, the <code>Player</code> needs the world map, so the map comes first; the command parser doesn't need anything, so it can be built and tested on its own.</p><p>That is exactly how today's exercises are arranged. Each track has three milestones today and more tomorrow:</p>" },
     { t: "table", head: ["Project", "Day 29 (today)", "Day 30 (tomorrow)"], rows: [["🗺️ Text adventure", "world map, player, command parser", "playable game loop + your own rooms"], ["📚 Library system", "Book, Member classes, Library rules", "search, save/load, command interface"], ["🤖 AI classifier", "explore data, compare models, tune k", "final evaluation + study-buddy text AI"]] },
-    { t: "tip", title: "Copy forward", html: "Each milestone's starter is self-contained. When a milestone passes, copy your code into the next one and extend it — that's exactly how real projects grow." },
-    { t: "h", text: "Worked example: a project in milestones" },
-    { t: "p", html: "<p>Before you start your own project, watch the method on a small one. The trick is always the same: <b>break the problem into small functions, test each one alone, then join them</b>. A bug in a 4-line function is easy to find; a bug somewhere in 60 lines is not.</p>" },
-    { t: "analogy", title: "Building with LEGO", html: "<p>You don't build a LEGO castle in one go. You build a tower, check it stands, build a wall, check it, and only then clip the pieces together. Each function is one LEGO piece you can test in your hand.</p>" },
-    { t: "steps", title: "A coffee-order app, milestone by milestone", problem: "<p>Build a small café app: the user types drink names one by one, then <code>done</code>. Unknown drinks get a polite message. At the end the program prints a receipt with a total.</p>",
-      steps: [
-        { html: "<p><b>Describe it in plain words, then choose the data.</b> What does the program remember? A menu (drink → price) and the current order (a list of drinks). A dict and a list are enough.</p>", code: c`MENU = {"latte": 14, "espresso": 10, "tea": 6, "water": 2}
-order = []` },
-        { html: "<p><b>Milestone 1: one small function.</b> <code>price(item)</code> returns the price, or <code>None</code> if the drink is not on the menu. Test it <b>right away</b> with cases you can check by hand — including a bad one.</p>", code: c`def price(item):
-    """Return the price of a drink, or None if it is not on the menu."""
-    return MENU.get(item.strip().lower())
+    { t: "p", html: "<p>Notice the order inside each track. <b>Library:</b> a <code>Book</code> knows nothing about members; a <code>Member</code> knows nothing about the library; the <code>Library</code> uses both — so it comes last. <b>AI:</b> you must know the data (balanced? how many features?) before comparing models, and you must have a fair comparison before tuning <code>k</code>. When you plan your own extra features, use the same question: <i>what does this piece need to exist first?</i></p>" },
+    { t: "ar", html: "المرحلة (milestone) جزء صغير له مدخلات ومخرجات واضحة ويمكن اختباره وحده. ابدأ{{g:|ي}} بالأجزاء التي تحتاجها الأجزاء الأخرى: الخريطة قبل اللاعب، والكتاب والعضو قبل المكتبة، واستكشاف البيانات قبل مقارنة النماذج." },
 
-print(price("Latte") == 14)     # should be True
-print(price("pizza") is None)   # should be True` },
-        { html: "<p><b>Milestone 2: build on the first piece.</b> <code>total(order)</code> adds up the prices by calling <code>price()</code>, which we already trust.</p>", code: c`def total(order):
-    result = 0
-    for item in order:
-        result += price(item)
-    return result
+    { t: "h", text: "Step 4: build the smallest working version first" },
+    { t: "p", html: "<p>Beginners often write 100 lines and run them for the first time at the end — and then face ten errors at once. Professionals do the opposite: they build the <b>smallest version that runs from start to end</b>, even if it can do almost nothing, and then add one feature at a time, running after every change. If something breaks, the bug is in the few lines you just added.</p>" },
+    { t: "code", code: c`def handle(command):
+    if command == "look":
+        return "You are at the gate."
+    return "I don't understand."
 
-print(total(["tea", "tea", "water"]) == 14)   # should be True
-print(total([]) == 0)                          # an empty order costs 0` },
-        { html: "<p><b>Milestone 3: the output.</b> <code>receipt(order)</code> returns the text instead of printing it, so it is easy to test and reuse.</p>", code: c`def receipt(order):
-    lines = []
-    for item in order:
-        lines.append(f"{item}: {price(item)} SAR")
-    lines.append(f"Total: {total(order)} SAR")
-    return "\n".join(lines)` },
-        { html: "<p><b>Join the pieces.</b> Only now write the main loop. It is short because every hard part already lives in a tested function.</p>", code: c`while True:
-    item = input("Drink (or done): ")
-    if item.strip().lower() == "done":
-        break
-    if price(item) is None:
-        print("Sorry, we don't have", item)
-    else:
-        order.append(item.strip().lower())
-print(receipt(order))` },
-      ],
-      code: c`MENU = {"latte": 14, "espresso": 10, "tea": 6, "water": 2}
+for command in ["look", "dance"]:
+    print(">", command)
+    print(handle(command))`, before: "<p>A first, tiny version of a game: it understands only one command. Run it, then add a second command such as <code>\"help\"</code> and run again.</p>", note: "<p>Line by line:</p><ul><li><code>handle(command)</code> takes one command and <b>returns</b> the game's answer. Returning a message (instead of printing inside) makes the function easy to test — the same reason today's milestones ask for returned messages.</li><li>Only <code>\"look\"</code> is known; every other command gets <code>I don't understand.</code></li><li>The loop plays two commands automatically, so we can test without typing.</li></ul><p>Output: <code>&gt; look</code>, <code>You are at the gate.</code>, <code>&gt; dance</code>, <code>I don't understand.</code> It is a silly game, but it <b>works end to end</b>: command in, answer out. From here, each new feature (a second room, an item, a locked door) is one small change you can run and check right away.</p>" },
+    { t: "ar", html: "ابنِ{{g:|ي}} أولًا أصغر نسخة تعمل من البداية للنهاية، ثم أضف{{g:|ي}} ميزة واحدة في كل مرة وشغّل{{g:|ي}} الكود بعد كل تغيير. هكذا إذا ظهر خطأ تعرف{{g:|ين}} أنه في الأسطر القليلة التي أضفتها للتو." },
 
-def price(item):
-    """Return the price of a drink, or None if it is not on the menu."""
-    return MENU.get(item.strip().lower())
+    { t: "h", text: "Step 5: test each piece" },
+    { t: "p", html: "<p>A piece is finished only when you have <b>checked</b> it. A simple way: call your function with inputs where you already know the right answer, and print the result next to the expected one. Choose three kinds of test cases: a <b>normal</b> case, a <b>boundary</b> case (exactly at the limit), and a <b>strange</b> case (empty text, a missing item, a wrong name).</p>" },
+    { t: "code", code: c`def is_overdue(days_borrowed, limit=14):
+    return days_borrowed > limit
 
-def total(order):
-    result = 0
-    for item in order:
-        result += price(item)
-    return result
+print(is_overdue(3), "expected False")
+print(is_overdue(20), "expected True")
+print(is_overdue(14), "expected False")`, before: "<p>A helper the library track might need: is a book overdue after a number of days? Run the three tests and compare each result with its expected value.</p>", note: "<p>Line by line:</p><ul><li><code>limit=14</code> is a default parameter (Day 15): if we don't pass a limit, it is 14 days.</li><li><code>days_borrowed &gt; limit</code> is already True or False, so we return it directly.</li><li>Three tests: a normal short loan (3 days), a clearly late one (20 days), and the <b>boundary</b>: exactly 14 days, which should still be on time.</li></ul><p>Output: <code>False expected False</code>, <code>True expected True</code>, <code>False expected False</code> — all three match, so we trust this piece and build on it. If someone had written <code>&gt;=</code>, the first two tests would still pass and only the boundary test would catch the bug. That is why boundary tests matter most.</p>" },
+    { t: "p", html: "<p>The milestones below do this for you: when you press <b>Check</b>, your code is called with prepared test inputs and its output is compared with the expected output line by line. When a check fails, don't guess — put the <b>expected</b> output next to <b>your</b> output, find the first line that differs, and add a <code>print</code> inside your function to see the values at that moment.</p>" },
+    { t: "ar", html: "اختبر{{g:|ي}} كل جزء بمدخلات تعرف{{g:|ين}} جوابها: حالة عادية، وحالة على الحد بالضبط، وحالة غريبة. حالة الحد هي التي تكشف أكثر الأخطاء، مثل كتابة &gt;= بدل &gt;. وعند فشل الاختبار قارن{{g:|ي}} الناتج المتوقع بالناتج الفعلي سطرًا سطرًا." },
 
-def receipt(order):
-    lines = []
-    for item in order:
-        lines.append(f"{item}: {price(item)} SAR")
-    lines.append(f"Total: {total(order)} SAR")
-    return "\n".join(lines)
+    { t: "h", text: "Step 6: connect the pieces and copy forward" },
+    { t: "p", html: "<p>Each milestone is a brick, and the next milestone stands on it. Here is how the pieces connect in each track:</p>" },
+    { t: "static", code: c`Adventure:  ROOMS (data) -> Player uses ROOMS in go/take
+            parse(text) -> (verb, noun)
+            tomorrow: game loop = input -> parse -> Player method -> print
 
-# Test each piece before joining them (every line should print True)
-print(price("Latte") == 14, price("pizza") is None)
-print(total(["tea", "tea", "water"]) == 14, total([]) == 0)
+Library:    Book, Member -> Library keeps them in dicts by title / name
+            borrow / give_back check the rules and raise errors
+            tomorrow: search, save/load, a command menu on top
 
-# Join the pieces: the main program
-order = []
-while True:
-    item = input("Drink (or done): ")
-    if item.strip().lower() == "done":
-        break
-    if price(item) is None:
-        print("Sorry, we don't have", item)
-    else:
-        order.append(item.strip().lower())
-print(receipt(order))`, stdin: "Latte\npizza\ntea\ndone",
-      ar: "الطريقة: قسّم{{g:|ي}} المشروع إلى دوال صغيرة، واختبر{{g:|ي}} كل دالة وحدها بأمثلة تعرف{{g:|ين}} جوابها، ثم اجمعها في البرنامج الرئيسي." },
-    { t: "check", q: "Your `total()` function gives a wrong answer. What is the best next step?", o: ["Move on to the next milestone and fix it at the end", "Test `total()` alone with a tiny example you can check by hand, fix it, then move on", "Delete everything and start again"], a: 1, e: "Fix bugs while the piece is small and fresh. Later milestones build on it, so a hidden bug would spread into everything that uses it.", hint: "Which way keeps the bug inside a few lines of code?" },
-    { t: "check", q: "Milestone 1 of the adventure uses a dict of exits. What does this print?", code: c`exits = {"north": "hall"}
-print(exits.get("west"))`, o: ["`None`", "A `KeyError`", "`hall`", "`west`"], a: 0, e: "`.get()` returns `None` when the key is missing, instead of crashing like `exits[\"west\"]` would. That is exactly what `move()` needs for \"no exit\".", ar: "get ترجع None إذا لم يوجد المفتاح، بدل أن يتوقف البرنامج بخطأ." },
-    { t: "check", q: "Why does `receipt()` **return** the text instead of printing it?", o: ["Because `print` does not work inside functions", "So you can test it (compare it with the expected text) and reuse it anywhere", "Returning is faster than printing"], a: 1, e: "A returned value can be checked, stored, joined or printed later. The automatic checks in today's milestones work the same way: most functions return messages.", hint: "`print` works fine inside functions — think about testing." },
-    { t: "ar", html: "قبل أن تكتب{{g:|ي}} أي كود: اكتب{{g:|ي}} في ملاحظاتك ماذا يفعل المستخدم، وما البيانات التي يحفظها البرنامج، وما الدوال التي تحتاجها." },
+AI:         explore (know the data) -> compare (fair split, baseline)
+            -> tune k (cross-validation on training data only)
+            tomorrow: one final honest test + a text classifier` },
+    { t: "tip", title: "Copy forward", html: "Each milestone's starter is self-contained. When a milestone passes, copy your code into the next one and extend it — that's exactly how real projects grow. Keep your passing version in your notes too, so you can always go back to code that worked." },
+    { t: "ar", html: "كل مرحلة تُبنى على التي قبلها: بعد نجاح المرحلة انسخ{{g:|ي}} حلك إلى المرحلة التالية وطوّره، واحتفظ{{g:|ي}} بنسخة تعمل في ملاحظاتك. غدًا نربط كل الأجزاء في برنامج كامل." },
+
+    { t: "h", text: "Pick your track and start" },
+    { t: "p", html: "<p>Choose the project that excites you most — there is no wrong choice:</p><ul><li><b>🗺️ Text adventure</b> if you enjoy games and stories. Main tools: dicts, functions, a class, string methods.</li><li><b>📚 Library system</b> if you like organized, real-world software. Main tools: classes, inheritance, exceptions (and files tomorrow).</li><li><b>🤖 AI classifier</b> if you enjoyed Days 23–27. Main tools: numpy, scikit-learn, honest evaluation.</li></ul><p>Then follow the plan: read Milestone 1, write the smallest code that could pass, run the checks, fix, and only then move on. If you are stuck for more than 15 minutes, look at the hint or the solution, understand it, close it, and write it again yourself.</p>" },
+    { t: "ar", html: "اختر{{g:|ي}} المشروع الذي يحمّسك أكثر، ثم اتبع{{g:|ي}} الخطة: اقرأ{{g:|ي}} المرحلة، واكتب{{g:|ي}} أبسط كود يمكن أن ينجح، وشغّل{{g:|ي}} الاختبارات. وإذا طالت المشكلة أكثر من ربع ساعة فافهم{{g:|ي}} الحل ثم أعد{{g:|ي}} كتابته بنفسك." },
   ],
   exercises: [
     // ---------- Adventure ----------
@@ -308,13 +294,5 @@ def tune():
     { f: "Steps for a bigger project", b: "Describe, choose data structures, split into milestones, build and test one at a time, then extend." },
     { f: "Why tune on training data with cross-validation?", b: "So the test set stays unseen and the final score stays honest." },
   ],
-  remember: [
-    "Plan first: describe the program in plain words, then choose the data (dicts, lists, classes).",
-    "Break the problem into **small functions**, each with one job.",
-    "Test each piece alone with cases you can check by hand — including bad or empty input.",
-    "Join the pieces only when each one works; the main loop should be short.",
-    "Prefer functions that **return** values: they are easier to test and reuse.",
-  ],
-  rememberAr: "الخلاصة: خطّط{{g:|ي}} أولًا، قسّم{{g:|ي}} المشروع إلى دوال صغيرة، اختبر{{g:|ي}} كل جزء وحده، ثم اجمع{{g:|ي}} الأجزاء.",
 };
 })();
