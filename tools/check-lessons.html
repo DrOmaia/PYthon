@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Py30 lesson checker</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; background: #fff; color: #222; }
+  pre { white-space: pre-wrap; }
+  .bad { color: #b00020; } .ok { color: #0a7d32; }
+</style>
+</head>
+<body>
+<h1>Py30 lesson checker</h1>
+<p>Checks the <b>Learn</b> section of every lesson against the explanation rules. Open this page in a browser, or run <code>tools/check-lessons.ps1</code>.</p>
+<pre id="report">Running…</pre>
+<script id="data" type="application/json"></script>
+<script src="../js/curriculum.js"></script>
+<script>
+/* Rules for the Learn section (lesson and review days from Day 4 on):
+   R1 every code/viz example has `before` (what to look for) and `note` (what happened, explained)
+   R2 the `note` explains, not just labels: at least MIN_NOTE characters of text
+   R3 an example teaches one idea: at most MAX_LINES lines
+   R4 every section (each "h") has an Arabic summary ("ar")
+   R5 every section has at least one runnable example
+   R6 overall explanation density: at least MIN_DENSITY characters of explanation per code line
+   R7 at least MIN_CHECKS inline checks (predict/parsons) inside Learn
+   R8 one larger "putting it together" example (together: true, up to MAX_TOGETHER lines) */
+const MIN_NOTE = 80, MAX_LINES = 10, MAX_TOGETHER = 20, MIN_DENSITY = 45, MIN_CHECKS = 2, STRICT_FROM = 4;
+window.DAYS = {};
+const errors = {};
+const strip = s => (s || "").replace(/<[^>]+>/g, "").replace(/\{\{[^}]*\}\}/g, "x").replace(/\s+/g, " ").trim();
+const textOf = it => [it.html, it.before, it.note, it.explain, it.prompt].reduce((n, s) => n + strip(s).length, 0);
+
+function load(d) {
+  return new Promise(res => {
+    const s = document.createElement("script");
+    s.src = `../js/days/day${String(d).padStart(2, "0")}.js`;
+    s.onload = () => res(); s.onerror = () => { errors[d] = "file missing"; res(); };
+    document.head.appendChild(s);
+  });
+}
+window.addEventListener("error", e => { const m = /day(\d\d)\.js/.exec(e.filename || ""); if (m) errors[+m[1]] = `syntax/runtime error line ${e.lineno}: ${e.message}`; });
+
+(async () => {
+  const days = CURRICULUM.days.filter(x => x.type === "lesson" || x.type === "review" || x.type === "project");
+  for (const m of days) await load(m.d);
+  const lines = [], blocks = [], summary = [];
+  let failing = 0;
+  for (const m of days) {
+    const d = m.d, D = DAYS[d];
+    if (errors[d] || !D) { lines.push(`Day ${d}: ✗ ${errors[d] || "DAYS[" + d + "] not defined"}`); failing++; continue; }
+    const L = D.learn || [];
+    const probs = [];
+    // split into sections by "h"
+    const sections = []; let cur = { title: "(before first heading)", items: [] };
+    L.forEach((it, k) => { if (it.t === "h") { if (cur.items.length || cur.title !== "(before first heading)") sections.push(cur); cur = { title: it.text, items: [] }; } else cur.items.push(Object.assign({ k }, it)); });
+    sections.push(cur);
+    let prose = 0, codeLines = 0, checks = 0, examples = 0, together = 0;
+    L.forEach((it, k) => {
+      prose += textOf(it);
+      if (it.t === "predict" || it.t === "parsons") checks++;
+      if (it.t === "code" || it.t === "viz") {
+        examples++;
+        // blank lines don't count, so readable spacing is never penalised
+        const n = it.code.split("\n").filter(l => l.trim()).length; codeLines += n;
+        blocks.push({ day: d, k, t: it.t, code: it.code, stdin: it.stdin || "", expectError: !!it.expectError });
+        const where = `learn[${k}] "${it.code.split("\n")[0].slice(0, 40)}"`;
+        if (!it.before) probs.push(`R1 no 'before' at ${where}`);
+        if (!it.note) probs.push(`R1 no 'note' at ${where}`);
+        else if (strip(it.note).length < MIN_NOTE) probs.push(`R2 note too short (${strip(it.note).length}) at ${where}`);
+        if (n > MAX_LINES && !(it.together && n <= MAX_TOGETHER)) probs.push(`R3 ${n} lines (max ${MAX_LINES}, or ${MAX_TOGETHER} for one "together" example) at ${where}`);
+        if (it.together) together++;
+      }
+      if (it.t === "predict") blocks.push({ day: d, k, t: "predict", code: it.code, stdin: it.stdin || "", expectError: !!it.expectError });
+    });
+    sections.forEach((s, si) => {
+      if (s.title === "(before first heading)" && !s.items.length) return;
+      if (!s.items.some(i => i.t === "ar")) probs.push(`R4 no Arabic summary in section "${s.title}"`);
+      // the opening "why" section may be prose + analogy only
+      if (m.type === "lesson" && si > 0 && !s.items.some(i => i.t === "code" || i.t === "viz")) probs.push(`R5 no runnable example in section "${s.title}"`);
+    });
+    const density = codeLines ? Math.round(prose / codeLines) : 999;
+    if (density < MIN_DENSITY) probs.push(`R6 explanation density ${density} chars/code line (min ${MIN_DENSITY})`);
+    if (m.type === "lesson" && checks < MIN_CHECKS) probs.push(`R7 only ${checks} inline checks in Learn (min ${MIN_CHECKS})`);
+    if (m.type === "lesson" && together !== 1) probs.push(`R8 needs exactly one "together" example that combines the day's ideas (found ${together})`);
+    const strict = d >= STRICT_FROM;
+    const head = `Day ${String(d).padStart(2)} [${m.type}] sections=${sections.length} examples=${examples} density=${density} checks=${checks}`;
+    if (probs.length && strict) failing++;
+    lines.push(`${head}  ${probs.length ? (strict ? "✗" : "(info)") + " " + probs.length + " issue(s)" : "✓"}`);
+    probs.forEach(p => lines.push("    - " + p));
+    summary.push({ day: d, ok: !probs.length, issues: probs.length, density, examples, checks });
+  }
+  lines.unshift(failing ? `RESULT: ${failing} day(s) need work` : "RESULT: all days pass", "");
+  const r = document.getElementById("report");
+  r.textContent = lines.join("\n");
+  r.className = failing ? "bad" : "ok";
+  document.getElementById("data").textContent = JSON.stringify({ summary, blocks });
+  document.body.setAttribute("data-done", "1");
+})();
+</script>
+</body>
+</html>
